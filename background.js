@@ -1,4 +1,5 @@
-browser.runtime.onMessage.addListener(function (arg, sender, sendResponse) {
+browser.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+
     function onStartedDownload(id) {
         console.log(`Started downloading: ${id}`);
     }
@@ -7,9 +8,9 @@ browser.runtime.onMessage.addListener(function (arg, sender, sendResponse) {
         console.log(`Download failed: ${error}`);
     }
 
-    let downloading = browser.downloads.download({
-        url: arg,
-        filename: 'foto.jpg',
+    const downloading = browser.downloads.download({
+        url: request.url,
+        filename: request.type === 'image' ? 'image.jpg' : 'video.mp4',
         conflictAction: 'uniquify',
         saveAs: true
     });

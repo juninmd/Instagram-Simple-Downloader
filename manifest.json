@@ -1,8 +1,8 @@
 {
     "manifest_version": 2,
     "name": "Instagram Simple Downloader",
-    "version": "0.1",
-    "description": "Add a simple button to download photos and videos from feed (Beta Version).",
+    "version": "1.0.0",
+    "description": "Add a simple button to download photos and videos from feed/story/profile.",
     "icons": {
         "48": "icons/logo-48.png"
     },
