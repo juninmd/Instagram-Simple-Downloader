@@ -5,6 +5,7 @@
 <p> Add a simple button to download photos and videos from feed/story/profile</p>
 </center>
 
+[Firefox](https://addons.mozilla.org/pt-BR/firefox/addon/instagram-simple-downloader/)
 
 ### Download from Profile
 <img src='https://i.imgur.com/QMdUmFC.png' height='400'>
