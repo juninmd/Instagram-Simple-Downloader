@@ -1,130 +1,67 @@
-const color = (type) => {
-    return type === 'video' ? 'linear-gradient(to bottom right, rgb(255, 0, 0), rgb(192, 0, 0))' : 'linear-gradient(to bottom right, rgb(0, 255, 0), rgb(0, 192, 0))';
-}
+const VIDEO_COLOR = 'linear-gradient(to bottom right, rgb(255, 0, 0), rgb(192, 0, 0))';
+const IMAGE_COLOR = 'linear-gradient(to bottom right, rgb(0, 255, 0), rgb(0, 192, 0))';
 
-const feed = () => {
-    const downloadBtn = function (url, type, i) {
-        const el = document.createElement('a');
-        el.style = `color: white;background: ${color(type)}; padding-top: 8px;border-radius: 4px;cursor: pointer;margin-right: 10px;border: 1px solid #090909 !important;height: 25px;width: auto;padding-left: 3px;padding-right: 3px;`
-        el.innerText = `Download #${i}`
-        el.addEventListener("click", (e) =>
-            browser.runtime.sendMessage({ url, type })
-        )
-        return el;
-    }
+const createDownloadButton = (url, type, index) => {
+  const button = document.createElement('a');
+  button.classList.add('download-button');
+  button.style.background = type === 'video' ? VIDEO_COLOR : IMAGE_COLOR;
+  button.innerHTML = `<span>Download #${index}</span>`;
+  button.addEventListener('click', async (e) => {
+    await browser.runtime.sendMessage({ url, type });
+  });
+  return button;
+};
 
-    const appendBtn = (article, src, type, i) => {
-        const section = article.querySelector('section');
-        if (section != null)
-            section.prepend(downloadBtn(src, type, i))
-    }
+const appendDownloadButton = (container, src, type, index) => {
+  const section = container.querySelector('section');
+  if (section) {
+    section.prepend(createDownloadButton(src, type, index));
+  }
+};
 
-    const search = () => {
-        for (const article of document.querySelectorAll('article')) {
-            const items = article.querySelectorAll('img[srcset]:not([download-button="ok"]),video:not([download-button="ok"])')
-            for (let i = 0; i < items.length; i++) {
-                const item = items[i];
-                if (item.nodeName === 'VIDEO') {
-                    appendBtn(article, item.src, 'video', i + 1);
-                    item.setAttribute('download-button', 'ok');
-                } else {
-                    appendBtn(article, item.src, 'image', i + 1);
-                    item.setAttribute('download-button', 'ok');
-                }
-            }
-        }
-    }
-    return { search };
-}
-
-const stories = () => {
-    const downloadBtn = function (url, type) {
-        const el = document.createElement('a');
-        el.style = `color: white;background: ${color(type)}; border-radius: 4px;cursor: pointer;margin-right: 10px;border: 1px solid #090909 !important;padding-left: 3px;padding-right: 3px; margin-left: 4px;`
-        el.innerText = `Download`
-        el.addEventListener("click", (e) =>
-            browser.runtime.sendMessage({ url, type })
-        )
-        return el;
-    }
-
-    const appendBtn = (src, type) => {
-        document.querySelector('time').parentElement.append(downloadBtn(src, type))
-    }
-
-    const search = () => {
-        const items = document.querySelector('section[style]').querySelectorAll('video:not([download-button="ok"]),img[srcset]:not([download-button="ok"])')
-        for (let i = 0; i < items.length; i++) {
-            const item = items[i];
-            if (item.nodeName === 'VIDEO') {
-                appendBtn(item.querySelectorAll('source')[1].src, 'video');
-                item.setAttribute('download-button', 'ok');
-            } else {
-                appendBtn(item.src, 'image');
-                item.setAttribute('download-button', 'ok');
-            }
-        }
-    }
-    return { search };
-}
-
-const profile = () => {
-    const downloadBtn = function (url, type, i) {
-        const el = document.createElement('a');
-        el.style = `color: white;background: ${color(type)}; padding-top: 8px;border-radius: 4px;cursor: pointer;margin-right: 10px;border: 1px solid #090909 !important;height: 25px;width: auto;padding-left: 3px;padding-right: 3px;`
-        el.innerText = `#${i}`
-        el.addEventListener("click", (e) =>
-            browser.runtime.sendMessage({ url, type })
-        )
-        return el;
-    }
-
-    const appendBtn = (article, src, type, i) => {
-        const section = article.querySelector('section');
-        if (section != null)
-            section.prepend(downloadBtn(src, type, i))
-    }
-
-    const search = () => {
-        const article = document.querySelector('article');
-        const items = article.querySelectorAll('video:not([download-button="ok"]),img[srcset]:not([download-button="ok"])');
-        for (let i = 0; i < items.length; i++) {
-            const item = items[i];
-            if (item.nodeName === 'VIDEO') {
-                appendBtn(article, item.src, 'video', i + 1);
-                item.setAttribute('download-button', 'ok');
-            } else {
-                appendBtn(article, item.src, 'image', i + 1);
-                item.setAttribute('download-button', 'ok');
-            }
-        }
-    }
-
-    return { search };
-}
-
-const observer = new MutationObserver((mutations) => {
-
-    if (!(window.location.href === "https://www.instagram.com/" ||
-        window.location.href.includes('instagram.com/stories') ||
-        window.location.href.includes('instagram.com/p'))) {
-        return;
-    }
-
-    mutations.forEach((mutation) => {
-        if (mutation.addedNodes && mutation.addedNodes.length > 0) {
-            if (window.location.href.includes('instagram.com/stories')) {
-                stories().search();
-            } else if (window.location.href === "https://www.instagram.com/") {
-                feed().search();
-            } else if (window.location.href.includes('instagram.com/p')) {
-                profile().search();
-            }
-        }
+const searchFeed = () => {
+  const articles = document.querySelectorAll('article');
+  articles.forEach((article) => {
+    const items = article.querySelectorAll('img[srcset]:not([download-button="ok"]), video:not([download-button="ok"])');
+    items.forEach((item, index) => {
+      const type = item.nodeName === 'VIDEO' ? 'video' : 'image';
+      appendDownloadButton(article, item.src, type, index + 1);
+      item.setAttribute('download-button', 'ok');
     });
-});
+  });
+};
 
+const searchStories = () => {
+  const items = document.querySelector('section[style]').querySelectorAll('img[srcset]:not([download-button="ok"]), video:not([download-button="ok"])');
+  items.forEach((item, index) => {
+    const type = item.nodeName === 'VIDEO' ? 'video' : 'image';
+    appendDownloadButton(item.parentElement, item.src, type, index + 1);
+    item.setAttribute('download-button', 'ok');
+  });
+};
+
+const searchProfile = () => {
+  const article = document.querySelector('article');
+  const items = article.querySelectorAll('img[srcset]:not([download-button="ok"]), video:not([download-button="ok"])');
+  items.forEach((item, index) => {
+    const type = item.nodeName === 'VIDEO' ? 'video' : 'image';
+    appendDownloadButton(article, item.src, type, index + 1);
+    item.setAttribute('download-button', 'ok');
+  });
+};
+
+const observerCallback = (mutations) => {
+  if (window.location.href === 'https://www.instagram.com/') {
+    searchFeed();
+  } else if (window.location.href.includes('instagram.com/stories')) {
+    searchStories();
+  } else if (window.location.href.includes('instagram.com/p')) {
+    searchProfile();
+  }
+};
+
+const observer = new MutationObserver(observerCallback);
 observer.observe(document.body, {
-    childList: true,
-    subtree: true
+  childList: true,
+  subtree: true
 });
