@@ -2,12 +2,55 @@ const VIDEO_COLOR = 'linear-gradient(to bottom right, rgb(255, 0, 0), rgb(192, 0
 const IMAGE_COLOR = 'linear-gradient(to bottom right, rgb(0, 255, 0), rgb(0, 192, 0))';
 
 const createDownloadButton = (url, type, index) => {
-  const button = document.createElement('a');
+  const button = document.createElement('button');
   button.classList.add('download-button');
-  button.style.background = type === 'video' ? VIDEO_COLOR : IMAGE_COLOR;
-  button.innerHTML = `<span>Download #${index}</span>`;
+
+  button.type = 'button';
+  button.setAttribute('aria-label', `Download ${type} ${index}`);
+
+  Object.assign(button.style, {
+    background: type === 'video' ? VIDEO_COLOR : IMAGE_COLOR,
+    border: 'none',
+    color: '#fff',
+    padding: '8px 12px',
+    borderRadius: '4px',
+    cursor: 'pointer',
+    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
+    fontWeight: '600',
+    fontSize: '14px',
+    margin: '8px 0',
+    display: 'inline-flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    transition: 'opacity 0.2s ease-in-out'
+  });
+
+  const span = document.createElement('span');
+  span.textContent = `Download #${index}`;
+  button.appendChild(span);
+
   button.addEventListener('click', async (e) => {
-    await browser.runtime.sendMessage({ url, type });
+    e.preventDefault();
+    e.stopPropagation();
+
+    const originalText = span.textContent;
+    button.disabled = true;
+    button.style.opacity = '0.7';
+    span.textContent = 'Downloading...';
+
+    try {
+      await browser.runtime.sendMessage({ url, type });
+      span.textContent = 'Started!';
+    } catch (error) {
+      console.error(error);
+      span.textContent = 'Error';
+    } finally {
+      setTimeout(() => {
+        span.textContent = originalText;
+        button.disabled = false;
+        button.style.opacity = '1';
+      }, 2000);
+    }
   });
   return button;
 };
