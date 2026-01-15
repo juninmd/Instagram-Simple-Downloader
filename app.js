@@ -1,5 +1,5 @@
-const VIDEO_COLOR = 'linear-gradient(to bottom right, rgb(255, 0, 0), rgb(192, 0, 0))';
-const IMAGE_COLOR = 'linear-gradient(to bottom right, rgb(0, 255, 0), rgb(0, 192, 0))';
+const VIDEO_COLOR = 'linear-gradient(to bottom right, #D32F2F, #B71C1C)';
+const IMAGE_COLOR = 'linear-gradient(to bottom right, #2E7D32, #1B5E20)';
 
 const injectStyles = () => {
   const style = document.createElement('style');
@@ -57,6 +57,7 @@ const createDownloadButton = (url, type, index) => {
 
   const span = document.createElement('span');
   span.textContent = `Download #${index}`;
+  span.setAttribute('aria-live', 'polite');
   button.appendChild(span);
 
   button.addEventListener('click', async (e) => {
