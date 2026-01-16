@@ -1,9 +1,26 @@
-const VIDEO_COLOR = 'linear-gradient(to bottom right, rgb(255, 0, 0), rgb(192, 0, 0))';
-const IMAGE_COLOR = 'linear-gradient(to bottom right, rgb(0, 255, 0), rgb(0, 192, 0))';
+const VIDEO_COLOR = 'linear-gradient(to bottom right, #D32F2F, #C62828)';
+const IMAGE_COLOR = 'linear-gradient(to bottom right, #2E7D32, #1B5E20)';
 
 const injectStyles = () => {
   const style = document.createElement('style');
   style.textContent = `
+    @keyframes isd-spin {
+      to { transform: rotate(360deg); }
+    }
+    .isd-spinner {
+      width: 14px;
+      height: 14px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: isd-spin 1s linear infinite;
+      margin-right: 6px;
+      display: inline-block;
+      box-sizing: border-box;
+    }
+    .isd-hidden {
+      display: none !important;
+    }
     .isd-btn {
       border: none;
       color: #fff;
@@ -52,11 +69,18 @@ const createDownloadButton = (url, type, index) => {
     background: type === 'video' ? VIDEO_COLOR : IMAGE_COLOR
   });
 
-  const iconSvg = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>`;
-  button.innerHTML = iconSvg;
+  const iconContainer = document.createElement('span');
+  iconContainer.innerHTML = `<svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>`;
+  const iconSvg = iconContainer.firstElementChild;
+
+  const spinner = document.createElement('span');
+  spinner.className = 'isd-spinner isd-hidden';
 
   const span = document.createElement('span');
   span.textContent = `Download #${index}`;
+
+  button.appendChild(iconSvg);
+  button.appendChild(spinner);
   button.appendChild(span);
 
   button.addEventListener('click', async (e) => {
@@ -67,6 +91,8 @@ const createDownloadButton = (url, type, index) => {
     button.disabled = true;
     button.style.opacity = '0.7';
     span.textContent = 'Downloading...';
+    iconSvg.classList.add('isd-hidden');
+    spinner.classList.remove('isd-hidden');
 
     try {
       await browser.runtime.sendMessage({ url, type });
@@ -79,6 +105,8 @@ const createDownloadButton = (url, type, index) => {
         span.textContent = originalText;
         button.disabled = false;
         button.style.opacity = '';
+        iconSvg.classList.remove('isd-hidden');
+        spinner.classList.add('isd-hidden');
       }, 2000);
     }
   });
