@@ -45,6 +45,10 @@ const injectStyles = () => {
     .isd-btn:active {
       transform: translateY(0);
     }
+    .isd-btn:disabled {
+      cursor: not-allowed;
+      opacity: 0.7;
+    }
     .isd-btn:focus-visible {
       outline: 2px solid white;
       box-shadow: 0 0 0 4px rgba(0,0,0,0.3);
@@ -77,6 +81,7 @@ const createDownloadButton = (url, type, index) => {
   spinner.className = 'isd-spinner isd-hidden';
 
   const span = document.createElement('span');
+  span.setAttribute('aria-live', 'polite');
   span.textContent = `Download #${index}`;
 
   button.appendChild(iconSvg);
@@ -89,7 +94,6 @@ const createDownloadButton = (url, type, index) => {
 
     const originalText = span.textContent;
     button.disabled = true;
-    button.style.opacity = '0.7';
     span.textContent = 'Downloading...';
     iconSvg.classList.add('isd-hidden');
     spinner.classList.remove('isd-hidden');
@@ -104,7 +108,6 @@ const createDownloadButton = (url, type, index) => {
       setTimeout(() => {
         span.textContent = originalText;
         button.disabled = false;
-        button.style.opacity = '';
         iconSvg.classList.remove('isd-hidden');
         spinner.classList.add('isd-hidden');
       }, 2000);
