@@ -18,6 +18,11 @@ const injectStyles = () => {
       display: inline-block;
       box-sizing: border-box;
     }
+    @media (prefers-reduced-motion: reduce) {
+      .isd-spinner {
+        animation: none;
+      }
+    }
     .isd-hidden {
       display: none !important;
     }
@@ -77,6 +82,10 @@ const createDownloadButton = (url, type, index) => {
   iconContainer.innerHTML = `<svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>`;
   const iconSvg = iconContainer.firstElementChild;
 
+  const checkContainer = document.createElement('span');
+  checkContainer.innerHTML = `<svg aria-hidden="true" class="isd-hidden" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
+  const checkSvg = checkContainer.firstElementChild;
+
   const spinner = document.createElement('span');
   spinner.className = 'isd-spinner isd-hidden';
 
@@ -86,6 +95,7 @@ const createDownloadButton = (url, type, index) => {
 
   button.appendChild(iconSvg);
   button.appendChild(spinner);
+  button.appendChild(checkSvg);
   button.appendChild(span);
 
   button.addEventListener('click', async (e) => {
@@ -101,6 +111,8 @@ const createDownloadButton = (url, type, index) => {
     try {
       await browser.runtime.sendMessage({ url, type });
       span.textContent = 'Started!';
+      spinner.classList.add('isd-hidden');
+      checkSvg.classList.remove('isd-hidden');
     } catch (error) {
       console.error(error);
       span.textContent = 'Error';
@@ -109,6 +121,7 @@ const createDownloadButton = (url, type, index) => {
         span.textContent = originalText;
         button.disabled = false;
         iconSvg.classList.remove('isd-hidden');
+        checkSvg.classList.add('isd-hidden');
         spinner.classList.add('isd-hidden');
       }, 2000);
     }

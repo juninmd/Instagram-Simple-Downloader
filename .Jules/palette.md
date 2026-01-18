@@ -13,3 +13,7 @@
 ## 2025-05-24 - [Disabled State Styling]
 **Learning:** Setting `button.disabled = true` does not automatically change the cursor to `not-allowed` if a class defines `cursor: pointer`.
 **Action:** Explicitly define `:disabled` pseudo-class styles in CSS rather than using inline styles, to ensure consistent visual feedback.
+
+## 2024-05-24 - [Success Feedback & Motion]
+**Learning:** Persisting a spinner during a success message ("Started!") confuses users about the operation status.
+**Action:** Replace loading indicators with static success icons (like a checkmark) immediately upon completion, and respect `prefers-reduced-motion` for spinners.
