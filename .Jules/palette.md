@@ -17,3 +17,7 @@
 ## 2024-05-24 - [Success Feedback & Motion]
 **Learning:** Persisting a spinner during a success message ("Started!") confuses users about the operation status.
 **Action:** Replace loading indicators with static success icons (like a checkmark) immediately upon completion, and respect `prefers-reduced-motion` for spinners.
+
+## 2025-05-25 - [Micro-interactions & Tooltips]
+**Learning:** Visual state changes (like success/error) are enhanced by micro-animations (pop/shake), but these must be paired with descriptive text (tooltips/aria-labels) for clarity.
+**Action:** Combine CSS animations for emotional feedback with dynamic `title` attributes for cognitive clarity, ensuring `prefers-reduced-motion` is respected.

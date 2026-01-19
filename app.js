@@ -7,6 +7,15 @@ const injectStyles = () => {
     @keyframes isd-spin {
       to { transform: rotate(360deg); }
     }
+    @keyframes isd-shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-4px); }
+      75% { transform: translateX(4px); }
+    }
+    @keyframes isd-pop {
+      0% { transform: scale(0.8); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
     .isd-spinner {
       width: 14px;
       height: 14px;
@@ -18,9 +27,16 @@ const injectStyles = () => {
       display: inline-block;
       box-sizing: border-box;
     }
+    .isd-shake {
+      animation: isd-shake 0.4s ease-in-out;
+    }
+    .isd-pop {
+      animation: isd-pop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
     @media (prefers-reduced-motion: reduce) {
-      .isd-spinner {
+      .isd-spinner, .isd-shake, .isd-pop {
         animation: none;
+        transition: none;
       }
     }
     .isd-hidden {
@@ -73,6 +89,7 @@ const createDownloadButton = (url, type, index) => {
 
   button.type = 'button';
   button.setAttribute('aria-label', `Download ${type} ${index}`);
+  button.setAttribute('title', `Download full resolution ${type}`);
 
   Object.assign(button.style, {
     background: type === 'video' ? VIDEO_COLOR : IMAGE_COLOR
@@ -105,24 +122,32 @@ const createDownloadButton = (url, type, index) => {
     const originalText = span.textContent;
     button.disabled = true;
     span.textContent = 'Downloading...';
+    button.setAttribute('title', 'Downloading in progress...');
     iconSvg.classList.add('isd-hidden');
     spinner.classList.remove('isd-hidden');
 
     try {
       await browser.runtime.sendMessage({ url, type });
       span.textContent = 'Started!';
+      button.setAttribute('title', 'Download started successfully');
       spinner.classList.add('isd-hidden');
       checkSvg.classList.remove('isd-hidden');
+      checkSvg.classList.add('isd-pop');
     } catch (error) {
       console.error(error);
       span.textContent = 'Error';
+      button.setAttribute('title', 'Download failed. Click to try again.');
+      button.classList.add('isd-shake');
     } finally {
       setTimeout(() => {
         span.textContent = originalText;
         button.disabled = false;
+        button.setAttribute('title', `Download full resolution ${type}`);
         iconSvg.classList.remove('isd-hidden');
         checkSvg.classList.add('isd-hidden');
+        checkSvg.classList.remove('isd-pop');
         spinner.classList.add('isd-hidden');
+        button.classList.remove('isd-shake');
       }, 2000);
     }
   });
