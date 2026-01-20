@@ -43,7 +43,7 @@ const injectStyles = () => {
       display: none !important;
     }
     .isd-btn {
-      border: none;
+      border: 1px solid transparent;
       color: #fff;
       padding: 8px 12px;
       border-radius: 4px;
@@ -69,6 +69,18 @@ const injectStyles = () => {
     .isd-btn:disabled {
       cursor: not-allowed;
       opacity: 0.7;
+    }
+    .isd-btn.isd-loading {
+      cursor: progress;
+      opacity: 1;
+    }
+    .isd-btn.isd-success {
+      cursor: default;
+      opacity: 1;
+    }
+    .isd-btn.isd-error {
+      cursor: not-allowed;
+      opacity: 1;
     }
     .isd-btn:focus-visible {
       outline: 2px solid white;
@@ -121,6 +133,7 @@ const createDownloadButton = (url, type, index) => {
 
     const originalText = span.textContent;
     button.disabled = true;
+    button.classList.add('isd-loading');
     span.textContent = 'Downloading...';
     button.setAttribute('title', 'Downloading in progress...');
     iconSvg.classList.add('isd-hidden');
@@ -128,6 +141,8 @@ const createDownloadButton = (url, type, index) => {
 
     try {
       await browser.runtime.sendMessage({ url, type });
+      button.classList.remove('isd-loading');
+      button.classList.add('isd-success');
       span.textContent = 'Started!';
       button.setAttribute('title', 'Download started successfully');
       spinner.classList.add('isd-hidden');
@@ -135,11 +150,14 @@ const createDownloadButton = (url, type, index) => {
       checkSvg.classList.add('isd-pop');
     } catch (error) {
       console.error(error);
+      button.classList.remove('isd-loading');
+      button.classList.add('isd-error');
       span.textContent = 'Error';
       button.setAttribute('title', 'Download failed. Click to try again.');
       button.classList.add('isd-shake');
     } finally {
       setTimeout(() => {
+        button.classList.remove('isd-loading', 'isd-success', 'isd-error');
         span.textContent = originalText;
         button.disabled = false;
         button.setAttribute('title', `Download full resolution ${type}`);
