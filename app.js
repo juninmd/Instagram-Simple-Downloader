@@ -81,7 +81,7 @@ const injectStyles = () => {
       opacity: 1;
     }
     .isd-btn.isd-error {
-      cursor: not-allowed;
+      cursor: pointer;
       opacity: 1;
     }
     .isd-btn:focus-visible {
@@ -129,12 +129,17 @@ const createDownloadButton = (url, type, index) => {
   button.appendChild(checkSvg);
   button.appendChild(span);
 
+  let resetTimer;
+  const defaultText = span.textContent;
+
   button.addEventListener('click', async (e) => {
     e.preventDefault();
     e.stopPropagation();
 
-    const originalText = span.textContent;
+    if (resetTimer) clearTimeout(resetTimer);
+
     button.disabled = true;
+    button.classList.remove('isd-loading', 'isd-success', 'isd-error', 'isd-shake');
     button.classList.add('isd-loading');
     span.textContent = 'Downloading...';
     button.setAttribute('title', 'Downloading in progress...');
@@ -155,21 +160,21 @@ const createDownloadButton = (url, type, index) => {
       button.classList.remove('isd-loading');
       button.classList.add('isd-error');
       span.textContent = 'Error';
-      button.setAttribute('title', 'Download failed. Click to try again.');
+      button.setAttribute('title', 'Download failed. Click to retry.');
       button.classList.add('isd-shake');
-    } finally {
-      setTimeout(() => {
-        button.classList.remove('isd-loading', 'isd-success', 'isd-error');
-        span.textContent = originalText;
-        button.disabled = false;
-        button.setAttribute('title', `Download full resolution ${type}`);
-        iconSvg.classList.remove('isd-hidden');
-        checkSvg.classList.add('isd-hidden');
-        checkSvg.classList.remove('isd-pop');
-        spinner.classList.add('isd-hidden');
-        button.classList.remove('isd-shake');
-      }, 2000);
+      button.disabled = false;
     }
+
+    resetTimer = setTimeout(() => {
+      button.classList.remove('isd-loading', 'isd-success', 'isd-error', 'isd-shake');
+      span.textContent = defaultText;
+      button.disabled = false;
+      button.setAttribute('title', `Download full resolution ${type}`);
+      iconSvg.classList.remove('isd-hidden');
+      checkSvg.classList.add('isd-hidden');
+      checkSvg.classList.remove('isd-pop');
+      spinner.classList.add('isd-hidden');
+    }, 2000);
   });
   return button;
 };

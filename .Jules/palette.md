@@ -21,3 +21,7 @@
 ## 2025-05-25 - [Micro-interactions & Tooltips]
 **Learning:** Visual state changes (like success/error) are enhanced by micro-animations (pop/shake), but these must be paired with descriptive text (tooltips/aria-labels) for clarity.
 **Action:** Combine CSS animations for emotional feedback with dynamic `title` attributes for cognitive clarity, ensuring `prefers-reduced-motion` is respected.
+
+## 2025-05-26 - [Interactive Error States]
+**Learning:** Tooltips recommending action (e.g., "Click to retry") on disabled elements create frustration and confusion.
+**Action:** Ensure error states are interactive and retryable immediately, managing internal timers to prevent state conflicts.
