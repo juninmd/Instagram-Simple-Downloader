@@ -85,8 +85,8 @@ const injectStyles = () => {
       opacity: 1;
     }
     .isd-btn:focus-visible {
-      outline: 2px solid white;
-      box-shadow: 0 0 0 4px rgba(0,0,0,0.3);
+      outline: 2px solid #0095f6;
+      outline-offset: 2px;
     }
     .isd-btn svg {
       margin-right: 6px;
