@@ -25,7 +25,7 @@ const injectStyles = () => {
       border-top-color: #fff;
       border-radius: 50%;
       animation: isd-spin 1s linear infinite;
-      margin-right: 6px;
+      margin-inline-end: 6px;
       display: inline-block;
       box-sizing: border-box;
     }
@@ -68,7 +68,7 @@ const injectStyles = () => {
     .isd-btn:active {
       transform: translateY(0);
     }
-    .isd-btn:disabled {
+    .isd-btn[aria-disabled="true"] {
       cursor: not-allowed;
       opacity: 0.7;
     }
@@ -89,7 +89,7 @@ const injectStyles = () => {
       outline-offset: 2px;
     }
     .isd-btn svg {
-      margin-right: 6px;
+      margin-inline-end: 6px;
     }
   `;
   document.head.appendChild(style);
@@ -136,9 +136,11 @@ const createDownloadButton = (url, type, index) => {
     e.preventDefault();
     e.stopPropagation();
 
+    if (button.getAttribute('aria-disabled') === 'true') return;
+
     if (resetTimer) clearTimeout(resetTimer);
 
-    button.disabled = true;
+    button.setAttribute('aria-disabled', 'true');
     button.classList.remove('isd-loading', 'isd-success', 'isd-error', 'isd-shake');
     button.classList.add('isd-loading');
     span.textContent = 'Downloading...';
@@ -162,13 +164,13 @@ const createDownloadButton = (url, type, index) => {
       span.textContent = 'Error';
       button.setAttribute('title', 'Download failed. Click to retry.');
       button.classList.add('isd-shake');
-      button.disabled = false;
+      button.setAttribute('aria-disabled', 'false');
     }
 
     resetTimer = setTimeout(() => {
       button.classList.remove('isd-loading', 'isd-success', 'isd-error', 'isd-shake');
       span.textContent = defaultText;
-      button.disabled = false;
+      button.setAttribute('aria-disabled', 'false');
       button.setAttribute('title', `Download full resolution ${type}`);
       iconSvg.classList.remove('isd-hidden');
       checkSvg.classList.add('isd-hidden');

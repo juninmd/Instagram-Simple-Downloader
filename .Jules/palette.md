@@ -25,3 +25,7 @@
 ## 2025-05-26 - [Interactive Error States]
 **Learning:** Tooltips recommending action (e.g., "Click to retry") on disabled elements create frustration and confusion.
 **Action:** Ensure error states are interactive and retryable immediately, managing internal timers to prevent state conflicts.
+
+## 2025-05-27 - [Focus Retention & RTL]
+**Learning:** Using `button.disabled = true` causes focus to be lost (reset to body) during async operations, confusing keyboard users.
+**Action:** Use `aria-disabled="true"` with a JS guard clause to maintain focus context, and use logical properties (`margin-inline-end`) for RTL support.
