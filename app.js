@@ -1,7 +1,9 @@
 const VIDEO_COLOR = 'linear-gradient(to bottom right, #D32F2F, #C62828)';
 const IMAGE_COLOR = 'linear-gradient(to bottom right, #2E7D32, #1B5E20)';
+const COPY_COLOR = 'linear-gradient(to bottom right, #0095f6, #0074cc)';
 
 const ICON_DOWNLOAD = `<svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>`;
+const ICON_COPY = `<svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>`;
 
 const injectStyles = () => {
   const style = document.createElement('style');
@@ -17,6 +19,10 @@ const injectStyles = () => {
     @keyframes isd-pop {
       0% { transform: scale(0.8); opacity: 0; }
       100% { transform: scale(1); opacity: 1; }
+    }
+    @keyframes isd-confetti-explode {
+      0% { transform: translate(0,0) scale(1); opacity: 1; }
+      100% { transform: translate(var(--dx), var(--dy)) scale(0); opacity: 0; }
     }
     .isd-spinner {
       width: 14px;
@@ -35,10 +41,20 @@ const injectStyles = () => {
     .isd-pop {
       animation: isd-pop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
+    .isd-confetti {
+      position: fixed;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 10000;
+      animation: isd-confetti-explode 0.6s ease-out forwards;
+    }
     @media (prefers-reduced-motion: reduce) {
-      .isd-spinner, .isd-shake, .isd-pop {
+      .isd-spinner, .isd-shake, .isd-pop, .isd-confetti {
         animation: none;
         transition: none;
+        display: none; /* Hide confetti on reduced motion */
       }
     }
     .isd-hidden {
@@ -53,7 +69,7 @@ const injectStyles = () => {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       font-weight: 600;
       font-size: 14px;
-      margin: 8px 0;
+      margin: 8px 4px 8px 0; /* Added spacing between buttons */
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -96,6 +112,36 @@ const injectStyles = () => {
 };
 
 injectStyles();
+
+const createConfetti = (rect) => {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  const colors = ['#D32F2F', '#2E7D32', '#0095f6', '#FDD835', '#9C27B0'];
+  const centerX = rect.left + rect.width / 2;
+  const centerY = rect.top + rect.height / 2;
+
+  for (let i = 0; i < 12; i++) {
+    const confetti = document.createElement('div');
+    confetti.className = 'isd-confetti';
+    confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+    confetti.style.left = `${centerX}px`;
+    confetti.style.top = `${centerY}px`;
+
+    // Random direction
+    const angle = Math.random() * 2 * Math.PI;
+    const velocity = 20 + Math.random() * 60;
+    const dx = Math.cos(angle) * velocity + 'px';
+    const dy = Math.sin(angle) * velocity + 'px';
+
+    confetti.style.setProperty('--dx', dx);
+    confetti.style.setProperty('--dy', dy);
+
+    document.body.appendChild(confetti);
+
+    // Cleanup
+    setTimeout(() => confetti.remove(), 600);
+  }
+};
 
 const createDownloadButton = (url, type, index) => {
   const button = document.createElement('button');
@@ -181,10 +227,112 @@ const createDownloadButton = (url, type, index) => {
   return button;
 };
 
-const appendDownloadButton = (container, src, type, index) => {
+const createCopyButton = (url, type, index) => {
+  const button = document.createElement('button');
+  button.classList.add('copy-button', 'isd-btn');
+
+  button.type = 'button';
+  button.setAttribute('aria-label', `Copy link for ${type} ${index}`);
+  button.setAttribute('title', `Copy link`);
+
+  Object.assign(button.style, {
+    background: COPY_COLOR
+  });
+
+  const iconContainer = document.createElement('span');
+  iconContainer.innerHTML = ICON_COPY;
+  const iconSvg = iconContainer.firstElementChild;
+
+  const checkContainer = document.createElement('span');
+  checkContainer.innerHTML = `<svg aria-hidden="true" class="isd-hidden" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
+  const checkSvg = checkContainer.firstElementChild;
+
+  const span = document.createElement('span');
+  span.setAttribute('aria-live', 'polite');
+  span.textContent = `Copy Link`;
+
+  button.appendChild(iconSvg);
+  button.appendChild(checkContainer.firstElementChild); // Re-use reference
+  button.appendChild(span);
+
+  // We need to re-select the checkSvg because the appendChild above moved it?
+  // Actually checkContainer.firstElementChild is just a reference, it's fine.
+  // But wait, I appended checkContainer.firstElementChild.
+  // Let's just correct the reference.
+  const actualCheckSvg = button.querySelector('svg:nth-child(2)');
+
+  let resetTimer;
+
+  button.addEventListener('click', async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (button.getAttribute('aria-disabled') === 'true') return;
+
+    if (resetTimer) clearTimeout(resetTimer);
+
+    try {
+      await navigator.clipboard.writeText(url);
+
+      button.setAttribute('aria-disabled', 'true');
+      button.classList.add('isd-success');
+      span.textContent = 'Copied!';
+      button.setAttribute('title', 'Link copied to clipboard');
+
+      iconSvg.classList.add('isd-hidden');
+      actualCheckSvg.classList.remove('isd-hidden');
+      actualCheckSvg.classList.add('isd-pop');
+
+      // Trigger Confetti
+      const rect = button.getBoundingClientRect();
+      createConfetti(rect);
+
+    } catch (error) {
+      console.error(error);
+      button.classList.add('isd-error');
+      span.textContent = 'Error';
+      button.classList.add('isd-shake');
+    }
+
+    resetTimer = setTimeout(() => {
+      button.classList.remove('isd-success', 'isd-error', 'isd-shake');
+      span.textContent = 'Copy Link';
+      button.setAttribute('aria-disabled', 'false');
+      button.setAttribute('title', `Copy link`);
+      iconSvg.classList.remove('isd-hidden');
+      actualCheckSvg.classList.add('isd-hidden');
+      actualCheckSvg.classList.remove('isd-pop');
+    }, 2000);
+  });
+  return button;
+};
+
+const appendButtons = (container, src, type, index) => {
   const section = container.querySelector('section');
   if (section) {
-    section.prepend(createDownloadButton(src, type, index));
+    // Create wrapper to keep them together if needed, or just prepend both
+    // Prepending in reverse order so they appear: [Download] [Copy] or similar.
+    // If I prepend Copy then Download, Download will be first (leftmost).
+
+    // Let's create a wrapper div for better layout control
+    let wrapper = section.querySelector('.isd-wrapper');
+    if (!wrapper) {
+      wrapper = document.createElement('div');
+      wrapper.className = 'isd-wrapper';
+      wrapper.style.display = 'flex';
+      wrapper.style.flexWrap = 'wrap';
+      wrapper.style.marginBottom = '8px';
+      section.prepend(wrapper);
+    }
+
+    // Prevent duplicate injection in the wrapper if called multiple times?
+    // The main logic uses `download-button="ok"` attribute on the ITEM (img/video).
+    // So this function is only called once per item.
+
+    // Append Download Button
+    wrapper.appendChild(createDownloadButton(src, type, index));
+    // Append Copy Button
+    wrapper.appendChild(createCopyButton(src, type, index));
   }
 };
 
@@ -194,7 +342,7 @@ const searchFeed = () => {
     const items = article.querySelectorAll('img[srcset]:not([download-button="ok"]), video:not([download-button="ok"])');
     items.forEach((item, index) => {
       const type = item.nodeName === 'VIDEO' ? 'video' : 'image';
-      appendDownloadButton(article, item.src, type, index + 1);
+      appendButtons(article, item.src, type, index + 1);
       item.setAttribute('download-button', 'ok');
     });
   });
@@ -204,7 +352,7 @@ const searchStories = () => {
   const items = document.querySelector('section[style]').querySelectorAll('img[srcset]:not([download-button="ok"]), video:not([download-button="ok"])');
   items.forEach((item, index) => {
     const type = item.nodeName === 'VIDEO' ? 'video' : 'image';
-    appendDownloadButton(item.parentElement, item.src, type, index + 1);
+    appendButtons(item.parentElement, item.src, type, index + 1);
     item.setAttribute('download-button', 'ok');
   });
 };
@@ -214,7 +362,7 @@ const searchProfile = () => {
   const items = article.querySelectorAll('img[srcset]:not([download-button="ok"]), video:not([download-button="ok"])');
   items.forEach((item, index) => {
     const type = item.nodeName === 'VIDEO' ? 'video' : 'image';
-    appendDownloadButton(article, item.src, type, index + 1);
+    appendButtons(article, item.src, type, index + 1);
     item.setAttribute('download-button', 'ok');
   });
 };
