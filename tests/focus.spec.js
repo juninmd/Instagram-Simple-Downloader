@@ -3,18 +3,16 @@ const fs = require('fs');
 const path = require('path');
 
 test('focus style verification', async ({ page }) => {
-  // Read app.js
-  const appJsPath = path.join(__dirname, '..', 'app.js');
-  const appJsContent = fs.readFileSync(appJsPath, 'utf-8');
+  const utilsJsPath = path.join(__dirname, '..', 'utils.js');
+  const utilsJsContent = fs.readFileSync(utilsJsPath, 'utf-8');
 
   // Extract CSS
-  const cssMatch = appJsContent.match(/style\.textContent = `([\s\S]*?)`;/);
+  const cssMatch = utilsJsContent.match(/style\.textContent = `([\s\S]*?)`;/);
   if (!cssMatch) {
-    throw new Error('Could not find CSS in app.js');
+    throw new Error('Could not find CSS in utils.js');
   }
   const css = cssMatch[1];
 
-  // Set up the page
   await page.setContent(`
     <!DOCTYPE html>
     <html lang="en">
@@ -24,7 +22,7 @@ test('focus style verification', async ({ page }) => {
       <title>Focus Verification</title>
       <style>
         body {
-          background-color: #f0f2f5; /* Light background like FB/Insta */
+          background-color: #f0f2f5;
           display: flex;
           flex-direction: column;
           align-items: center;
@@ -61,14 +59,10 @@ test('focus style verification', async ({ page }) => {
     </html>
   `);
 
-  // Focus the first button
   const button = page.locator('.isd-btn').first();
   await button.focus();
-
-  // Take screenshot of the light container
   await page.locator('.container').first().screenshot({ path: 'tests/focus-light-after.png' });
 
-  // Focus the second button
   const buttonDark = page.locator('.isd-btn').nth(1);
   await buttonDark.focus();
   await page.locator('.container').nth(1).screenshot({ path: 'tests/focus-dark-after.png' });
