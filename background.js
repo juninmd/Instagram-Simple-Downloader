@@ -1,4 +1,4 @@
-browser.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+browser.runtime.onMessage.addListener(function (request) {
 
     function onStartedDownload(id) {
         console.log(`Started downloading: ${id}`);
