@@ -69,10 +69,12 @@
         border: 1px solid transparent; color: #fff; padding: 8px 12px;
         border-radius: 4px; cursor: pointer;
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-        font-weight: 600; font-size: 14px; margin: 8px 4px 8px 0;
+        font-weight: 600; font-size: 14px;
+        margin-block: 8px; margin-inline-end: 4px; margin-inline-start: 0;
         display: inline-flex; align-items: center; justify-content: center;
         transition: all 0.2s ease-in-out; text-decoration: none; line-height: 1;
       }
+      .isd-btn:focus-visible { outline: 2px solid #0095f6; outline-offset: 2px; }
       .isd-btn:hover { opacity: 0.9; transform: translateY(-1px); }
       .isd-btn:active { transform: translateY(0); }
       .isd-btn[aria-disabled="true"] { cursor: not-allowed; opacity: 0.7; }
