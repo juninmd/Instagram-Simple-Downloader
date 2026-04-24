@@ -84,12 +84,12 @@
   };
 
   window.ISD_UI.appendButtons = (container, src, type, index) => {
-    const section = container.querySelector('section');
-    if (!section) return;
-    let wrapper = section.querySelector('.isd-wrapper');
+    const target = container.tagName === 'SECTION' ? container : (container.querySelector('section') || container);
+    if (!target) return;
+    let wrapper = target.querySelector('.isd-wrapper');
     if (!wrapper) {
-      wrapper = el('div', 'isd-wrapper', {}, { display: 'flex', flexWrap: 'wrap', marginBottom: '8px' });
-      section.prepend(wrapper);
+      wrapper = el('div', 'isd-wrapper', {}, { display: 'flex', flexWrap: 'wrap', marginBottom: '8px', zIndex: 1000, position: 'relative' });
+      target.prepend(wrapper);
     }
     wrapper.appendChild(window.ISD_UI.createDownloadButton(src, type, index));
     wrapper.appendChild(window.ISD_UI.createCopyButton(src, type, index));
