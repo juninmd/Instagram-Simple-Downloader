@@ -45,7 +45,7 @@
 
   const observerCallback = () => {
     const url = window.location.href;
-    if (url === 'https://www.instagram.com/') {
+    if (url === 'https://www.instagram.com/' || url.includes('instagram.com/?') || url.includes('instagram.com/reels')) {
       searchFeed();
     } else if (url.includes('instagram.com/stories')) {
       searchStories();
