@@ -10,9 +10,11 @@
   U.injectStyles();
 
   const processItems = (container, items) => {
-    items.forEach((item, index) => {
+    let existingCount = container.querySelectorAll('.isd-wrapper [aria-label^="Download"]').length;
+    items.forEach((item) => {
+      existingCount++;
       const type = item.nodeName === 'VIDEO' ? 'video' : 'image';
-      UI.appendButtons(container, item.src, type, index + 1);
+      UI.appendButtons(container, item.src, type, existingCount);
       item.setAttribute('download-button', 'ok');
     });
   };
@@ -29,9 +31,11 @@
     const section = document.querySelector('section[style]');
     if (!section) return;
     const items = section.querySelectorAll('img[srcset]:not([download-button="ok"]), video:not([download-button="ok"])');
-    items.forEach((item, index) => {
+
+    items.forEach((item) => {
+      const existingCount = item.parentElement.querySelectorAll('.isd-wrapper [aria-label^="Download"]').length;
       const type = item.nodeName === 'VIDEO' ? 'video' : 'image';
-      UI.appendButtons(item.parentElement, item.src, type, index + 1);
+      UI.appendButtons(item.parentElement, item.src, type, existingCount + 1);
       item.setAttribute('download-button', 'ok');
     });
   };
