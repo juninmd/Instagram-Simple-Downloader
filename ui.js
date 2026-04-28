@@ -92,6 +92,6 @@
       target.prepend(wrapper);
     }
     wrapper.appendChild(window.ISD_UI.createDownloadButton(src, type, index));
-    wrapper.appendChild(window.ISD_UI.createCopyButton(src, type, index));
+    wrapper.appendChild(window.ISD_UI.createCopyButton(src));
   };
 })();
