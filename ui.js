@@ -71,9 +71,9 @@
     });
   };
 
-  window.ISD_UI.createCopyButton = (url) => {
+  window.ISD_UI.createCopyButton = (url, index) => {
     return createBaseButton({
-      label: 'Copy Link',
+      label: index ? `Copy Link #${index}` : 'Copy Link',
       title: 'Copy link',
       icon: C.ICON_COPY,
       background: C.COPY_COLOR,
@@ -92,6 +92,6 @@
       target.prepend(wrapper);
     }
     wrapper.appendChild(window.ISD_UI.createDownloadButton(src, type, index));
-    wrapper.appendChild(window.ISD_UI.createCopyButton(src));
+    wrapper.appendChild(window.ISD_UI.createCopyButton(src, index));
   };
 })();

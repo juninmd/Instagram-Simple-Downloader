@@ -34,11 +34,11 @@ test('both download and copy buttons are injected', async ({ page }) => {
   });
 
   const downloadBtn = page.locator('.isd-btn[aria-label*="Download"]');
-  const copyBtn = page.locator('.isd-btn[aria-label="Copy Link"]');
+  const copyBtn = page.locator('.isd-btn[aria-label="Copy Link #1"]');
 
   await expect(downloadBtn).toBeVisible();
   await expect(copyBtn).toBeVisible();
 
   await expect(downloadBtn).toHaveText(/Download Image #1/);
-  await expect(copyBtn).toHaveText(/Copy Link/);
+  await expect(copyBtn).toHaveText(/Copy Link #1/);
 });
