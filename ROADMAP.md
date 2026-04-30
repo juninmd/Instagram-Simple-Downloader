@@ -8,4 +8,4 @@
 ## Backlog
 - [ ] Migrate to Manifest V3.
 - [x] Add unit tests for utility functions.
-- [ ] Add support for carousel downloads.
+- [x] Add support for carousel downloads.

@@ -30,7 +30,7 @@ test('copy button simulates writeText and transitions to success state', async (
 
   await page.evaluate(() => {
     const content = document.getElementById('content');
-    const button = window.ISD_UI.createCopyButton('https://instagram.com/p/123');
+    const button = window.ISD_UI.createCopyButton('https://instagram.com/p/123', 1);
     content.appendChild(button);
   });
 
