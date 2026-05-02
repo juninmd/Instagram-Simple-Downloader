@@ -12,8 +12,8 @@ test('both download and copy buttons are injected', async ({ page }) => {
 
   // Mock location check in observer.js
   let modifiedObserverJs = observerJs.replace(
-    "if (url === 'https://www.instagram.com/' || url.includes('instagram.com/?') || url.includes('instagram.com/reels'))",
-    "if (true)"
+    /const isFeedOrReels = [^;]+;/s,
+    "const isFeedOrReels = true;"
   );
 
   // Combine scripts
