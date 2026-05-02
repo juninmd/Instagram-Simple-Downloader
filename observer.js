@@ -9,6 +9,8 @@
   // Inject styles immediately
   U.injectStyles();
 
+  const MEDIA_SELECTOR = 'img[srcset]:not([download-button="ok"]), video:not([download-button="ok"])';
+
   const processItems = (container, items) => {
     let existingCount = container.querySelectorAll('.isd-wrapper [aria-label^="Download"]').length;
     items.forEach((item) => {
@@ -22,7 +24,7 @@
   const searchFeed = () => {
     const articles = document.querySelectorAll('article');
     articles.forEach((article) => {
-      const items = article.querySelectorAll('img[srcset]:not([download-button="ok"]), video:not([download-button="ok"])');
+      const items = article.querySelectorAll(MEDIA_SELECTOR);
       processItems(article, items);
     });
   };
@@ -30,7 +32,7 @@
   const searchStories = () => {
     const section = document.querySelector('section[style]');
     if (!section) return;
-    const items = section.querySelectorAll('img[srcset]:not([download-button="ok"]), video:not([download-button="ok"])');
+    const items = section.querySelectorAll(MEDIA_SELECTOR);
 
     items.forEach((item) => {
       const existingCount = item.parentElement.querySelectorAll('.isd-wrapper [aria-label^="Download"]').length;
@@ -43,13 +45,18 @@
   const searchProfile = () => {
     const article = document.querySelector('article');
     if (!article) return;
-    const items = article.querySelectorAll('img[srcset]:not([download-button="ok"]), video:not([download-button="ok"])');
+    const items = article.querySelectorAll(MEDIA_SELECTOR);
     processItems(article, items);
   };
 
   const observerCallback = () => {
     const url = window.location.href;
-    if (url === 'https://www.instagram.com/' || url.includes('instagram.com/?') || url.includes('instagram.com/reels')) {
+
+    const isFeedOrReels = url === 'https://www.instagram.com/' ||
+                          url.includes('instagram.com/?') ||
+                          url.includes('instagram.com/reels');
+
+    if (isFeedOrReels) {
       searchFeed();
     } else if (url.includes('instagram.com/stories')) {
       searchStories();

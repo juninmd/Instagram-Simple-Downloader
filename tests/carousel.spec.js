@@ -19,8 +19,8 @@ test('carousel dynamically added items have incrementing indexes', async ({ page
 
   // Mock location check in observer.js
   let modifiedObserverJs = observerJs.replace(
-    "if (url === 'https://www.instagram.com/' || url.includes('instagram.com/?') || url.includes('instagram.com/reels'))",
-    "if (true)"
+    /const isFeedOrReels = [^;]+;/s,
+    "const isFeedOrReels = true;"
   );
 
   const fullScript = utilsJs + '\n' + uiJs + '\n' + modifiedObserverJs;

@@ -26,8 +26,8 @@ test('button retains focus and uses aria-disabled', async ({ page }) => {
   });
 
   let modifiedObserverJs = observerJs.replace(
-    "if (url === 'https://www.instagram.com/' || url.includes('instagram.com/?') || url.includes('instagram.com/reels'))",
-    "if (true)"
+    /const isFeedOrReels = [^;]+;/s,
+    "const isFeedOrReels = true;"
   );
 
   let modifiedUiJs = uiJs.replace(/await browser\.runtime/g, 'await window.browser.runtime');
