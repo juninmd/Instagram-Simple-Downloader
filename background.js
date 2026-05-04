@@ -1,4 +1,6 @@
-browser.runtime.onMessage.addListener(function (request) {
+const b = typeof browser !== 'undefined' ? browser : chrome;
+
+b.runtime.onMessage.addListener(function (request) {
 
     function onStartedDownload(id) {
         console.log(`Started downloading: ${id}`);
@@ -8,7 +10,7 @@ browser.runtime.onMessage.addListener(function (request) {
         console.log(`Download failed: ${error}`);
     }
 
-    const downloading = browser.downloads.download({
+    const downloading = b.downloads.download({
         url: request.url,
         filename: request.type === 'image' ? 'image.jpg' : 'video.mp4',
         conflictAction: 'uniquify',
