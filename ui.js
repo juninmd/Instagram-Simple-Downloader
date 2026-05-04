@@ -59,6 +59,8 @@
     return btn;
   };
 
+  const b = typeof browser !== 'undefined' ? browser : (typeof chrome !== 'undefined' ? chrome : {});
+
   window.ISD_UI.createDownloadButton = (url, type, index) => {
     return createBaseButton({
       label: `Download ${type === 'video' ? 'Video' : 'Image'} #${index}`,
@@ -67,7 +69,7 @@
       background: type === 'video' ? C.VIDEO_COLOR : C.IMAGE_COLOR,
       loadingText: 'Downloading...',
       successText: 'Started!',
-      onClick: async () => await browser.runtime.sendMessage({ url, type })
+      onClick: async () => await b.runtime.sendMessage({ url, type })
     });
   };
 

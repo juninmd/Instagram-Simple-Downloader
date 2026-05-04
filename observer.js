@@ -65,7 +65,16 @@
     }
   };
 
-  const observer = new MutationObserver(observerCallback);
+  let timeoutId = null;
+  const debouncedObserverCallback = () => {
+    if (timeoutId) clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => {
+      observerCallback();
+      timeoutId = null;
+    }, 100);
+  };
+
+  const observer = new MutationObserver(debouncedObserverCallback);
   observer.observe(document.body, {
     childList: true,
     subtree: true
