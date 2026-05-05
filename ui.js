@@ -69,7 +69,21 @@
       background: type === 'video' ? C.VIDEO_COLOR : C.IMAGE_COLOR,
       loadingText: 'Downloading...',
       successText: 'Started!',
-      onClick: async () => await b.runtime.sendMessage({ url, type })
+      onClick: async () => {
+        return new Promise((resolve, reject) => {
+          try {
+            const res = b.runtime.sendMessage({ url, type }, (response) => {
+              if (b.runtime.lastError) return reject(b.runtime.lastError);
+              resolve(response);
+            });
+            if (res && typeof res.then === 'function') {
+              res.then(resolve, reject);
+            }
+          } catch (err) {
+            reject(err);
+          }
+        });
+      }
     });
   };
 

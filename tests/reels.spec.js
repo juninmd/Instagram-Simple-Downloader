@@ -22,8 +22,8 @@ test('buttons are injected in reels', async ({ page }) => {
   `);
 
   let modifiedObserverJs = observerJs.replace(
-    "const url = window.location.href;",
-    "const url = 'https://instagram.com/reels/123/';"
+    "const url = new URL(window.location.href);",
+    "const url = new URL('https://instagram.com/reels/123/');"
   );
 
   const fullScript = utilsJs + '\n' + uiJs + '\n' + modifiedObserverJs;

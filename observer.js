@@ -50,18 +50,21 @@
   };
 
   const observerCallback = () => {
-    const url = window.location.href;
+    try {
+      const url = new URL(window.location.href);
+      const pathname = url.pathname;
 
-    const isFeedOrReels = url === 'https://www.instagram.com/' ||
-                          url.includes('instagram.com/?') ||
-                          url.includes('instagram.com/reels');
+      const isFeedOrReels = pathname === '/' || pathname.startsWith('/reels/');
 
-    if (isFeedOrReels) {
-      searchFeed();
-    } else if (url.includes('instagram.com/stories')) {
-      searchStories();
-    } else if (url.includes('instagram.com/p')) {
-      searchProfile();
+      if (isFeedOrReels) {
+        searchFeed();
+      } else if (pathname.startsWith('/stories/')) {
+        searchStories();
+      } else if (pathname.startsWith('/p/')) {
+        searchProfile();
+      }
+    } catch {
+      // Ignore URL parsing errors
     }
   };
 
