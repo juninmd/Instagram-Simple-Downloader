@@ -1,14 +1,6 @@
 const b = typeof browser !== 'undefined' ? browser : chrome;
 
-b.runtime.onMessage.addListener(function (request) {
-
-    function onStartedDownload(id) {
-        console.log(`Started downloading: ${id}`);
-    }
-
-    function onFailed(error) {
-        console.log(`Download failed: ${error}`);
-    }
+b.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 
     const options = {
         url: request.url,
@@ -20,7 +12,7 @@ b.runtime.onMessage.addListener(function (request) {
     const downloading = new Promise((resolve, reject) => {
         try {
             const res = b.downloads.download(options, (id) => {
-                if (b.runtime.lastError) return reject(b.runtime.lastError);
+                if (b.runtime.lastError) return reject(new Error(b.runtime.lastError.message || b.runtime.lastError));
                 resolve(id);
             });
             if (res && typeof res.then === 'function') {
@@ -31,5 +23,16 @@ b.runtime.onMessage.addListener(function (request) {
         }
     });
 
-    downloading.then(onStartedDownload, onFailed);
+    downloading
+        .then((id) => {
+            console.log(`Started downloading: ${id}`);
+            sendResponse({ success: true, id });
+        })
+        .catch((error) => {
+            console.error(`Download failed: ${error}`);
+            sendResponse({ error: error.message || String(error) });
+        });
+
+    // Return true to indicate that we will send a response asynchronously
+    return true;
 });

@@ -29,10 +29,23 @@
         btn.classList.toggle('isd-error', error);
         btn.classList.toggle('isd-shake', error);
 
-        if (loading) { span.textContent = loadingText; btn.title = loadingText; }
-        else if (success) { span.textContent = successText; btn.title = 'Success'; }
-        else if (error) { span.textContent = 'Error'; btn.title = 'Failed. Click to retry.'; }
-        else { span.textContent = label; btn.title = title; }
+        if (loading) {
+            span.textContent = loadingText;
+            btn.title = loadingText;
+            btn.setAttribute('aria-label', loadingText);
+        } else if (success) {
+            span.textContent = successText;
+            btn.title = 'Success';
+            btn.setAttribute('aria-label', successText);
+        } else if (error) {
+            span.textContent = 'Error';
+            btn.title = 'Failed. Click to retry.';
+            btn.setAttribute('aria-label', 'Error');
+        } else {
+            span.textContent = label;
+            btn.title = title;
+            btn.setAttribute('aria-label', label);
+        }
 
         iconSvg.classList.toggle('isd-hidden', loading || success);
         spinner.classList.toggle('isd-hidden', !loading);
@@ -73,11 +86,15 @@
         return new Promise((resolve, reject) => {
           try {
             const res = b.runtime.sendMessage({ url, type }, (response) => {
-              if (b.runtime.lastError) return reject(b.runtime.lastError);
+              if (b.runtime.lastError) return reject(new Error(b.runtime.lastError.message || b.runtime.lastError));
+              if (response && response.error) return reject(new Error(response.error));
               resolve(response);
             });
             if (res && typeof res.then === 'function') {
-              res.then(resolve, reject);
+              res.then((response) => {
+                  if (response && response.error) return reject(new Error(response.error));
+                  resolve(response);
+              }, reject);
             }
           } catch (err) {
             reject(err);

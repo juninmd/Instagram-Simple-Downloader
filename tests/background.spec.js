@@ -11,11 +11,18 @@ test('background script handles download messages for image and video', async ({
     window.downloadArgs = null;
     window.successLogged = false;
     window.errorLogged = false;
+    window.sendResponseArgs = null;
 
     const originalConsoleLog = console.log;
     console.log = (msg) => {
       if (typeof msg === 'string') {
         if (msg.includes('Started downloading')) window.successLogged = true;
+      }
+    };
+
+    const originalConsoleError = console.error;
+    console.error = (msg) => {
+      if (typeof msg === 'string') {
         if (msg.includes('Download failed')) window.errorLogged = true;
       }
     };
@@ -45,7 +52,7 @@ test('background script handles download messages for image and video', async ({
 
   // Test image download
   await page.evaluate(() => {
-    window.bgListener({ url: 'http://example.com/img.jpg', type: 'image' });
+    window.bgListener({ url: 'http://example.com/img.jpg', type: 'image' }, null, (res) => { window.sendResponseArgs = res; });
   });
 
   // Small wait for promise
@@ -59,10 +66,14 @@ test('background script handles download messages for image and video', async ({
   const successLogged = await page.evaluate(() => window.successLogged);
   expect(successLogged).toBe(true);
 
+  const sendResArgsImg = await page.evaluate(() => window.sendResponseArgs);
+  expect(sendResArgsImg).toEqual({ success: true, id: 123 });
+
   // Test video download
   await page.evaluate(() => {
     window.successLogged = false;
-    window.bgListener({ url: 'http://example.com/vid.mp4', type: 'video' });
+    window.sendResponseArgs = null;
+    window.bgListener({ url: 'http://example.com/vid.mp4', type: 'video' }, null, (res) => { window.sendResponseArgs = res; });
   });
 
   await page.waitForTimeout(50);
@@ -73,11 +84,15 @@ test('background script handles download messages for image and video', async ({
 
   // Test failure
   await page.evaluate(() => {
-    window.bgListener({ url: 'fail', type: 'image' });
+    window.sendResponseArgs = null;
+    window.bgListener({ url: 'fail', type: 'image' }, null, (res) => { window.sendResponseArgs = res; });
   });
 
   await page.waitForTimeout(50);
 
   const errorLogged = await page.evaluate(() => window.errorLogged);
   expect(errorLogged).toBe(true);
+
+  const sendResArgsErr = await page.evaluate(() => window.sendResponseArgs);
+  expect(sendResArgsErr).toEqual({ error: 'Simulated error' });
 });
