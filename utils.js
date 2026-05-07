@@ -6,9 +6,9 @@
   window.ISD_UTILS = {};
 
   window.ISD_UTILS.CONSTANTS = {
-    VIDEO_COLOR: 'linear-gradient(to bottom right, #D32F2F, #C62828)',
-    IMAGE_COLOR: 'linear-gradient(to bottom right, #2E7D32, #1B5E20)',
-    COPY_COLOR: 'linear-gradient(to bottom right, #0095f6, #0074cc)',
+    VIDEO_COLOR: '#D32F2F',
+    IMAGE_COLOR: '#2E7D32',
+    COPY_COLOR: '#0095f6',
     ICON_DOWNLOAD: `<svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>`,
     ICON_COPY: `<svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>`
   };
