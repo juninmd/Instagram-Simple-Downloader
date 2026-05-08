@@ -47,4 +47,22 @@ test('button handles error state and shows shake animation', async ({ page }) =>
 
   // Verify error text
   await expect(button).toHaveText(/Error/);
+
+  // Additional test for lastError callback simulation
+  await page.evaluate(() => {
+    window.browser = {
+      runtime: {
+        sendMessage: (msg, cb) => {
+          window.browser.runtime.lastError = { message: 'Callback failed message' };
+          cb();
+          return undefined; // no promise to reject
+        }
+      }
+    };
+  });
+
+  await button.click();
+
+  await expect(button).toHaveClass(/isd-error/);
+  await expect(button).toHaveClass(/isd-shake/);
 });

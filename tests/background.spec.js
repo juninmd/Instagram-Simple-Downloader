@@ -36,10 +36,16 @@ test('background script handles download messages for image and video', async ({
         }
       },
       downloads: {
-        download: (options) => {
+        download: (options, cb) => {
           window.downloadArgs = options;
           if (options.url === 'fail') {
              return Promise.reject('Simulated error');
+          } else if (options.url === 'cb-fail') {
+            window.browser.runtime.lastError = { message: 'Callback failed' };
+            if (cb) cb();
+            return;
+          } else if (options.url === 'sync-fail') {
+             throw new Error('Sync throw');
           }
           return Promise.resolve(123);
         }
@@ -95,4 +101,26 @@ test('background script handles download messages for image and video', async ({
 
   const sendResArgsErr = await page.evaluate(() => window.sendResponseArgs);
   expect(sendResArgsErr).toEqual({ error: 'Simulated error' });
+
+  // Test callback failure
+  await page.evaluate(() => {
+    window.sendResponseArgs = null;
+    window.bgListener({ url: 'cb-fail', type: 'image' }, null, (res) => { window.sendResponseArgs = res; });
+  });
+
+  await page.waitForTimeout(50);
+
+  const sendResArgsCbFail = await page.evaluate(() => window.sendResponseArgs);
+  expect(sendResArgsCbFail).toEqual({ error: 'Callback failed' });
+
+  // Test synchronous exception
+  await page.evaluate(() => {
+    window.sendResponseArgs = null;
+    window.bgListener({ url: 'sync-fail', type: 'image' }, null, (res) => { window.sendResponseArgs = res; });
+  });
+
+  await page.waitForTimeout(50);
+
+  const sendResArgsSyncFail = await page.evaluate(() => window.sendResponseArgs);
+  expect(sendResArgsSyncFail).toEqual({ error: 'Sync throw' });
 });

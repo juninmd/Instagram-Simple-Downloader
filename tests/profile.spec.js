@@ -22,7 +22,7 @@ test('buttons are injected in post page', async ({ page }) => {
   `);
 
   let modifiedObserverJs = observerJs.replace(
-    "const url = new URL(window.location.href);",
+    /const url = new URL\(window\.location\.href\);/s,
     "const url = new URL('https://instagram.com/p/123/');"
   );
 

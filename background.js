@@ -1,4 +1,4 @@
-const b = typeof browser !== 'undefined' ? browser : chrome;
+const b = typeof browser !== 'undefined' ? browser : (typeof chrome !== 'undefined' ? chrome : {});
 
 b.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 
