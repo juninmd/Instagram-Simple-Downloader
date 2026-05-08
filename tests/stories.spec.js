@@ -22,7 +22,7 @@ test('buttons are injected in stories', async ({ page }) => {
   `);
 
   let modifiedObserverJs = observerJs.replace(
-    "const url = new URL(window.location.href);",
+    /const url = new URL\(window\.location\.href\);/s,
     "const url = new URL('https://instagram.com/stories/test/');"
   );
 

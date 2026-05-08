@@ -28,6 +28,19 @@ test.describe('Utility functions', () => {
     expect(elementProps.color).toBe('red');
   });
 
+  test('el creates DOM elements correctly with default arguments', async ({ page }) => {
+    const elementProps = await page.evaluate(() => {
+      const el = window.ISD_UTILS.el('span');
+      return {
+        tagName: el.tagName,
+        className: el.className
+      };
+    });
+
+    expect(elementProps.tagName).toBe('SPAN');
+    expect(elementProps.className).toBe('');
+  });
+
   test('injectStyles appends styles to the document', async ({ page }) => {
     const styleCountBefore = await page.locator('style').count();
 
