@@ -61,8 +61,9 @@
       }
       @media (prefers-reduced-motion: reduce) {
         .isd-spinner, .isd-shake, .isd-pop, .isd-confetti {
-          animation: none; transition: none; display: none;
+          animation: none !important; transition: none !important;
         }
+        .isd-confetti { display: none !important; }
       }
       .isd-hidden { display: none !important; }
       .isd-btn {
