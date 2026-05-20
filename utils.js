@@ -60,8 +60,11 @@
         animation: isd-confetti-explode 0.6s ease-out forwards;
       }
       @media (prefers-reduced-motion: reduce) {
-        .isd-spinner, .isd-shake, .isd-pop, .isd-confetti {
-          animation: none; transition: none; display: none;
+        .isd-spinner, .isd-shake, .isd-pop {
+          animation: none !important; transition: none !important;
+        }
+        .isd-confetti {
+          animation: none !important; transition: none !important; display: none !important;
         }
       }
       .isd-hidden { display: none !important; }
