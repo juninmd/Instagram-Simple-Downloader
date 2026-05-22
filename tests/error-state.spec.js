@@ -24,7 +24,7 @@ test('button handles error state and shows shake animation', async ({ page }) =>
     };
   });
 
-  let modifiedUiJs = uiJs.replace(/await browser\.runtime/g, 'await window.browser.runtime');
+  let modifiedUiJs = uiJs.replace(/const b = [^;]+;/s, "const b = window.browser;");
 
   const fullScript = utilsJs + '\n' + modifiedUiJs;
 
