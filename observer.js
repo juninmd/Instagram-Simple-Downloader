@@ -35,10 +35,7 @@
     const items = section.querySelectorAll(MEDIA_SELECTOR);
 
     items.forEach((item) => {
-      const existingCount = item.parentElement.querySelectorAll('.isd-wrapper [aria-label^="Download"]').length;
-      const type = item.nodeName === 'VIDEO' ? 'video' : 'image';
-      UI.appendButtons(item.parentElement, item.src, type, existingCount + 1);
-      item.setAttribute('download-button', 'ok');
+      processItems(item.parentElement, [item]);
     });
   };
 
