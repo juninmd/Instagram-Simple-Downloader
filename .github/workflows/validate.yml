@@ -12,5 +12,3 @@ concurrency:
 jobs:
   check:
     uses: juninmd/base-actions/.github/workflows/reusable-validate.yml@main
-    secrets:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
