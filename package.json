@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "packageManager": "pnpm@9.0.0",
   "scripts": {
+    "build": "",
     "test": "playwright test",
     "lint": "eslint .",
     "coverage": "nyc playwright test"
