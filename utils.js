@@ -9,8 +9,8 @@
     VIDEO_COLOR: '#D32F2F',
     IMAGE_COLOR: '#2E7D32',
     COPY_COLOR: '#0095f6',
-    ICON_DOWNLOAD: `<svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>`,
-    ICON_COPY: `<svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>`
+    ICON_DOWNLOAD: `<svg aria-hidden=\"true\" width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4\"></path><polyline points=\"7 10 12 15 17 10\"></polyline><line x1=\"12\" y1=\"15\" x2=\"12\" y2=\"3\"></line></svg>`,
+    ICON_COPY: `<svg aria-hidden=\"true\" width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"9\" y=\"9\" width=\"13\" height=\"13\" rx=\"2\" ry=\"2\"></rect><path d=\"M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1\"></path></svg>`
   };
 
   /**
@@ -60,16 +60,18 @@
         animation: isd-confetti-explode 0.6s ease-out forwards;
       }
       @media (prefers-reduced-motion: reduce) {
-        .isd-spinner, .isd-shake, .isd-pop, .isd-confetti {
+        .isd-spinner, .isd-shake, .isd-pop {
           animation: none !important; transition: none !important;
         }
-        .isd-confetti { display: none !important; }
+        .isd-confetti {
+          display: none !important;
+        }
       }
       .isd-hidden { display: none !important; }
       .isd-btn {
         border: 1px solid transparent; color: #fff; padding: 8px 12px;
         border-radius: 4px; cursor: pointer;
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        font-family: -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif;
         font-weight: 600; font-size: 14px;
         margin-block: 8px; margin-inline-end: 4px; margin-inline-start: 0;
         display: inline-flex; align-items: center; justify-content: center;
@@ -78,7 +80,7 @@
       .isd-btn:focus-visible { outline: 2px solid #0095f6; outline-offset: 2px; }
       .isd-btn:hover { opacity: 0.9; transform: translateY(-1px); }
       .isd-btn:active { transform: translateY(0); }
-      .isd-btn[aria-disabled="true"] { cursor: not-allowed; opacity: 0.7; }
+      .isd-btn[aria-disabled=\"true\"] { cursor: not-allowed; opacity: 0.7; }
       .isd-btn.isd-loading { cursor: progress; opacity: 1; }
       .isd-btn.isd-success { cursor: default; opacity: 1; }
       .isd-btn.isd-error { cursor: pointer; }

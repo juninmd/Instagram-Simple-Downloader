@@ -30,7 +30,7 @@ test('button retains focus and uses aria-disabled', async ({ page }) => {
     "const isFeedOrReels = true;"
   );
 
-  let modifiedUiJs = uiJs.replace(/await browser\.runtime/g, 'await window.browser.runtime');
+  let modifiedUiJs = uiJs.replace(/const b = [^;]+;/s, "const b = window.browser;");
 
   const fullScript = utilsJs + '\n' + modifiedUiJs + '\n' + modifiedObserverJs;
 

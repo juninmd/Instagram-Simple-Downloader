@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "scripts": {
     "test": "playwright test",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "coverage": "nyc playwright test"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
