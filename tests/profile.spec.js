@@ -29,7 +29,7 @@ test('buttons are injected in post page', async ({ page }) => {
   const fullScript = utilsJs + '\n' + uiJs + '\n' + modifiedObserverJs;
   await page.evaluate(fullScript);
 
-  const downloadBtn = page.locator('.isd-btn[aria-label*="Download"]');
+  const downloadBtn = page.locator('.isd-btn[aria-label*="Image"]');
   const copyBtn = page.locator('.isd-btn[aria-label="Copy Link #1"]');
 
   await expect(downloadBtn).toBeVisible({ timeout: 1000 });

@@ -29,7 +29,7 @@ test('buttons are injected in reels', async ({ page }) => {
   const fullScript = utilsJs + '\n' + uiJs + '\n' + modifiedObserverJs;
   await page.evaluate(fullScript);
 
-  const downloadBtn = page.locator('.isd-btn[aria-label*="Download"]');
+  const downloadBtn = page.locator('.isd-btn[aria-label*="Video"]');
   const copyBtn = page.locator('.isd-btn[aria-label="Copy Link #1"]');
 
   await expect(downloadBtn).toBeVisible({ timeout: 1000 });

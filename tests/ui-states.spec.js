@@ -34,7 +34,7 @@ test('button transitions through loading and success states', async ({ page }) =
   const button = page.locator('.isd-btn').first();
   await expect(button).toBeVisible();
 
-  await expect(button).toHaveText(/Download Image #1/);
+  await expect(button).toHaveText(/Image #1/);
 
   await button.click();
 
@@ -46,4 +46,8 @@ test('button transitions through loading and success states', async ({ page }) =
   await expect(button).toHaveClass(/isd-success/);
   await expect(button).toHaveText(/Started!/);
   await expect(button).toHaveAttribute('aria-label', 'Started!');
+
+  // Check that the pop animation is applied to the SVG
+  const checkSvg = button.locator('svg.isd-pop');
+  await expect(checkSvg).toBeVisible();
 });

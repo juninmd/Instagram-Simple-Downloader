@@ -29,6 +29,6 @@ test('buttons are injected in stories', async ({ page }) => {
   const fullScript = utilsJs + '\n' + uiJs + '\n' + modifiedObserverJs;
   await page.evaluate(fullScript);
 
-  const downloadBtn = page.locator('.isd-btn[aria-label*="Download"]');
+  const downloadBtn = page.locator('.isd-btn[aria-label*="Image"]');
   await expect(downloadBtn).toBeVisible({ timeout: 1000 });
 });
