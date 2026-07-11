@@ -53,9 +53,9 @@ test('carousel dynamically added items have incrementing indexes', async ({ page
   // we can wait a small amount of time for the observer to catch the second image addition.
   await page.waitForTimeout(100);
 
-  const downloadBtns = page.locator('.isd-btn[aria-label*="Download"]');
+  const downloadBtns = page.locator('.isd-btn[aria-label*="Image"]');
 
   await expect(downloadBtns).toHaveCount(2);
-  await expect(downloadBtns.nth(0)).toHaveText(/Download Image #1/);
-  await expect(downloadBtns.nth(1)).toHaveText(/Download Image #2/);
+  await expect(downloadBtns.nth(0)).toHaveText(/Image #1/);
+  await expect(downloadBtns.nth(1)).toHaveText(/Image #2/);
 });

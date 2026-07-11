@@ -76,7 +76,7 @@
 
   window.ISD_UI.createDownloadButton = (url, type, index) => {
     return createBaseButton({
-      label: `Download ${type === 'video' ? 'Video' : 'Image'} #${index}`,
+      label: `${type === 'video' ? 'Video' : 'Image'} #${index}`,
       title: `Download full resolution ${type}`,
       icon: C.ICON_DOWNLOAD,
       background: type === 'video' ? C.VIDEO_COLOR : C.IMAGE_COLOR,
