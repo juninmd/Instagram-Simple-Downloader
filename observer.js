@@ -12,7 +12,7 @@
   const MEDIA_SELECTOR = 'img[srcset]:not([download-button="ok"]), video:not([download-button="ok"])';
 
   const processItems = (container, items) => {
-    let existingCount = container.querySelectorAll('.isd-wrapper [aria-label^="Download"]').length;
+    let existingCount = container.querySelectorAll('.isd-wrapper [aria-label^="Video"], .isd-wrapper [aria-label^="Image"]').length;
     items.forEach((item) => {
       existingCount++;
       const type = item.nodeName === 'VIDEO' ? 'video' : 'image';
