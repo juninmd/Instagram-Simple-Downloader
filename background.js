@@ -2,9 +2,21 @@ const b = typeof browser !== 'undefined' ? browser : (typeof chrome !== 'undefin
 
 b.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 
+    let parsedFilename = '';
+    try {
+        const urlObj = new URL(request.url);
+        parsedFilename = urlObj.pathname.split('/').pop();
+    } catch {
+        // Ignore URL parsing errors
+    }
+
+    if (!parsedFilename) {
+        parsedFilename = request.type === 'image' ? 'image.jpg' : 'video.mp4';
+    }
+
     const options = {
         url: request.url,
-        filename: request.type === 'image' ? 'image.jpg' : 'video.mp4',
+        filename: parsedFilename,
         conflictAction: 'uniquify',
         saveAs: true
     };

@@ -66,7 +66,7 @@ test('background script handles download messages for image and video', async ({
 
   const imgArgs = await page.evaluate(() => window.downloadArgs);
   expect(imgArgs.url).toBe('http://example.com/img.jpg');
-  expect(imgArgs.filename).toBe('image.jpg');
+  expect(imgArgs.filename).toBe('img.jpg');
   expect(imgArgs.saveAs).toBe(true);
 
   const successLogged = await page.evaluate(() => window.successLogged);
@@ -86,7 +86,20 @@ test('background script handles download messages for image and video', async ({
 
   const vidArgs = await page.evaluate(() => window.downloadArgs);
   expect(vidArgs.url).toBe('http://example.com/vid.mp4');
-  expect(vidArgs.filename).toBe('video.mp4');
+  expect(vidArgs.filename).toBe('vid.mp4');
+
+  // Test fallback for missing filename
+  await page.evaluate(() => {
+    window.successLogged = false;
+    window.sendResponseArgs = null;
+    window.bgListener({ url: 'http://example.com/', type: 'image' }, null, (res) => { window.sendResponseArgs = res; });
+  });
+
+  await page.waitForTimeout(50);
+
+  const fallbackArgs = await page.evaluate(() => window.downloadArgs);
+  expect(fallbackArgs.url).toBe('http://example.com/');
+  expect(fallbackArgs.filename).toBe('image.jpg');
 
   // Test failure
   await page.evaluate(() => {
