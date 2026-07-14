@@ -4,3 +4,4 @@ playwright-report/
 web-ext-artifacts/
 .nyc_output/
 coverage/
+tests/*.png
