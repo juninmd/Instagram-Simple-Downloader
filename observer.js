@@ -14,9 +14,16 @@
   const processItems = (container, items) => {
     let existingCount = container.querySelectorAll('.isd-wrapper [aria-label^="Video"], .isd-wrapper [aria-label^="Image"]').length;
     items.forEach((item) => {
+      let src = item.src;
+      if (!src && item.nodeName === 'VIDEO') {
+        const source = item.querySelector('source');
+        if (source) src = source.src;
+      }
+      if (!src) return;
+
       existingCount++;
       const type = item.nodeName === 'VIDEO' ? 'video' : 'image';
-      UI.appendButtons(container, item.src, type, existingCount);
+      UI.appendButtons(container, src, type, existingCount);
       item.setAttribute('download-button', 'ok');
     });
   };
