@@ -19,7 +19,13 @@ test('button handles error state and shows shake animation', async ({ page }) =>
   await page.evaluate(() => {
     window.browser = {
       runtime: {
-        sendMessage: () => Promise.reject(new Error('Simulated network error'))
+        sendMessage: (msg, cb) => {
+          // If a callback is passed, we shouldn't just call it with no arguments,
+          // as that will resolve the wrapper Promise successfully.
+          // If we want to simulate a promise rejection, we can just reject the promise.
+          // Or if we want to simulate an error via callback, we'd set lastError.
+          return Promise.reject(new Error('Simulated network error'));
+        }
       }
     };
   });
@@ -54,7 +60,7 @@ test('button handles error state and shows shake animation', async ({ page }) =>
       runtime: {
         sendMessage: (msg, cb) => {
           window.browser.runtime.lastError = { message: 'Callback failed message' };
-          cb();
+          if (cb) cb();
           return undefined; // no promise to reject
         }
       }
