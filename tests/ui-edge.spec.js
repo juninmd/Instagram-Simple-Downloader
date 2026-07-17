@@ -37,6 +37,36 @@ test('appendButtons handles invalid containers gracefully', async ({ page }) => 
   await expect(buttons).toHaveCount(4); // 2 download + 2 copy
 });
 
+test('button updates aria-live to assertive on error', async ({ page }) => {
+  const read = (f) => fs.readFileSync(path.join(__dirname, '..', f), 'utf-8');
+  const utilsJs = read('utils.js');
+  const uiJs = read('ui.js');
+
+  await page.setContent(`<!DOCTYPE html><html><body></body></html>`);
+
+  await page.evaluate(utilsJs + '\n' + uiJs);
+
+  const isAssertive = await page.evaluate(async () => {
+    Object.assign(navigator, {
+      clipboard: {
+        writeText: () => Promise.reject(new Error('fail'))
+      }
+    });
+    const btn = window.ISD_UI.createCopyButton('http://test', 1);
+    document.body.appendChild(btn);
+
+    btn.click();
+
+    // Wait for error state
+    await new Promise(resolve => setTimeout(resolve, 50));
+
+    const span = btn.querySelector('span[aria-live]');
+    return span.getAttribute('aria-live');
+  });
+
+  expect(isAssertive).toBe('assertive');
+});
+
 test('button handles null callback in success and error paths properly', async ({ page }) => {
   const read = (f) => fs.readFileSync(path.join(__dirname, '..', f), 'utf-8');
   const utilsJs = read('utils.js');

@@ -57,6 +57,24 @@ test.describe('Utility functions', () => {
     expect(styleText).toContain('@keyframes isd-pop');
   });
 
+  test('el creates DOM elements with default tag div if omitted or falsy', async ({ page }) => {
+    const tagName = await page.evaluate(() => {
+      const e = window.ISD_UTILS.el('');
+      return e.tagName;
+    });
+    expect(tagName).toBe('DIV');
+  });
+
+  test('createConfetti handles missing or invalid rect object', async ({ page }) => {
+    // Should not throw or create any confetti
+    const confettiCount = await page.evaluate(() => {
+      window.ISD_UTILS.createConfetti(null);
+      window.ISD_UTILS.createConfetti({ left: 10 }); // Invalid
+      return document.querySelectorAll('.isd-confetti').length;
+    });
+    expect(confettiCount).toBe(0);
+  });
+
   test('createConfetti renders elements', async ({ page }) => {
     await page.evaluate(() => {
       window.ISD_UTILS.createConfetti({ left: 100, top: 100, width: 50, height: 50 });

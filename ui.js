@@ -33,18 +33,22 @@
             span.textContent = loadingText;
             btn.title = loadingText;
             btn.setAttribute('aria-label', loadingText);
+            span.setAttribute('aria-live', 'polite');
         } else if (success) {
             span.textContent = successText;
             btn.title = 'Success';
             btn.setAttribute('aria-label', successText);
+            span.setAttribute('aria-live', 'polite');
         } else if (error) {
             span.textContent = 'Error';
             btn.title = 'Failed. Click to retry.';
             btn.setAttribute('aria-label', 'Error');
+            span.setAttribute('aria-live', 'assertive');
         } else {
             span.textContent = label;
             btn.title = title;
             btn.setAttribute('aria-label', label);
+            span.setAttribute('aria-live', 'polite');
         }
 
         iconSvg.classList.toggle('isd-hidden', loading || success);

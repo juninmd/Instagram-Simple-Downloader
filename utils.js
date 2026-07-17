@@ -22,7 +22,7 @@
    * @returns {HTMLElement}
    */
   window.ISD_UTILS.el = (tag, cls = '', attrs = {}, style = {}) => {
-    const e = document.createElement(tag);
+    const e = document.createElement(tag || 'div');
     if (cls) e.className = cls;
     Object.entries(attrs).forEach(([k, v]) => e.setAttribute(k, v));
     Object.assign(e.style, style);
@@ -90,6 +90,7 @@
 
   window.ISD_UTILS.createConfetti = (rect) => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (!rect || typeof rect.left !== 'number' || typeof rect.width !== 'number' || typeof rect.top !== 'number' || typeof rect.height !== 'number') return;
     const colors = ['#D32F2F', '#2E7D32', '#0095f6', '#FDD835', '#9C27B0'];
     const centerX = rect.left + rect.width / 2;
     const centerY = rect.top + rect.height / 2;
