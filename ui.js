@@ -125,7 +125,7 @@
     if (!target) return;
     let wrapper = target.querySelector('.isd-wrapper');
     if (!wrapper) {
-      wrapper = el('div', 'isd-wrapper', {}, { display: 'flex', flexWrap: 'wrap', marginBottom: '8px', zIndex: 1000, position: 'relative' });
+      wrapper = el('div', 'isd-wrapper', {}, { display: 'flex', flexWrap: 'wrap', marginBlockEnd: '8px', zIndex: 1000, position: 'relative' });
       target.prepend(wrapper);
     }
     wrapper.appendChild(window.ISD_UI.createDownloadButton(src, type, index));
