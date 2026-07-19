@@ -12,7 +12,7 @@
     const btn = el('button', 'isd-btn', { type: 'button', 'aria-label': label, title }, { background });
     const iconContainer = el('span'); iconContainer.innerHTML = icon;
     const checkContainer = el('span');
-    checkContainer.innerHTML = `<svg aria-hidden="true" class="isd-hidden" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
+    checkContainer.innerHTML = C.ICON_CHECK;
     const spinner = el('span', 'isd-spinner isd-hidden');
     const span = el('span', '', { 'aria-live': 'polite' }); span.textContent = label;
 
