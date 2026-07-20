@@ -8,6 +8,19 @@
   const C = U.CONSTANTS;
   const el = U.el;
 
+  /**
+   * Creates a standardized, accessible base button with loading, success, and error states.
+   * @param {Object} config - Button configuration.
+   * @param {string} config.label - Default aria-label and text content for the button.
+   * @param {string} config.title - Tooltip text shown on hover.
+   * @param {string} config.icon - SVG markup string for the default state icon.
+   * @param {string} config.background - CSS background color for the button.
+   * @param {Function} config.onClick - Async callback function executed when the button is clicked.
+   * @param {string} [config.loadingText='Processing...'] - Text and aria-label shown during async operation.
+   * @param {string} [config.successText='Success!'] - Text and aria-label shown on successful completion.
+   * @param {Function} [config.onSuccess] - Optional callback function executed on successful completion. receives the button element.
+   * @returns {HTMLButtonElement} The constructed button DOM element.
+   */
   const createBaseButton = ({ label, title, icon, background, onClick, loadingText = 'Processing...', successText = 'Success!', onSuccess }) => {
     const btn = el('button', 'isd-btn', { type: 'button', 'aria-label': label, title }, { background });
     const iconContainer = el('span'); iconContainer.innerHTML = icon;
@@ -78,6 +91,14 @@
 
   const b = typeof browser !== 'undefined' ? browser : (typeof chrome !== 'undefined' ? chrome : {});
 
+  /**
+   * Creates a download button specific to the media type.
+   * Integrates with the background script to trigger downloads.
+   * @param {string} url - The URL of the media file to download.
+   * @param {string} type - The media type, either 'video' or 'image'.
+   * @param {number} index - The dynamic carousel index of the media item to ensure uniqueness.
+   * @returns {HTMLButtonElement} The configured download button.
+   */
   window.ISD_UI.createDownloadButton = (url, type, index) => {
     return createBaseButton({
       label: `${type === 'video' ? 'Video' : 'Image'} #${index}`,
@@ -108,6 +129,13 @@
     });
   };
 
+  /**
+   * Creates a copy link utility button.
+   * Writes the provided URL directly to the user's clipboard.
+   * @param {string} url - The URL to copy.
+   * @param {number} index - The dynamic carousel index of the media item to ensure uniqueness.
+   * @returns {HTMLButtonElement} The configured copy button.
+   */
   window.ISD_UI.createCopyButton = (url, index) => {
     return createBaseButton({
       label: index ? `Copy Link #${index}` : 'Copy Link',
@@ -120,6 +148,14 @@
     });
   };
 
+  /**
+   * Appends the action buttons (download and copy) to a target DOM container.
+   * Wraps buttons in a flexbox layout to ensure consistent styling.
+   * @param {HTMLElement} container - The parent DOM element (typically an `<article>` or `<section>`) containing the media.
+   * @param {string} src - The URL of the media to be manipulated by the buttons.
+   * @param {string} type - The media type, either 'video' or 'image'.
+   * @param {number} index - The calculated index of the item within the dynamic container.
+   */
   window.ISD_UI.appendButtons = (container, src, type, index) => {
     const target = container.tagName === 'SECTION' ? container : (container.querySelector('section') || container);
     if (!target) return;
