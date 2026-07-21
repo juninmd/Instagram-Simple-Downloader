@@ -42,27 +42,12 @@
         btn.classList.toggle('isd-error', error);
         btn.classList.toggle('isd-shake', error);
 
-        if (loading) {
-            span.textContent = loadingText;
-            btn.title = loadingText;
-            btn.setAttribute('aria-label', loadingText);
-            span.setAttribute('aria-live', 'polite');
-        } else if (success) {
-            span.textContent = successText;
-            btn.title = 'Success';
-            btn.setAttribute('aria-label', successText);
-            span.setAttribute('aria-live', 'polite');
-        } else if (error) {
-            span.textContent = 'Error';
-            btn.title = 'Failed. Click to retry.';
-            btn.setAttribute('aria-label', 'Error');
-            span.setAttribute('aria-live', 'assertive');
-        } else {
-            span.textContent = label;
-            btn.title = title;
-            btn.setAttribute('aria-label', label);
-            span.setAttribute('aria-live', 'polite');
-        }
+        const txt = loading ? loadingText : success ? successText : error ? 'Error' : label;
+        const ttl = loading ? loadingText : success ? 'Success' : error ? 'Failed. Click to retry.' : title;
+        span.textContent = txt;
+        btn.title = ttl;
+        btn.setAttribute('aria-label', txt);
+        span.setAttribute('aria-live', error ? 'assertive' : 'polite');
 
         iconSvg.classList.toggle('isd-hidden', loading || success);
         spinner.classList.toggle('isd-hidden', !loading);
@@ -107,25 +92,17 @@
       background: type === 'video' ? C.VIDEO_COLOR : C.IMAGE_COLOR,
       loadingText: 'Downloading...',
       successText: 'Started!',
-      onClick: async () => {
-        return new Promise((resolve, reject) => {
-          try {
-            const res = b.runtime.sendMessage({ url, type }, (response) => {
-              if (b.runtime.lastError) return reject(new Error(b.runtime.lastError.message || b.runtime.lastError));
-              if (response && response.error) return reject(new Error(response.error));
-              resolve(response);
-            });
-            if (res && typeof res.then === 'function') {
-              res.then((response) => {
-                  if (response && response.error) return reject(new Error(response.error));
-                  resolve(response);
-              }, reject);
-            }
-          } catch (err) {
-            reject(err);
-          }
-        });
-      }
+      onClick: () => new Promise((resolve, reject) => {
+        try {
+          const cb = (r) => {
+            if (b.runtime.lastError) return reject(new Error(b.runtime.lastError.message || b.runtime.lastError));
+            if (r && r.error) return reject(new Error(r.error));
+            resolve(r);
+          };
+          const res = b.runtime.sendMessage({ url, type }, cb);
+          if (res && typeof res.then === 'function') res.then(cb, reject);
+        } catch (err) { reject(err); }
+      })
     });
   };
 
