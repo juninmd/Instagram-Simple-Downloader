@@ -1,5 +1,16 @@
 const b = typeof browser !== 'undefined' ? browser : (typeof chrome !== 'undefined' ? chrome : {});
 
+/**
+ * Listens for messages from the content script to trigger a download.
+ * Extracts the filename from the URL or falls back to a default based on the media type.
+ * Ensures compatibility between callback-based (Manifest V2) and promise-based implementations.
+ * @param {Object} request - The message payload.
+ * @param {string} request.url - The URL of the media file to download.
+ * @param {string} request.type - The media type ('image' or 'video').
+ * @param {Object} sender - The sender of the message.
+ * @param {Function} sendResponse - Callback function to send a response back to the content script.
+ * @returns {boolean} Returns true to indicate that the response will be sent asynchronously.
+ */
 b.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 
     let parsedFilename = '';
