@@ -18,6 +18,8 @@
    * @param {NodeList|HTMLElement[]} items - A collection of media elements matching the MEDIA_SELECTOR.
    */
   const processItems = (container, items) => {
+    // Calculate dynamic numbering indices by querying the count of existing elements in the DOM container
+    // rather than using the loop index to prevent duplicate numbering of newly loaded items in carousels.
     let existingCount = container.querySelectorAll('.isd-wrapper [aria-label^="Video"], .isd-wrapper [aria-label^="Image"]').length;
     items.forEach((item) => {
       let src = item.src;
