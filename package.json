@@ -10,7 +10,7 @@
     "@eslint/js": "^10.0.1",
     "@playwright/test": "^1.57.0",
     "eslint": "^10.0.0",
-    "globals": "15",
+    "globals": "^15.0.0",
     "nyc": "^18.0.0"
   },
   "packageManager": "pnpm@9.1.0"
