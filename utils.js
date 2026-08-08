@@ -99,7 +99,7 @@
    * @param {DOMRect} rect - The bounding client rectangle of the element to originate from (e.g., button).
    */
   window.ISD_UTILS.createConfetti = (rect) => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     if (!rect || typeof rect.left !== 'number' || typeof rect.width !== 'number' || typeof rect.top !== 'number' || typeof rect.height !== 'number') return;
     const colors = ['#D32F2F', '#2E7D32', '#0095f6', '#FDD835', '#9C27B0'];
     const centerX = rect.left + rect.width / 2;

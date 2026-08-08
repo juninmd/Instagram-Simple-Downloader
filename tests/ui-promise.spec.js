@@ -43,6 +43,43 @@ test('button handles native Promise resolution from sendMessage', async ({ page 
   await expect(button).toHaveText(/Started!/);
 });
 
+test('button gracefully handles native Promise rejections (exceptions) from sendMessage', async ({ page }) => {
+  const read = (f) => fs.readFileSync(path.join(__dirname, '..', f), 'utf-8');
+  const utilsJs = read('utils.js');
+  const uiJs = read('ui.js');
+
+  await page.setContent(`<!DOCTYPE html><html><body><div id="content"></div></body></html>`);
+
+  await page.evaluate(() => {
+    window.browser = {
+      runtime: {
+        // Native Promise style that strictly rejects
+        sendMessage: (msg) => {
+          return Promise.reject(new Error('Network error'));
+        }
+      }
+    };
+  });
+
+  const fullScript = utilsJs + '\n' + uiJs;
+  await page.evaluate(fullScript);
+
+  await page.evaluate(() => {
+    const content = document.getElementById('content');
+    const button = window.ISD_UI.createDownloadButton('test4.jpg', 'image', 4);
+    content.appendChild(button);
+  });
+
+  const button = page.locator('.isd-btn').first();
+  await expect(button).toBeVisible();
+
+  await button.click();
+
+  // Wait for error
+  await expect(button).toHaveClass(/isd-error/);
+  await expect(button).toHaveText(/Error/);
+});
+
 test('button handles native Promise rejection with error object from sendMessage', async ({ page }) => {
   const read = (f) => fs.readFileSync(path.join(__dirname, '..', f), 'utf-8');
   const utilsJs = read('utils.js');
