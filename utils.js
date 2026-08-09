@@ -33,6 +33,7 @@
   /**
    * Injects the required CSS styles for the extension into the document head.
    * This includes animations, button styles, and interactive states.
+   * @returns {void}
    */
   window.ISD_UTILS.injectStyles = () => {
     const style = document.createElement('style');
@@ -97,6 +98,7 @@
    * Creates a brief confetti animation originating from the specified DOM element's rectangle.
    * Respects user preferences for reduced motion by aborting if enabled.
    * @param {DOMRect} rect - The bounding client rectangle of the element to originate from (e.g., button).
+   * @returns {void}
    */
   window.ISD_UTILS.createConfetti = (rect) => {
     if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;

@@ -16,6 +16,7 @@
    * calculates dynamic indices for uniqueness, and appends the action buttons to their container.
    * @param {HTMLElement} container - The parent container element (e.g., an article or section).
    * @param {NodeList|HTMLElement[]} items - A collection of media elements matching the MEDIA_SELECTOR.
+   * @returns {void}
    */
   const processItems = (container, items) => {
     // Calculate dynamic numbering indices by querying the count of existing elements in the DOM container
@@ -39,6 +40,7 @@
   /**
    * Scans the DOM for Instagram feed posts and Reels, which use `<article>` elements.
    * Identifies un-processed media items and dispatches them for button injection.
+   * @returns {void}
    */
   const searchFeed = () => {
     const articles = document.querySelectorAll('article');
@@ -51,6 +53,7 @@
   /**
    * Scans the DOM for Instagram Stories, which typically use a specialized `<section>` layout.
    * Identifies un-processed media items and dispatches them for button injection.
+   * @returns {void}
    */
   const searchStories = () => {
     const section = document.querySelector('section[style]');
@@ -65,6 +68,7 @@
   /**
    * Scans the DOM for the active post modal or detail view on a user profile.
    * Identifies un-processed media items and dispatches them for button injection.
+   * @returns {void}
    */
   const searchProfile = () => {
     const article = document.querySelector('article');
@@ -76,6 +80,7 @@
   /**
    * The core logic executed periodically to evaluate the current route.
    * Parses the URL pathname and delegates DOM scanning to route-specific handler functions.
+   * @returns {void}
    */
   const observerCallback = () => {
     try {

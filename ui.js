@@ -132,6 +132,7 @@
    * @param {string} src - The URL of the media to be manipulated by the buttons.
    * @param {string} type - The media type, either 'video' or 'image'.
    * @param {number} index - The calculated index of the item within the dynamic container.
+   * @returns {void}
    */
   window.ISD_UI.appendButtons = (container, src, type, index) => {
     const target = container.tagName === 'SECTION' ? container : (container.querySelector('section') || container);
