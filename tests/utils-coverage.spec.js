@@ -23,6 +23,27 @@ test('el creates DOM elements with missing classes and multiple attributes', asy
   expect(elementProps.marginTop).toBe('10px');
 });
 
+test('el gracefully ignores null and undefined attributes', async ({ page }) => {
+  const utilsJs = fs.readFileSync(path.join(__dirname, '..', 'utils.js'), 'utf-8');
+  await page.setContent(`<!DOCTYPE html><html><body></body></html>`);
+  await page.evaluate(utilsJs);
+
+  const elementProps = await page.evaluate(() => {
+    const el = window.ISD_UTILS.el('div', undefined, { 'data-valid': 'ok', 'data-null': null, 'data-undef': undefined });
+    return {
+      hasValid: el.hasAttribute('data-valid'),
+      validValue: el.getAttribute('data-valid'),
+      hasNull: el.hasAttribute('data-null'),
+      hasUndef: el.hasAttribute('data-undef')
+    };
+  });
+
+  expect(elementProps.hasValid).toBe(true);
+  expect(elementProps.validValue).toBe('ok');
+  expect(elementProps.hasNull).toBe(false);
+  expect(elementProps.hasUndef).toBe(false);
+});
+
 test('el creates DOM elements with only tag and attributes', async ({ page }) => {
   const utilsJs = fs.readFileSync(path.join(__dirname, '..', 'utils.js'), 'utf-8');
   await page.setContent(`<!DOCTYPE html><html><body></body></html>`);
