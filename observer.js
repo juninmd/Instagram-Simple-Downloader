@@ -106,6 +106,7 @@
   /**
    * A debounced wrapper for the main observer callback to optimize performance.
    * Prevents browser lag by rate-limiting intensive DOM queries during rapid mutations.
+   * @returns {void}
    */
   const debouncedObserverCallback = () => {
     if (timeoutId) clearTimeout(timeoutId);

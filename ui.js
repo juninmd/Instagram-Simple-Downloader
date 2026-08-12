@@ -43,7 +43,7 @@
         btn.classList.toggle('isd-shake', error);
 
         const txt = loading ? loadingText : success ? successText : error ? 'Error' : label;
-        const ttl = loading ? loadingText : success ? 'Success' : error ? 'Failed. Click to retry.' : title;
+        const ttl = loading ? loadingText : success ? successText : error ? 'Failed. Click to retry.' : title;
         span.textContent = txt;
         btn.title = ttl;
         btn.setAttribute('aria-label', txt);

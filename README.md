@@ -2,7 +2,7 @@
 
 <center>
 <img src='icons/logo-48.png' height='100' style='margin: 0 auto;text-align:center'>
-<p> Add a simple button to download photos and videos from feed/story/profile</p>
+<p> Add simple buttons to download and copy links for photos and videos from feed, story, profile, and reels (Manifest V2)</p>
 </center>
 
 [Firefox](https://addons.mozilla.org/pt-BR/firefox/addon/instagram-simple-downloader/)
@@ -20,4 +20,4 @@
 
 É uma extensão para o `Mozilla Firefox`  
 
-Será adicionado um botão para fazer download de fotos e vídeos do feed e do stories.
+Serão adicionados botões para fazer download e copiar links de fotos e vídeos do feed, perfil, reels e do stories (Manifest V2).
