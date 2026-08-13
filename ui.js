@@ -18,10 +18,12 @@
    * @param {Function} config.onClick - Async callback function executed when the button is clicked.
    * @param {string} [config.loadingText='Processing...'] - Text and aria-label shown during async operation.
    * @param {string} [config.successText='Success!'] - Text and aria-label shown on successful completion.
+   * @param {string} [config.errorText='Error'] - Text and aria-label shown on error.
+   * @param {string} [config.errorTitle='Failed. Click to retry.'] - Tooltip text shown on error.
    * @param {Function} [config.onSuccess] - Optional callback function executed on successful completion. receives the button element.
    * @returns {HTMLButtonElement} The constructed button DOM element.
    */
-  const createBaseButton = ({ label, title, icon, background, onClick, loadingText = 'Processing...', successText = 'Success!', onSuccess }) => {
+  const createBaseButton = ({ label, title, icon, background, onClick, loadingText = 'Processing...', successText = 'Success!', errorText = 'Error', errorTitle = 'Failed. Click to retry.', onSuccess }) => {
     const btn = el('button', 'isd-btn', { type: 'button', 'aria-label': label, title }, { background });
     const iconContainer = el('span'); iconContainer.innerHTML = icon;
     const checkContainer = el('span');
@@ -42,8 +44,8 @@
         btn.classList.toggle('isd-error', error);
         btn.classList.toggle('isd-shake', error);
 
-        const txt = loading ? loadingText : success ? successText : error ? 'Error' : label;
-        const ttl = loading ? loadingText : success ? successText : error ? 'Failed. Click to retry.' : title;
+        const txt = loading ? loadingText : success ? successText : error ? errorText : label;
+        const ttl = loading ? loadingText : success ? successText : error ? errorTitle : title;
         span.textContent = txt;
         btn.title = ttl;
         btn.setAttribute('aria-label', txt);
