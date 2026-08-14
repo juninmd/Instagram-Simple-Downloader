@@ -38,7 +38,9 @@
    * @returns {void}
    */
   window.ISD_UTILS.injectStyles = () => {
+    if (document.getElementById('isd-styles')) return;
     const style = document.createElement('style');
+    style.id = 'isd-styles';
     style.textContent = `
       @keyframes isd-spin { to { transform: rotate(360deg); } }
       @keyframes isd-shake {
