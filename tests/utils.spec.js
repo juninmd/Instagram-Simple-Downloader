@@ -46,10 +46,11 @@ test.describe('Utility functions', () => {
 
     await page.evaluate(() => {
       window.ISD_UTILS.injectStyles();
+      window.ISD_UTILS.injectStyles(); // Test idempotency by calling twice
     });
 
     const styleCountAfter = await page.locator('style').count();
-    expect(styleCountAfter).toBe(styleCountBefore + 1);
+    expect(styleCountAfter).toBe(styleCountBefore + 1); // Only 1 style tag should be appended
 
     const styleText = await page.locator('style').last().textContent();
     expect(styleText).toContain('.isd-btn');
