@@ -87,13 +87,15 @@
    * @returns {HTMLButtonElement} The configured download button.
    */
   window.ISD_UI.createDownloadButton = (url, type, index) => {
+    const label = `${type === 'video' ? 'Video' : 'Image'} #${index}`;
     return createBaseButton({
-      label: `${type === 'video' ? 'Video' : 'Image'} #${index}`,
+      label,
       title: `Download full resolution ${type}`,
       icon: C.ICON_DOWNLOAD,
       background: type === 'video' ? C.VIDEO_COLOR : C.IMAGE_COLOR,
-      loadingText: 'Downloading...',
-      successText: 'Started!',
+      loadingText: `${label} - Downloading...`,
+      successText: `${label} - Started!`,
+      errorText: `${label} - Error`,
       onClick: () => new Promise((resolve, reject) => {
         try {
           const cb = (r) => {
@@ -116,12 +118,14 @@
    * @returns {HTMLButtonElement} The configured copy button.
    */
   window.ISD_UI.createCopyButton = (url, index) => {
+    const label = index ? `Copy Link #${index}` : 'Copy Link';
     return createBaseButton({
-      label: index ? `Copy Link #${index}` : 'Copy Link',
+      label,
       title: 'Copy link',
       icon: C.ICON_COPY,
       background: C.COPY_COLOR,
-      successText: 'Copied!',
+      successText: `${label} - Copied!`,
+      errorText: `${label} - Error`,
       onClick: async () => await navigator.clipboard.writeText(url),
       onSuccess: (btn) => U.createConfetti(btn.getBoundingClientRect())
     });
