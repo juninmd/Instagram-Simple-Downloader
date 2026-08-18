@@ -43,7 +43,7 @@ test('copy button simulates writeText and transitions to success state', async (
   await expect(button).toHaveClass(/isd-success/);
 
   // Verify success text
-  await expect(button).toHaveText(/Copied!/);
+  await expect(button).toHaveText(/Copy Link #1 - Copied!/);
 
   // Confetti verification
   const confettiCount = await page.locator('.isd-confetti').count();

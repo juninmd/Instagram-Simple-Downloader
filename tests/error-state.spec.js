@@ -52,7 +52,7 @@ test('button handles error state and shows shake animation', async ({ page }) =>
   await expect(button).toHaveClass(/isd-shake/);
 
   // Verify error text
-  await expect(button).toHaveText(/Error/);
+  await expect(button).toHaveText(/Image #1 - Error/);
 
   // Additional test for lastError callback simulation
   await page.evaluate(() => {
