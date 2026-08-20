@@ -26,16 +26,13 @@
   const createBaseButton = ({ label, title, icon, background, onClick, loadingText = 'Processing...', successText = 'Success!', errorText = 'Error', errorTitle = 'Failed. Click to retry.', onSuccess }) => {
     const btn = el('button', 'isd-btn', { type: 'button', 'aria-label': label, title }, { background });
     const iconContainer = el('span'); iconContainer.innerHTML = icon;
-    const checkContainer = el('span');
-    checkContainer.innerHTML = C.ICON_CHECK;
+    const checkContainer = el('span'); checkContainer.innerHTML = C.ICON_CHECK;
     const spinner = el('span', 'isd-spinner isd-hidden');
     const span = el('span', '', { 'aria-live': 'polite' }); span.textContent = label;
-
     // Append children (safely extracting firstElementChild from containers)
     const iconSvg = iconContainer.firstElementChild;
     const checkSvg = checkContainer.firstElementChild;
     [iconSvg, spinner, checkSvg, span].forEach(c => btn.appendChild(c));
-
     let resetTimer;
     const updateState = (loading, success, error) => {
         btn.setAttribute('aria-disabled', loading ? 'true' : 'false');
@@ -43,14 +40,12 @@
         btn.classList.toggle('isd-success', success);
         btn.classList.toggle('isd-error', error);
         btn.classList.toggle('isd-shake', error);
-
         const txt = loading ? loadingText : success ? successText : error ? errorText : label;
         const ttl = loading ? loadingText : success ? successText : error ? errorTitle : title;
         span.textContent = txt;
         btn.title = ttl;
         btn.setAttribute('aria-label', txt);
         span.setAttribute('aria-live', error ? 'assertive' : 'polite');
-
         iconSvg.classList.toggle('isd-hidden', loading || success);
         spinner.classList.toggle('isd-hidden', !loading);
         checkSvg.classList.toggle('isd-hidden', !success);
