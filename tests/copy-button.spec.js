@@ -20,7 +20,7 @@ test('copy button simulates writeText and transitions to success state', async (
     // Mock navigator.clipboard
     Object.assign(navigator, {
       clipboard: {
-        writeText: (text) => Promise.resolve()
+        writeText: (text) => new Promise(resolve => setTimeout(resolve, 300))
       }
     });
   });
@@ -38,6 +38,9 @@ test('copy button simulates writeText and transitions to success state', async (
   await expect(button).toBeVisible();
 
   await button.click();
+
+  await expect(button).toHaveClass(/isd-loading/);
+  await expect(button).toHaveText(/Copy Link #1 - Processing.../);
 
   // Wait for the button to have the success class
   await expect(button).toHaveClass(/isd-success/);

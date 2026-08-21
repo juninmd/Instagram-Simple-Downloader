@@ -119,6 +119,7 @@
       title: 'Copy link',
       icon: C.ICON_COPY,
       background: C.COPY_COLOR,
+      loadingText: `${label} - Processing...`,
       successText: `${label} - Copied!`,
       errorText: `${label} - Error`,
       onClick: async () => await navigator.clipboard.writeText(url),
