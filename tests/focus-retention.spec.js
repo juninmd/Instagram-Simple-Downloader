@@ -26,8 +26,8 @@ test('button retains focus and uses aria-disabled', async ({ page }) => {
   });
 
   let modifiedObserverJs = observerJs.replace(
-    /const isFeedOrReels = [^;]+;/s,
-    "const isFeedOrReels = true;"
+    /const isArticleRoute = [^;]+;/s,
+    "const isArticleRoute = true;"
   );
 
   let modifiedUiJs = uiJs.replace(/const b = [^;]+;/s, "const b = window.browser;");

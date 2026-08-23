@@ -19,8 +19,8 @@ test('carousel dynamically added items have incrementing indexes', async ({ page
 
   // Mock location check in observer.js
   let modifiedObserverJs = observerJs.replace(
-    /const isFeedOrReels = [^;]+;/s,
-    "const isFeedOrReels = true;"
+    /const isArticleRoute = [^;]+;/s,
+    "const isArticleRoute = true;"
   );
 
   const fullScript = utilsJs + '\n' + uiJs + '\n' + modifiedObserverJs;
