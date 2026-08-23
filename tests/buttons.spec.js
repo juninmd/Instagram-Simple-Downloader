@@ -12,8 +12,8 @@ test('both download and copy buttons are injected', async ({ page }) => {
 
   // Mock location check in observer.js
   let modifiedObserverJs = observerJs.replace(
-    /const isFeedOrReels = [^;]+;/s,
-    "const isFeedOrReels = true;"
+    /const isArticleRoute = [^;]+;/s,
+    "const isArticleRoute = true;"
   );
 
   // Combine scripts

@@ -11,8 +11,8 @@ test('carousel indexes are correct even if a previous button is clicked and chan
   await page.setContent(`<!DOCTYPE html><html><body><div id="content"></div></body></html>`);
 
   let modifiedObserverJs = observerJs.replace(
-    /const isFeedOrReels = [^;]+;/s,
-    "const isFeedOrReels = true;"
+    /const isArticleRoute = [^;]+;/s,
+    "const isArticleRoute = true;"
   );
 
   await page.evaluate(() => {

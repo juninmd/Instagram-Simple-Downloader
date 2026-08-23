@@ -38,11 +38,11 @@
   };
 
   /**
-   * Scans the DOM for Instagram feed posts and Reels, which use `<article>` elements.
+   * Scans the DOM for Instagram feed posts, Reels, and profile post modals, which use `<article>` elements.
    * Identifies un-processed media items and dispatches them for button injection.
    * @returns {void}
    */
-  const searchFeed = () => {
+  const searchArticles = () => {
     const articles = document.querySelectorAll('article');
     articles.forEach((article) => {
       const items = article.querySelectorAll(MEDIA_SELECTOR);
@@ -66,18 +66,6 @@
   };
 
   /**
-   * Scans the DOM for the active post modal or detail view on a user profile.
-   * Identifies un-processed media items and dispatches them for button injection.
-   * @returns {void}
-   */
-  const searchProfile = () => {
-    const article = document.querySelector('article');
-    if (!article) return;
-    const items = article.querySelectorAll(MEDIA_SELECTOR);
-    processItems(article, items);
-  };
-
-  /**
    * The core logic executed periodically to evaluate the current route.
    * Parses the URL pathname and delegates DOM scanning to route-specific handler functions.
    * @returns {void}
@@ -87,14 +75,12 @@
       const url = new URL(window.location.href);
       const pathname = url.pathname;
 
-      const isFeedOrReels = pathname === '/' || pathname.startsWith('/reels/');
+      const isArticleRoute = pathname === '/' || pathname.startsWith('/reels/') || pathname.startsWith('/p/');
 
-      if (isFeedOrReels) {
-        searchFeed();
+      if (isArticleRoute) {
+        searchArticles();
       } else if (pathname.startsWith('/stories/')) {
         searchStories();
-      } else if (pathname.startsWith('/p/')) {
-        searchProfile();
       }
     } catch {
       // Ignore URL parsing errors
