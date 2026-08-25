@@ -28,7 +28,7 @@
     const iconContainer = el('span'); iconContainer.innerHTML = icon;
     const checkContainer = el('span'); checkContainer.innerHTML = C.ICON_CHECK;
     const spinner = el('span', 'isd-spinner isd-hidden');
-    const span = el('span', '', { 'aria-live': 'polite' }); span.textContent = label;
+    const span = el('span', '', { 'aria-live': 'polite', 'aria-atomic': 'true' }); span.textContent = label;
     // Append children (safely extracting firstElementChild from containers)
     const iconSvg = iconContainer.firstElementChild;
     const checkSvg = checkContainer.firstElementChild;

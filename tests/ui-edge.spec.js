@@ -46,7 +46,7 @@ test('button updates aria-live to assertive on error', async ({ page }) => {
 
   await page.evaluate(utilsJs + '\n' + uiJs);
 
-  const isAssertive = await page.evaluate(async () => {
+  const [isAssertive, isAtomic] = await page.evaluate(async () => {
     Object.assign(navigator, {
       clipboard: {
         writeText: () => Promise.reject(new Error('fail'))
@@ -61,10 +61,11 @@ test('button updates aria-live to assertive on error', async ({ page }) => {
     await new Promise(resolve => setTimeout(resolve, 50));
 
     const span = btn.querySelector('span[aria-live]');
-    return span.getAttribute('aria-live');
+    return [span.getAttribute('aria-live'), span.getAttribute('aria-atomic')];
   });
 
   expect(isAssertive).toBe('assertive');
+  expect(isAtomic).toBe('true');
 });
 
 test('button handles null callback in success and error paths properly', async ({ page }) => {
