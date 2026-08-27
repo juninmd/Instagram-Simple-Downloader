@@ -75,7 +75,7 @@
       const url = new URL(window.location.href);
       const pathname = url.pathname;
 
-      const isArticleRoute = pathname === '/' || pathname.startsWith('/reels/') || pathname.startsWith('/p/');
+      const isArticleRoute = pathname === '/' || /^\/(reels?|p)\//.test(pathname);
 
       if (isArticleRoute) {
         searchArticles();
