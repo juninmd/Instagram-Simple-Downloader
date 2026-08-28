@@ -33,8 +33,8 @@ test('both download and copy buttons are injected', async ({ page }) => {
     content.appendChild(article);
   });
 
-  const downloadBtn = page.locator('.isd-btn[aria-label*="Image"]');
-  const copyBtn = page.locator('.isd-btn[aria-label="Copy Link #1"]');
+  const downloadBtn = page.locator('.isd-btn[title*="Image"]');
+  const copyBtn = page.locator('.isd-btn[title*="Copy Link #1"]');
 
   await expect(downloadBtn).toBeVisible();
   await expect(copyBtn).toBeVisible();
