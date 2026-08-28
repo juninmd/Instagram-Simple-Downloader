@@ -27,7 +27,7 @@ test('observer handles missing target elements gracefully', async ({ page }) => 
   // Execution should not throw error if section is not found
   await page.evaluate(fullScript);
 
-  let downloadBtn = page.locator('.isd-btn[aria-label*="Image"]');
+  let downloadBtn = page.locator('.isd-btn[title*="Image"]');
   await expect(downloadBtn).toHaveCount(0);
 
   // Re-run for profile page where article is not found
@@ -41,7 +41,7 @@ test('observer handles missing target elements gracefully', async ({ page }) => 
   const fullScriptProfile = utilsJs + '\n' + uiJs + '\n' + modifiedObserverJs;
   await page.evaluate(fullScriptProfile);
 
-  downloadBtn = page.locator('.isd-btn[aria-label*="Image"]');
+  downloadBtn = page.locator('.isd-btn[title*="Image"]');
   await expect(downloadBtn).toHaveCount(0);
 
   // Re-run for exception handling in URL parsing
@@ -89,6 +89,6 @@ test('observer handles missing target elements gracefully', async ({ page }) => 
   // 1 download button, 1 copy button
   await expect(allBtns).toHaveCount(2);
 
-  const downloadBtnVideo = page.locator('.isd-btn[aria-label="Video #1"]');
+  const downloadBtnVideo = page.locator('.isd-btn[title*="Video #1"]');
   await expect(downloadBtnVideo).toHaveCount(1);
 });

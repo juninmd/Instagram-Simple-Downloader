@@ -24,7 +24,7 @@
    * @returns {HTMLButtonElement} The constructed button DOM element.
    */
   const createBaseButton = ({ label, title, icon, background, onClick, loadingText = 'Processing...', successText = 'Success!', errorText = 'Error', errorTitle = 'Failed. Click to retry.', onSuccess }) => {
-    const btn = el('button', 'isd-btn', { type: 'button', 'aria-label': label, title }, { background });
+    const btn = el('button', 'isd-btn', { type: 'button', title }, { background });
     const iconContainer = el('span'); iconContainer.innerHTML = icon;
     const checkContainer = el('span'); checkContainer.innerHTML = C.ICON_CHECK;
     const spinner = el('span', 'isd-spinner isd-hidden');
@@ -44,7 +44,6 @@
         const ttl = loading ? loadingText : success ? successText : error ? errorTitle : title;
         span.textContent = txt;
         btn.title = ttl;
-        btn.setAttribute('aria-label', txt);
         span.setAttribute('aria-live', error ? 'assertive' : 'polite');
         iconSvg.classList.toggle('isd-hidden', loading || success);
         spinner.classList.toggle('isd-hidden', !loading);
@@ -85,7 +84,7 @@
     const label = `${type === 'video' ? 'Video' : 'Image'} #${index}`;
     return createBaseButton({
       label,
-      title: `Download full resolution ${type}`,
+      title: `${label} - Download full resolution ${type}`,
       icon: C.ICON_DOWNLOAD,
       background: type === 'video' ? C.VIDEO_COLOR : C.IMAGE_COLOR,
       loadingText: `${label} - Downloading...`,
@@ -116,7 +115,7 @@
     const label = index ? `Copy Link #${index}` : 'Copy Link';
     return createBaseButton({
       label,
-      title: 'Copy link',
+      title: `${label} - Copy link`,
       icon: C.ICON_COPY,
       background: C.COPY_COLOR,
       loadingText: `${label} - Processing...`,

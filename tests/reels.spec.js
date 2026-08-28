@@ -29,8 +29,8 @@ test('buttons are injected in reels', async ({ page }) => {
   const fullScript = utilsJs + '\n' + uiJs + '\n' + modifiedObserverJs;
   await page.evaluate(fullScript);
 
-  const downloadBtn = page.locator('.isd-btn[aria-label*="Video"]');
-  const copyBtn = page.locator('.isd-btn[aria-label="Copy Link #1"]');
+  const downloadBtn = page.locator('.isd-btn[title*="Video"]');
+  const copyBtn = page.locator('.isd-btn[title*="Copy Link #1"]');
 
   await expect(downloadBtn).toBeVisible({ timeout: 1000 });
   await expect(copyBtn).toBeVisible({ timeout: 1000 });
@@ -63,8 +63,8 @@ test('buttons are injected in singular reel route', async ({ page }) => {
   const fullScript = utilsJs + '\n' + uiJs + '\n' + modifiedObserverJs;
   await page.evaluate(fullScript);
 
-  const downloadBtn = page.locator('.isd-btn[aria-label*="Video"]');
-  const copyBtn = page.locator('.isd-btn[aria-label="Copy Link #1"]');
+  const downloadBtn = page.locator('.isd-btn[title*="Video"]');
+  const copyBtn = page.locator('.isd-btn[title*="Copy Link #1"]');
 
   await expect(downloadBtn).toBeVisible({ timeout: 1000 });
   await expect(copyBtn).toBeVisible({ timeout: 1000 });

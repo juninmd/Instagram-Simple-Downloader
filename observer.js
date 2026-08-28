@@ -21,7 +21,7 @@
   const processItems = (container, items) => {
     // Calculate dynamic numbering indices by querying the count of existing elements in the DOM container
     // rather than using the loop index to prevent duplicate numbering of newly loaded items in carousels.
-    let existingCount = container.querySelectorAll('.isd-wrapper [aria-label^="Video"], .isd-wrapper [aria-label^="Image"]').length;
+    let existingCount = container.querySelectorAll('.isd-wrapper [title^="Video"], .isd-wrapper [title^="Image"]').length;
     items.forEach((item) => {
       let src = item.src;
       if (!src && item.nodeName === 'VIDEO') {
