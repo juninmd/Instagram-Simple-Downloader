@@ -53,7 +53,7 @@ test('button handles error state and shows shake animation', async ({ page }) =>
 
   // Verify error text
   await expect(button).toHaveText(/Image #1 - Error/);
-  await expect(button).toHaveAttribute('title', 'Failed. Click to retry.');
+  await expect(button).toHaveAttribute('title', 'Image #1 - Failed. Click to retry.');
 
   // Additional test for lastError callback simulation
   await page.evaluate(() => {
