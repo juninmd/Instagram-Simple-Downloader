@@ -90,6 +90,7 @@
       loadingText: `${label} - Downloading...`,
       successText: `${label} - Started!`,
       errorText: `${label} - Error`,
+      errorTitle: `${label} - Failed. Click to retry.`,
       onClick: () => new Promise((resolve, reject) => {
         try {
           const cb = (r) => {
@@ -121,6 +122,7 @@
       loadingText: `${label} - Processing...`,
       successText: `${label} - Copied!`,
       errorText: `${label} - Error`,
+      errorTitle: `${label} - Failed. Click to retry.`,
       onClick: async () => await navigator.clipboard.writeText(url),
       onSuccess: (btn) => U.createConfetti(btn.getBoundingClientRect())
     });
