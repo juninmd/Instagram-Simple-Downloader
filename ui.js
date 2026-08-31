@@ -4,9 +4,7 @@
  */
 (function() {
   window.ISD_UI = {};
-  const U = window.ISD_UTILS;
-  const C = U.CONSTANTS;
-  const el = U.el;
+  const U = window.ISD_UTILS, C = U.CONSTANTS, el = U.el;
 
   /**
    * Creates a standardized, accessible base button with loading, success, and error states.
@@ -23,7 +21,7 @@
    * @param {Function} [config.onSuccess] - Optional callback function executed on successful completion. receives the button element.
    * @returns {HTMLButtonElement} The constructed button DOM element.
    */
-  const createBaseButton = ({ label, title, icon, background, onClick, loadingText = 'Processing...', successText = 'Success!', errorText = 'Error', errorTitle = 'Failed. Click to retry.', onSuccess }) => {
+  const createBaseButton = ({ label, title, icon, background, onClick, loadingText = `${label} - Processing...`, successText = `${label} - Success!`, errorText = `${label} - Error`, errorTitle = `${label} - Failed. Click to retry.`, onSuccess }) => {
     const btn = el('button', 'isd-btn', { type: 'button', title }, { background });
     const iconContainer = el('span'); iconContainer.innerHTML = icon;
     const checkContainer = el('span'); checkContainer.innerHTML = C.ICON_CHECK;

@@ -61,8 +61,8 @@ test('button handles error state and shows shake animation', async ({ page }) =>
       runtime: {
         sendMessage: (msg, cb) => {
           window.browser.runtime.lastError = { message: 'Callback failed message' };
-          if (cb) cb();
-          return undefined; // no promise to reject
+          // Do not call cb() without arguments to simulate error correctly when wrapper Promise expects arguments
+          return Promise.reject(new Error('Callback failed message'));
         }
       }
     };
