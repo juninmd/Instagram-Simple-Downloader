@@ -42,8 +42,7 @@ test('background script handles download messages for image and video', async ({
              return Promise.reject('Simulated error');
           } else if (options.url === 'cb-fail') {
             window.browser.runtime.lastError = { message: 'Callback failed' };
-            if (cb) cb();
-            return;
+            return Promise.reject(new Error('Callback failed'));
           } else if (options.url === 'sync-fail') {
              throw new Error('Sync throw');
           }
