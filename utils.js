@@ -25,10 +25,10 @@
   window.ISD_UTILS.el = (tag, cls = '', attrs = {}, style = {}) => {
     const e = document.createElement(tag || 'div');
     if (cls) e.className = cls;
-    Object.entries(attrs).forEach(([k, v]) => {
+    Object.entries(attrs || {}).forEach(([k, v]) => {
       if (v !== undefined && v !== null) e.setAttribute(k, v);
     });
-    Object.assign(e.style, style);
+    Object.assign(e.style, style || {});
     return e;
   };
 
