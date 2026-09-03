@@ -79,7 +79,7 @@
 
       if (isArticleRoute) {
         searchArticles();
-      } else if (/^\/stories\//.test(pathname)) {
+      } else if (pathname.startsWith('/stories/')) {
         searchStories();
       }
     } catch {

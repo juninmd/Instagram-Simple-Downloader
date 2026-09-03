@@ -38,8 +38,21 @@
         btn.classList.toggle('isd-success', success);
         btn.classList.toggle('isd-error', error);
         btn.classList.toggle('isd-shake', error);
-        const txt = loading ? loadingText : success ? successText : error ? errorText : label;
-        const ttl = loading ? loadingText : success ? successText : error ? errorTitle : title;
+
+        let txt = label;
+        let ttl = title;
+
+        if (loading) {
+            txt = loadingText;
+            ttl = loadingText;
+        } else if (success) {
+            txt = successText;
+            ttl = successText;
+        } else if (error) {
+            txt = errorText;
+            ttl = errorTitle;
+        }
+
         span.textContent = txt;
         btn.title = ttl;
         span.setAttribute('aria-live', error ? 'assertive' : 'polite');
