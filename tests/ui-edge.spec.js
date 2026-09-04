@@ -5,11 +5,12 @@ const path = require('path');
 test('appendButtons handles invalid containers gracefully', async ({ page }) => {
   const read = (f) => fs.readFileSync(path.join(__dirname, '..', f), 'utf-8');
   const utilsJs = read('utils.js');
+  const uiBaseJs = read('ui-base.js');
   const uiJs = read('ui.js');
 
   await page.setContent(`<!DOCTYPE html><html><body><div id="content"></div></body></html>`);
 
-  const fullScript = utilsJs + '\n' + uiJs;
+  const fullScript = utilsJs + '\n' + uiBaseJs + '\n' + uiJs;
   await page.evaluate(fullScript);
 
   await page.evaluate(() => {
@@ -40,11 +41,12 @@ test('appendButtons handles invalid containers gracefully', async ({ page }) => 
 test('button updates aria-live to assertive on error', async ({ page }) => {
   const read = (f) => fs.readFileSync(path.join(__dirname, '..', f), 'utf-8');
   const utilsJs = read('utils.js');
+  const uiBaseJs = read('ui-base.js');
   const uiJs = read('ui.js');
 
   await page.setContent(`<!DOCTYPE html><html><body></body></html>`);
 
-  await page.evaluate(utilsJs + '\n' + uiJs);
+  await page.evaluate(utilsJs + '\n' + uiBaseJs + '\n' + uiJs);
 
   const [isAssertive, isAtomic] = await page.evaluate(async () => {
     Object.assign(navigator, {
@@ -71,6 +73,7 @@ test('button updates aria-live to assertive on error', async ({ page }) => {
 test('button handles null callback in success and error paths properly', async ({ page }) => {
   const read = (f) => fs.readFileSync(path.join(__dirname, '..', f), 'utf-8');
   const utilsJs = read('utils.js');
+  const uiBaseJs = read('ui-base.js');
   const uiJs = read('ui.js');
 
   await page.setContent(`<!DOCTYPE html><html><body><div id="content"></div></body></html>`);
@@ -88,7 +91,7 @@ test('button handles null callback in success and error paths properly', async (
     };
   });
 
-  const fullScript = utilsJs + '\n' + uiJs;
+  const fullScript = utilsJs + '\n' + uiBaseJs + '\n' + uiJs;
   await page.evaluate(fullScript);
 
   await page.evaluate(() => {

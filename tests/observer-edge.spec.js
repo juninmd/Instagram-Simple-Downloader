@@ -5,6 +5,7 @@ const path = require('path');
 test('observer handles missing target elements gracefully', async ({ page }) => {
   const read = (f) => fs.readFileSync(path.join(__dirname, '..', f), 'utf-8');
   const utilsJs = read('utils.js');
+  const uiBaseJs = read('ui-base.js');
   const uiJs = read('ui.js');
   const observerJs = read('observer.js');
 
@@ -22,7 +23,7 @@ test('observer handles missing target elements gracefully', async ({ page }) => 
     "const url = new URL('https://instagram.com/stories/test/');"
   );
 
-  const fullScript = utilsJs + '\n' + uiJs + '\n' + modifiedObserverJs;
+  const fullScript = utilsJs + '\n' + uiBaseJs + '\n' + uiJs + '\n' + modifiedObserverJs;
 
   // Execution should not throw error if section is not found
   await page.evaluate(fullScript);
