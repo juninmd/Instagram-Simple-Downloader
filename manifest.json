@@ -13,6 +13,7 @@
       ],
       "js": [
         "utils.js",
+        "ui-base.js",
         "ui.js",
         "observer.js"
       ]

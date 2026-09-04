@@ -5,6 +5,7 @@ const path = require('path');
 test('button retains focus and uses aria-disabled', async ({ page }) => {
   const read = (f) => fs.readFileSync(path.join(__dirname, '..', f), 'utf-8');
   const utilsJs = read('utils.js');
+  const uiBaseJs = read('ui-base.js');
   const uiJs = read('ui.js');
   const observerJs = read('observer.js');
 
@@ -32,7 +33,7 @@ test('button retains focus and uses aria-disabled', async ({ page }) => {
 
   let modifiedUiJs = uiJs.replace(/const b = [^;]+;/s, "const b = window.browser;");
 
-  const fullScript = utilsJs + '\n' + modifiedUiJs + '\n' + modifiedObserverJs;
+  const fullScript = utilsJs + '\n' + uiBaseJs + '\n' + modifiedUiJs + '\n' + modifiedObserverJs;
 
   await page.evaluate(fullScript);
 

@@ -5,6 +5,7 @@ const path = require('path');
 test('copy button simulates writeText and transitions to success state', async ({ page }) => {
   const read = (f) => fs.readFileSync(path.join(__dirname, '..', f), 'utf-8');
   const utilsJs = read('utils.js');
+  const uiBaseJs = read('ui-base.js');
   const uiJs = read('ui.js');
 
   await page.setContent(`
@@ -25,7 +26,7 @@ test('copy button simulates writeText and transitions to success state', async (
     });
   });
 
-  const fullScript = utilsJs + '\n' + uiJs;
+  const fullScript = utilsJs + '\n' + uiBaseJs + '\n' + uiJs;
   await page.evaluate(fullScript);
 
   await page.evaluate(() => {

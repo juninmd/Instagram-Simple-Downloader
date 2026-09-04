@@ -5,6 +5,7 @@ const path = require('path');
 test('button handles native Promise resolution from sendMessage', async ({ page }) => {
   const read = (f) => fs.readFileSync(path.join(__dirname, '..', f), 'utf-8');
   const utilsJs = read('utils.js');
+  const uiBaseJs = read('ui-base.js');
   const uiJs = read('ui.js');
 
   await page.setContent(`<!DOCTYPE html><html><body><div id="content"></div></body></html>`);
@@ -24,7 +25,7 @@ test('button handles native Promise resolution from sendMessage', async ({ page 
     };
   });
 
-  const fullScript = utilsJs + '\n' + uiJs;
+  const fullScript = utilsJs + '\n' + uiBaseJs + '\n' + uiJs;
   await page.evaluate(fullScript);
 
   await page.evaluate(() => {
@@ -46,6 +47,7 @@ test('button handles native Promise resolution from sendMessage', async ({ page 
 test('button gracefully handles native Promise rejections (exceptions) from sendMessage', async ({ page }) => {
   const read = (f) => fs.readFileSync(path.join(__dirname, '..', f), 'utf-8');
   const utilsJs = read('utils.js');
+  const uiBaseJs = read('ui-base.js');
   const uiJs = read('ui.js');
 
   await page.setContent(`<!DOCTYPE html><html><body><div id="content"></div></body></html>`);
@@ -61,7 +63,7 @@ test('button gracefully handles native Promise rejections (exceptions) from send
     };
   });
 
-  const fullScript = utilsJs + '\n' + uiJs;
+  const fullScript = utilsJs + '\n' + uiBaseJs + '\n' + uiJs;
   await page.evaluate(fullScript);
 
   await page.evaluate(() => {
@@ -83,6 +85,7 @@ test('button gracefully handles native Promise rejections (exceptions) from send
 test('button handles native Promise rejection with error object from sendMessage', async ({ page }) => {
   const read = (f) => fs.readFileSync(path.join(__dirname, '..', f), 'utf-8');
   const utilsJs = read('utils.js');
+  const uiBaseJs = read('ui-base.js');
   const uiJs = read('ui.js');
 
   await page.setContent(`<!DOCTYPE html><html><body><div id="content"></div></body></html>`);
@@ -98,7 +101,7 @@ test('button handles native Promise rejection with error object from sendMessage
     };
   });
 
-  const fullScript = utilsJs + '\n' + uiJs;
+  const fullScript = utilsJs + '\n' + uiBaseJs + '\n' + uiJs;
   await page.evaluate(fullScript);
 
   await page.evaluate(() => {

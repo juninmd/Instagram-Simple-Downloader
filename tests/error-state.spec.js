@@ -5,6 +5,7 @@ const path = require('path');
 test('button handles error state and shows shake animation', async ({ page }) => {
   const read = (f) => fs.readFileSync(path.join(__dirname, '..', f), 'utf-8');
   const utilsJs = read('utils.js');
+  const uiBaseJs = read('ui-base.js');
   const uiJs = read('ui.js');
 
   await page.setContent(`
@@ -32,7 +33,7 @@ test('button handles error state and shows shake animation', async ({ page }) =>
 
   let modifiedUiJs = uiJs.replace(/const b = [^;]+;/s, "const b = window.browser;");
 
-  const fullScript = utilsJs + '\n' + modifiedUiJs;
+  const fullScript = utilsJs + '\n' + uiBaseJs + '\n' + modifiedUiJs;
 
   await page.evaluate(fullScript);
 

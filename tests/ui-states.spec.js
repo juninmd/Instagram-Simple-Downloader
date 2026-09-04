@@ -5,6 +5,7 @@ const path = require('path');
 test('button transitions through loading and success states', async ({ page }) => {
   const read = (f) => fs.readFileSync(path.join(__dirname, '..', f), 'utf-8');
   const utilsJs = read('utils.js');
+  const uiBaseJs = read('ui-base.js');
   const uiJs = read('ui.js');
 
   await page.setContent(`<!DOCTYPE html><html><body><div id="content"></div></body></html>`);
@@ -22,7 +23,7 @@ test('button transitions through loading and success states', async ({ page }) =
     };
   });
 
-  const fullScript = utilsJs + '\n' + uiJs;
+  const fullScript = utilsJs + '\n' + uiBaseJs + '\n' + uiJs;
   await page.evaluate(fullScript);
 
   await page.evaluate(() => {

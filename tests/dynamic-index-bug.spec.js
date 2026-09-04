@@ -5,6 +5,7 @@ const path = require('path');
 test('carousel indexes are correct even if a previous button is clicked and changing state', async ({ page }) => {
   const read = (f) => fs.readFileSync(path.join(__dirname, '..', f), 'utf-8');
   const utilsJs = read('utils.js');
+  const uiBaseJs = read('ui-base.js');
   const uiJs = read('ui.js');
   const observerJs = read('observer.js');
 
@@ -26,7 +27,7 @@ test('carousel indexes are correct even if a previous button is clicked and chan
     };
   });
 
-  const fullScript = utilsJs + '\n' + uiJs + '\n' + modifiedObserverJs;
+  const fullScript = utilsJs + '\n' + uiBaseJs + '\n' + uiJs + '\n' + modifiedObserverJs;
   await page.evaluate(fullScript);
 
   await page.evaluate(() => {
