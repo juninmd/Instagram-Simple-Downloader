@@ -11,19 +11,30 @@ const b = typeof browser !== 'undefined' ? browser : (typeof chrome !== 'undefin
  * @param {Function} sendResponse - Callback function to send a response back to the content script.
  * @returns {boolean} Returns true to indicate that the response will be sent asynchronously.
  */
-b.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-
+/**
+ * Extracts a filename from the given URL.
+ * @param {string} requestUrl - The URL of the media file.
+ * @param {string} mediaType - The type of the media ('image' or 'video').
+ * @returns {string} The parsed filename or a default fallback.
+ */
+function extractFilename(requestUrl, mediaType) {
     let parsedFilename = '';
     try {
-        const urlObj = new URL(request.url);
+        const urlObj = new URL(requestUrl);
         parsedFilename = urlObj.pathname.split('/').pop();
     } catch {
         // Ignore URL parsing errors
     }
 
     if (!parsedFilename) {
-        parsedFilename = request.type === 'image' ? 'image.jpg' : 'video.mp4';
+        parsedFilename = mediaType === 'image' ? 'image.jpg' : 'video.mp4';
     }
+    return parsedFilename;
+}
+
+b.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+
+    const parsedFilename = extractFilename(request.url, request.type);
 
     const options = {
         url: request.url,
