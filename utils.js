@@ -94,6 +94,7 @@
       .isd-btn.isd-loading { cursor: progress; opacity: 1; }
       .isd-btn.isd-success { cursor: default; opacity: 1; }
       .isd-btn.isd-error { cursor: pointer; }
+      .isd-btn svg { margin-inline-end: 6px; }
     `;
     document.head.appendChild(style);
   };
