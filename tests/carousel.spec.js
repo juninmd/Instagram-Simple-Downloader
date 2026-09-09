@@ -64,3 +64,65 @@ test('carousel dynamically added items have incrementing indexes', async ({ page
   await expect(copyBtns.nth(0)).toHaveText(/Copy Link #1/);
   await expect(copyBtns.nth(1)).toHaveText(/Copy Link #2/);
 });
+
+test('carousel dynamically added items of mixed types have incrementing indexes', async ({ page }) => {
+  const read = (f) => fs.readFileSync(path.join(__dirname, '..', f), 'utf-8');
+  const utilsJs = read('utils.js');
+  const uiBaseJs = read('ui-base.js');
+  const uiJs = read('ui.js');
+  const observerJs = read('observer.js');
+
+  await page.setContent(`
+    <!DOCTYPE html>
+    <html>
+    <body>
+      <div id="content"></div>
+    </body>
+    </html>
+  `);
+
+  let modifiedObserverJs = observerJs.replace(
+    /const isArticleRoute = [^;]+;/s,
+    "const isArticleRoute = true;"
+  );
+
+  const fullScript = utilsJs + '\n' + uiBaseJs + '\n' + uiJs + '\n' + modifiedObserverJs;
+
+  await page.evaluate(fullScript);
+
+  // Initial render with one item (Image)
+  await page.evaluate(() => {
+    const content = document.getElementById('content');
+    const article = document.createElement('article');
+    const section = document.createElement('section');
+    const img = document.createElement('img');
+    img.srcset = "test1.jpg 1x";
+    img.src = "test1.jpg";
+    section.appendChild(img);
+    article.appendChild(section);
+    content.appendChild(article);
+  });
+
+  // Second item added to carousel (Video)
+  await page.evaluate(() => {
+    const section = document.querySelector('section');
+    const vid = document.createElement('video');
+    vid.src = "test2.mp4";
+    section.appendChild(vid);
+  });
+
+  await page.waitForTimeout(100);
+
+  const downloadImageBtns = page.locator('.isd-btn[title*="Image"]');
+  await expect(downloadImageBtns).toHaveCount(1);
+  await expect(downloadImageBtns.nth(0)).toHaveText(/Image #1/);
+
+  const downloadVideoBtns = page.locator('.isd-btn[title*="Video"]');
+  await expect(downloadVideoBtns).toHaveCount(1);
+  await expect(downloadVideoBtns.nth(0)).toHaveText(/Video #2/);
+
+  const copyBtns = page.locator('.isd-btn[title*="Copy"]');
+  await expect(copyBtns).toHaveCount(2);
+  await expect(copyBtns.nth(0)).toHaveText(/Copy Link #1/);
+  await expect(copyBtns.nth(1)).toHaveText(/Copy Link #2/);
+});
