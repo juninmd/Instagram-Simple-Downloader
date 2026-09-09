@@ -12,6 +12,20 @@
   const MEDIA_SELECTOR = 'img[srcset]:not([download-button="ok"]), video:not([download-button="ok"])';
 
   /**
+   * Helper function to extract the media source URL from an HTML element.
+   * @param {HTMLElement} item - The media element (img or video).
+   * @returns {string|null} The source URL, or null if not found.
+   */
+  const getMediaSource = (item) => {
+    let src = item.src;
+    if (!src && item.nodeName === 'VIDEO') {
+      const source = item.querySelector('source');
+      if (source) src = source.src;
+    }
+    return src || null;
+  };
+
+  /**
    * Processes a list of media elements (images or videos), extracts their source URLs,
    * calculates dynamic indices for uniqueness, and appends the action buttons to their container.
    * @param {HTMLElement} container - The parent container element (e.g., an article or section).
@@ -23,11 +37,7 @@
     // rather than using the loop index to prevent duplicate numbering of newly loaded items in carousels.
     let existingCount = container.querySelectorAll('.isd-wrapper [title^="Video"], .isd-wrapper [title^="Image"]').length;
     items.forEach((item) => {
-      let src = item.src;
-      if (!src && item.nodeName === 'VIDEO') {
-        const source = item.querySelector('source');
-        if (source) src = source.src;
-      }
+      const src = getMediaSource(item);
       if (!src) return;
 
       existingCount++;
