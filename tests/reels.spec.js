@@ -1,13 +1,8 @@
 const { test, expect } = require('@playwright/test');
-const fs = require('fs');
-const path = require('path');
+const { getScripts } = require('./test-helper');
 
 test('buttons are injected in reels', async ({ page }) => {
-  const read = (f) => fs.readFileSync(path.join(__dirname, '..', f), 'utf-8');
-  const utilsJs = read('utils.js');
-  const uiBaseJs = read('ui-base.js');
-  const uiJs = read('ui.js');
-  const observerJs = read('observer.js');
+  const { utilsJs, uiBaseJs, uiJs, observerJs, backgroundJs } = getScripts();
 
   await page.setContent(`
     <!DOCTYPE html>
@@ -38,11 +33,7 @@ test('buttons are injected in reels', async ({ page }) => {
 });
 
 test('buttons are injected in singular reel route', async ({ page }) => {
-  const read = (f) => fs.readFileSync(path.join(__dirname, '..', f), 'utf-8');
-  const utilsJs = read('utils.js');
-  const uiBaseJs = read('ui-base.js');
-  const uiJs = read('ui.js');
-  const observerJs = read('observer.js');
+  const { utilsJs, uiBaseJs, uiJs, observerJs, backgroundJs } = getScripts();
 
   await page.setContent(`
     <!DOCTYPE html>
