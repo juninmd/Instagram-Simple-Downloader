@@ -1,12 +1,10 @@
 const { test, expect } = require('@playwright/test');
-const fs = require('fs');
-const path = require('path');
+const { getScripts, read } = require('./test-helper');
+
+
 
 test('appendButtons handles invalid containers gracefully', async ({ page }) => {
-  const read = (f) => fs.readFileSync(path.join(__dirname, '..', f), 'utf-8');
-  const utilsJs = read('utils.js');
-  const uiBaseJs = read('ui-base.js');
-  const uiJs = read('ui.js');
+  const { utilsJs, uiBaseJs, uiJs } = getScripts();
 
   await page.setContent(`<!DOCTYPE html><html><body><div id="content"></div></body></html>`);
 
@@ -39,10 +37,7 @@ test('appendButtons handles invalid containers gracefully', async ({ page }) => 
 });
 
 test('button updates aria-live to assertive on error', async ({ page }) => {
-  const read = (f) => fs.readFileSync(path.join(__dirname, '..', f), 'utf-8');
-  const utilsJs = read('utils.js');
-  const uiBaseJs = read('ui-base.js');
-  const uiJs = read('ui.js');
+  const { utilsJs, uiBaseJs, uiJs } = getScripts();
 
   await page.setContent(`<!DOCTYPE html><html><body></body></html>`);
 
@@ -71,10 +66,7 @@ test('button updates aria-live to assertive on error', async ({ page }) => {
 });
 
 test('button handles null callback in success and error paths properly', async ({ page }) => {
-  const read = (f) => fs.readFileSync(path.join(__dirname, '..', f), 'utf-8');
-  const utilsJs = read('utils.js');
-  const uiBaseJs = read('ui-base.js');
-  const uiJs = read('ui.js');
+  const { utilsJs, uiBaseJs, uiJs } = getScripts();
 
   await page.setContent(`<!DOCTYPE html><html><body><div id="content"></div></body></html>`);
 

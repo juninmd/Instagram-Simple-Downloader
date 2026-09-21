@@ -1,12 +1,10 @@
 const { test, expect } = require('@playwright/test');
-const fs = require('fs');
-const path = require('path');
+const { getScripts, read } = require('./test-helper');
+
+
 
 test('button handles error state and shows shake animation', async ({ page }) => {
-  const read = (f) => fs.readFileSync(path.join(__dirname, '..', f), 'utf-8');
-  const utilsJs = read('utils.js');
-  const uiBaseJs = read('ui-base.js');
-  const uiJs = read('ui.js');
+  const { utilsJs, uiBaseJs, uiJs } = getScripts();
 
   await page.setContent(`
     <!DOCTYPE html>
