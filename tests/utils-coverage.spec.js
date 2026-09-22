@@ -1,9 +1,8 @@
 const { test, expect } = require('@playwright/test');
-const fs = require('fs');
-const path = require('path');
+const { getScripts } = require('./test-helper');
 
 test('el creates DOM elements with missing classes and multiple attributes', async ({ page }) => {
-  const utilsJs = fs.readFileSync(path.join(__dirname, '..', 'utils.js'), 'utf-8');
+  const { utilsJs } = getScripts();
   await page.setContent(`<!DOCTYPE html><html><body></body></html>`);
   await page.evaluate(utilsJs);
 
@@ -24,7 +23,7 @@ test('el creates DOM elements with missing classes and multiple attributes', asy
 });
 
 test('el gracefully ignores null and undefined attributes', async ({ page }) => {
-  const utilsJs = fs.readFileSync(path.join(__dirname, '..', 'utils.js'), 'utf-8');
+  const { utilsJs } = getScripts();
   await page.setContent(`<!DOCTYPE html><html><body></body></html>`);
   await page.evaluate(utilsJs);
 
@@ -45,7 +44,7 @@ test('el gracefully ignores null and undefined attributes', async ({ page }) => 
 });
 
 test('el creates DOM elements with only tag and attributes', async ({ page }) => {
-  const utilsJs = fs.readFileSync(path.join(__dirname, '..', 'utils.js'), 'utf-8');
+  const { utilsJs } = getScripts();
   await page.setContent(`<!DOCTYPE html><html><body></body></html>`);
   await page.evaluate(utilsJs);
 

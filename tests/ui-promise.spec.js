@@ -1,12 +1,8 @@
 const { test, expect } = require('@playwright/test');
-const fs = require('fs');
-const path = require('path');
+const { getScripts } = require('./test-helper');
 
 test('button handles native Promise resolution from sendMessage', async ({ page }) => {
-  const read = (f) => fs.readFileSync(path.join(__dirname, '..', f), 'utf-8');
-  const utilsJs = read('utils.js');
-  const uiBaseJs = read('ui-base.js');
-  const uiJs = read('ui.js');
+  const { utilsJs, uiBaseJs, uiJs } = getScripts();
 
   await page.setContent(`<!DOCTYPE html><html><body><div id="content"></div></body></html>`);
 
@@ -45,10 +41,7 @@ test('button handles native Promise resolution from sendMessage', async ({ page 
 });
 
 test('button gracefully handles native Promise rejections (exceptions) from sendMessage', async ({ page }) => {
-  const read = (f) => fs.readFileSync(path.join(__dirname, '..', f), 'utf-8');
-  const utilsJs = read('utils.js');
-  const uiBaseJs = read('ui-base.js');
-  const uiJs = read('ui.js');
+  const { utilsJs, uiBaseJs, uiJs } = getScripts();
 
   await page.setContent(`<!DOCTYPE html><html><body><div id="content"></div></body></html>`);
 
@@ -83,10 +76,7 @@ test('button gracefully handles native Promise rejections (exceptions) from send
 });
 
 test('button handles native Promise rejection with error object from sendMessage', async ({ page }) => {
-  const read = (f) => fs.readFileSync(path.join(__dirname, '..', f), 'utf-8');
-  const utilsJs = read('utils.js');
-  const uiBaseJs = read('ui-base.js');
-  const uiJs = read('ui.js');
+  const { utilsJs, uiBaseJs, uiJs } = getScripts();
 
   await page.setContent(`<!DOCTYPE html><html><body><div id="content"></div></body></html>`);
 

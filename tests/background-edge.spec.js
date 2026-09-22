@@ -1,9 +1,8 @@
 const { test, expect } = require('@playwright/test');
-const fs = require('fs');
-const path = require('path');
+const { getScripts } = require('./test-helper');
 
 test('background script handles unexpected URL in request', async ({ page }) => {
-  const bgJs = fs.readFileSync(path.join(__dirname, '..', 'background.js'), 'utf-8');
+  const { bgJs } = getScripts();
 
   await page.setContent(`<!DOCTYPE html><html><body></body></html>`);
 

@@ -1,9 +1,8 @@
 const { test, expect } = require('@playwright/test');
-const fs = require('fs');
-const path = require('path');
+const { getScripts } = require('./test-helper');
 
 test('createConfetti respects prefers-reduced-motion', async ({ page }) => {
-  const utilsJs = fs.readFileSync(path.join(__dirname, '..', 'utils.js'), 'utf-8');
+  const { utilsJs } = getScripts();
   await page.setContent(`<!DOCTYPE html><html><body></body></html>`);
 
   await page.emulateMedia({ reducedMotion: 'reduce' });
@@ -18,7 +17,7 @@ test('createConfetti respects prefers-reduced-motion', async ({ page }) => {
 });
 
 test('createConfetti safely handles missing window.matchMedia', async ({ page }) => {
-  const utilsJs = fs.readFileSync(path.join(__dirname, '..', 'utils.js'), 'utf-8');
+  const { utilsJs } = getScripts();
   await page.setContent(`<!DOCTYPE html><html><body></body></html>`);
 
   await page.evaluate(() => {

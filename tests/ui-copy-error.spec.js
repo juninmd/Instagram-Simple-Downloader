@@ -1,12 +1,8 @@
 const { test, expect } = require('@playwright/test');
-const fs = require('fs');
-const path = require('path');
+const { getScripts } = require('./test-helper');
 
 test('copy button simulates writeText failure and transitions to error state', async ({ page }) => {
-  const read = (f) => fs.readFileSync(path.join(__dirname, '..', f), 'utf-8');
-  const utilsJs = read('utils.js');
-  const uiBaseJs = read('ui-base.js');
-  const uiJs = read('ui.js');
+  const { utilsJs, uiBaseJs, uiJs } = getScripts();
 
   await page.setContent(`
     <!DOCTYPE html>
