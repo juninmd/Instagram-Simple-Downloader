@@ -1,13 +1,10 @@
 const { test, expect } = require('@playwright/test');
 const fs = require('fs');
+const { getScripts } = require('./test-helper');
 const path = require('path');
 
 test('both download and copy buttons are injected', async ({ page }) => {
-  const read = (f) => fs.readFileSync(path.join(__dirname, '..', f), 'utf-8');
-  const utilsJs = read('utils.js');
-  const uiBaseJs = read('ui-base.js');
-  const uiJs = read('ui.js');
-  const observerJs = read('observer.js');
+  const { utilsJs, uiBaseJs, uiJs, observerJs } = getScripts();
 
   await page.setContent(`<!DOCTYPE html><html><body><div id="content"></div></body></html>`);
 

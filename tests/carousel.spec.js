@@ -1,13 +1,10 @@
 const { test, expect } = require('@playwright/test');
 const fs = require('fs');
+const { getScripts } = require('./test-helper');
 const path = require('path');
 
 test('carousel dynamically added items have incrementing indexes', async ({ page }) => {
-  const read = (f) => fs.readFileSync(path.join(__dirname, '..', f), 'utf-8');
-  const utilsJs = read('utils.js');
-  const uiBaseJs = read('ui-base.js');
-  const uiJs = read('ui.js');
-  const observerJs = read('observer.js');
+  const { utilsJs, uiBaseJs, uiJs, observerJs } = getScripts();
 
   await page.setContent(`
     <!DOCTYPE html>
@@ -66,11 +63,7 @@ test('carousel dynamically added items have incrementing indexes', async ({ page
 });
 
 test('carousel dynamically added items of mixed types have incrementing indexes', async ({ page }) => {
-  const read = (f) => fs.readFileSync(path.join(__dirname, '..', f), 'utf-8');
-  const utilsJs = read('utils.js');
-  const uiBaseJs = read('ui-base.js');
-  const uiJs = read('ui.js');
-  const observerJs = read('observer.js');
+  const { utilsJs, uiBaseJs, uiJs, observerJs } = getScripts();
 
   await page.setContent(`
     <!DOCTYPE html>
