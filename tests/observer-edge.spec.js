@@ -36,7 +36,7 @@ test('observer handles missing target elements gracefully', async ({ page }) => 
     "const url = new URL('https://instagram.com/p/123/');"
   );
 
-  const fullScriptProfile = utilsJs + '\n' + uiJs + '\n' + modifiedObserverJs;
+  const fullScriptProfile = utilsJs + '\n' + uiBaseJs + '\n' + uiJs + '\n' + modifiedObserverJs;
   await page.evaluate(fullScriptProfile);
 
   downloadBtn = page.locator('.isd-btn[title*="Image"]');
@@ -50,7 +50,7 @@ test('observer handles missing target elements gracefully', async ({ page }) => 
     "throw new Error('URL parse error');"
   );
 
-  const fullScriptException = utilsJs + '\n' + uiJs + '\n' + modifiedObserverJs;
+  const fullScriptException = utilsJs + '\n' + uiBaseJs + '\n' + uiJs + '\n' + modifiedObserverJs;
   // Execution should not throw error up to global scope
   await page.evaluate(fullScriptException);
 
@@ -78,7 +78,7 @@ test('observer handles missing target elements gracefully', async ({ page }) => 
     "const url = new URL('https://instagram.com/p/123/');"
   );
 
-  const fullScriptNoSrc = utilsJs + '\n' + uiJs + '\n' + modifiedObserverJs;
+  const fullScriptNoSrc = utilsJs + '\n' + uiBaseJs + '\n' + uiJs + '\n' + modifiedObserverJs;
   await page.evaluate(fullScriptNoSrc);
 
   // Since there are 4 media tags matched by MEDIA_SELECTOR, 3 are missing 'src'
