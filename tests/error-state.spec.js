@@ -1,7 +1,5 @@
 const { test, expect } = require('@playwright/test');
-const { getScripts, read } = require('./test-helper');
-
-
+const { getScripts } = require('./test-helper');
 
 test('button handles error state and shows shake animation', async ({ page }) => {
   const { utilsJs, uiBaseJs, uiJs } = getScripts();

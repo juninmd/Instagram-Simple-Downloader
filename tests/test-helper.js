@@ -1,19 +1,19 @@
 const fs = require('fs');
 const path = require('path');
 
-const read = (f) => fs.readFileSync(path.join(__dirname, '..', f), 'utf-8');
+let cache = null;
 
 function getScripts() {
-  return {
+  if (cache) return cache;
+  const read = (f) => fs.readFileSync(path.join(__dirname, '..', f), 'utf-8');
+  cache = {
     utilsJs: read('utils.js'),
     uiBaseJs: read('ui-base.js'),
     uiJs: read('ui.js'),
     observerJs: read('observer.js'),
-    bgJs: read('background.js')
+    bgJs: read('background.js'),
   };
+  return cache;
 }
 
-module.exports = {
-  read,
-  getScripts
-};
+module.exports = { getScripts };

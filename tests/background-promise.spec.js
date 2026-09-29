@@ -1,7 +1,5 @@
 const { test, expect } = require('@playwright/test');
-const { getScripts, read } = require('./test-helper');
-
-
+const { getScripts } = require('./test-helper');
 
 test('background script handles native Promise resolution from download', async ({ page }) => {
   const { bgJs } = getScripts();

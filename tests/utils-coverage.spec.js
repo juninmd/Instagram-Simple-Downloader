@@ -1,7 +1,5 @@
 const { test, expect } = require('@playwright/test');
-const { getScripts, read } = require('./test-helper');
-
-
+const { getScripts } = require('./test-helper');
 
 test('el creates DOM elements with missing classes and multiple attributes', async ({ page }) => {
   const { utilsJs } = getScripts();

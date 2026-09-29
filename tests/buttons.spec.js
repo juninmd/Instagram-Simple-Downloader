@@ -1,7 +1,5 @@
 const { test, expect } = require('@playwright/test');
-const { getScripts, read } = require('./test-helper');
-
-
+const { getScripts } = require('./test-helper');
 
 test('both download and copy buttons are injected', async ({ page }) => {
   const { utilsJs, uiBaseJs, uiJs, observerJs } = getScripts();

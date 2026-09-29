@@ -1,7 +1,5 @@
 const { test, expect } = require('@playwright/test');
-const { getScripts, read } = require('./test-helper');
-
-
+const { getScripts } = require('./test-helper');
 
 test('copy button simulates writeText and transitions to success state', async ({ page }) => {
   const { utilsJs, uiBaseJs, uiJs } = getScripts();

@@ -1,7 +1,5 @@
 const { test, expect } = require('@playwright/test');
-const { getScripts, read } = require('./test-helper');
-
-
+const { getScripts } = require('./test-helper');
 
 test('createConfetti respects prefers-reduced-motion', async ({ page }) => {
   const { utilsJs } = getScripts();

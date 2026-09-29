@@ -1,7 +1,5 @@
 const { test, expect } = require('@playwright/test');
-const { getScripts, read } = require('./test-helper');
-
-
+const { getScripts } = require('./test-helper');
 
 test('button retains focus and uses aria-disabled', async ({ page }) => {
   const { utilsJs, uiBaseJs, uiJs, observerJs } = getScripts();

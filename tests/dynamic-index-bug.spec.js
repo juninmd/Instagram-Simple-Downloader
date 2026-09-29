@@ -1,7 +1,5 @@
 const { test, expect } = require('@playwright/test');
-const { getScripts, read } = require('./test-helper');
-
-
+const { getScripts } = require('./test-helper');
 
 test('carousel indexes are correct even if a previous button is clicked and changing state', async ({ page }) => {
   const { utilsJs, uiBaseJs, uiJs, observerJs } = getScripts();

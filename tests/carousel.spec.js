@@ -1,7 +1,5 @@
 const { test, expect } = require('@playwright/test');
-const { getScripts, read } = require('./test-helper');
-
-
+const { getScripts } = require('./test-helper');
 
 test('carousel dynamically added items have incrementing indexes', async ({ page }) => {
   const { utilsJs, uiBaseJs, uiJs, observerJs } = getScripts();

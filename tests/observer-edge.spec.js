@@ -1,7 +1,5 @@
 const { test, expect } = require('@playwright/test');
-const { getScripts, read } = require('./test-helper');
-
-
+const { getScripts } = require('./test-helper');
 
 test('observer handles missing target elements gracefully', async ({ page }) => {
   const { utilsJs, uiBaseJs, uiJs, observerJs } = getScripts();

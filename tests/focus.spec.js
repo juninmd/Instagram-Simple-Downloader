@@ -1,10 +1,8 @@
 const { test, expect } = require('@playwright/test');
-const { getScripts, read } = require('./test-helper');
-
-
+const { getScripts } = require('./test-helper');
 
 test('focus style verification', async ({ page }) => {
-  const utilsJsContent = read('utils.js');
+  const { utilsJs: utilsJsContent } = getScripts();
 
   // Extract CSS
   const cssMatch = utilsJsContent.match(/style\.textContent = `([\s\S]*?)`;/);
