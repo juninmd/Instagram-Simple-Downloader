@@ -35,7 +35,7 @@
   const processItems = (container, items) => {
     // Calculate dynamic numbering indices by querying the count of existing elements in the DOM container
     // rather than using the loop index to prevent duplicate numbering of newly loaded items in carousels.
-    let existingCount = container.querySelectorAll('img[download-button="ok"], video[download-button="ok"]').length;
+    let existingCount = container.querySelectorAll('[download-button="ok"]').length;
     items.forEach((item) => {
       const src = getMediaSource(item);
       if (!src) return;
