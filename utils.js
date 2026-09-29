@@ -26,7 +26,9 @@
     const e = document.createElement(tag || 'div');
     if (cls) e.className = cls;
     Object.entries(attrs || {}).forEach(([k, v]) => {
-      if (v !== undefined && v !== null) e.setAttribute(k, v);
+      if (v !== undefined && v !== null) {
+        e.setAttribute(k, v);
+      }
     });
     Object.assign(e.style, style || {});
     return e;
@@ -106,6 +108,7 @@
    * @returns {void}
    */
   window.ISD_UTILS.createConfetti = (rect) => {
+    if (!document.body) return;
     if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     if (!rect || typeof rect.left !== 'number' || typeof rect.width !== 'number' || typeof rect.top !== 'number' || typeof rect.height !== 'number') return;
     const colors = ['#D32F2F', '#2E7D32', '#0095f6', '#FDD835', '#9C27B0'];

@@ -23,10 +23,13 @@
    */
   window.ISD_UI.createBaseButton = ({ label, title, icon, background, onClick, loadingText = `${label} - Processing...`, successText = `${label} - Success!`, errorText = `${label} - Error`, errorTitle = `${label} - Failed. Click to retry.`, onSuccess }) => {
     const btn = el('button', 'isd-btn', { type: 'button', title }, { background });
-    const iconContainer = el('span'); iconContainer.innerHTML = icon;
-    const checkContainer = el('span'); checkContainer.innerHTML = C.ICON_CHECK;
+    const iconContainer = el('span');
+    iconContainer.innerHTML = icon;
+    const checkContainer = el('span');
+    checkContainer.innerHTML = C.ICON_CHECK;
     const spinner = el('span', 'isd-spinner isd-hidden');
-    const span = el('span', '', { 'aria-live': 'polite', 'aria-atomic': 'true' }); span.textContent = label;
+    const span = el('span', '', { 'aria-live': 'polite', 'aria-atomic': 'true' });
+    span.textContent = label;
     // Append children (safely extracting firstElementChild from containers)
     const iconSvg = iconContainer.firstElementChild;
     const checkSvg = checkContainer.firstElementChild;
@@ -63,7 +66,8 @@
     };
 
     btn.addEventListener('click', async (e) => {
-      e.preventDefault(); e.stopPropagation();
+      e.preventDefault();
+      e.stopPropagation();
       if (btn.getAttribute('aria-disabled') === 'true') return;
       if (resetTimer) clearTimeout(resetTimer);
 
