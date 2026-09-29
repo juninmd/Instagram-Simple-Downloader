@@ -1,9 +1,10 @@
 const { test, expect } = require('@playwright/test');
-const { getScripts } = require('./test-helper');
+const { getScripts, read } = require('./test-helper');
+
 
 
 test('buttons are injected in singular reel route without trailing slash', async ({ page }) => {
-  const { utilsJs, uiBaseJs, uiJs, observerJs, backgroundJs } = getScripts();
+  const { utilsJs, uiBaseJs, uiJs, observerJs } = getScripts();
 
   await page.setContent(`
     <!DOCTYPE html>
@@ -34,7 +35,7 @@ test('buttons are injected in singular reel route without trailing slash', async
 });
 
 test('buttons are injected in post page without trailing slash', async ({ page }) => {
-  const { utilsJs, uiBaseJs, uiJs, observerJs, backgroundJs } = getScripts();
+  const { utilsJs, uiBaseJs, uiJs, observerJs } = getScripts();
 
   await page.setContent(`
     <!DOCTYPE html>

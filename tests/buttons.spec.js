@@ -1,9 +1,10 @@
 const { test, expect } = require('@playwright/test');
-const { getScripts } = require('./test-helper');
+const { getScripts, read } = require('./test-helper');
+
 
 
 test('both download and copy buttons are injected', async ({ page }) => {
-  const { utilsJs, uiBaseJs, uiJs, observerJs, backgroundJs } = getScripts();
+  const { utilsJs, uiBaseJs, uiJs, observerJs } = getScripts();
 
   await page.setContent(`<!DOCTYPE html><html><body><div id="content"></div></body></html>`);
 

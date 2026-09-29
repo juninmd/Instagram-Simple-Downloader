@@ -1,11 +1,11 @@
 const { test, expect } = require('@playwright/test');
-const fs = require('fs');
-const { getScripts } = require('./test-helper');
-const path = require('path');
+const { getScripts, read } = require('./test-helper');
+
+
 
 test.describe('Utility functions', () => {
   test.beforeEach(async ({ page }) => {
-    const { utilsJs } = getScripts();
+  const { utilsJs } = getScripts();
     await page.setContent(`<!DOCTYPE html><html><head></head><body></body></html>`);
     await page.evaluate(utilsJs);
   });

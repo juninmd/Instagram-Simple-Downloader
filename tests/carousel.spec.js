@@ -1,8 +1,10 @@
 const { test, expect } = require('@playwright/test');
-const { getScripts } = require('./test-helper');
+const { getScripts, read } = require('./test-helper');
+
+
 
 test('carousel dynamically added items have incrementing indexes', async ({ page }) => {
-  const { utilsJs, uiBaseJs, uiJs, observerJs, backgroundJs } = getScripts();
+  const { utilsJs, uiBaseJs, uiJs, observerJs } = getScripts();
 
   await page.setContent(`
     <!DOCTYPE html>
@@ -61,7 +63,7 @@ test('carousel dynamically added items have incrementing indexes', async ({ page
 });
 
 test('carousel dynamically added items of mixed types have incrementing indexes', async ({ page }) => {
-  const { utilsJs, uiBaseJs, uiJs, observerJs, backgroundJs } = getScripts();
+  const { utilsJs, uiBaseJs, uiJs, observerJs } = getScripts();
 
   await page.setContent(`
     <!DOCTYPE html>

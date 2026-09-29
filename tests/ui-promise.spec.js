@@ -1,9 +1,10 @@
 const { test, expect } = require('@playwright/test');
-const { getScripts } = require('./test-helper');
+const { getScripts, read } = require('./test-helper');
+
 
 
 test('button handles native Promise resolution from sendMessage', async ({ page }) => {
-  const { utilsJs, uiBaseJs, uiJs, observerJs, backgroundJs } = getScripts();
+  const { utilsJs, uiBaseJs, uiJs } = getScripts();
 
   await page.setContent(`<!DOCTYPE html><html><body><div id="content"></div></body></html>`);
 
@@ -42,7 +43,7 @@ test('button handles native Promise resolution from sendMessage', async ({ page 
 });
 
 test('button gracefully handles native Promise rejections (exceptions) from sendMessage', async ({ page }) => {
-  const { utilsJs, uiBaseJs, uiJs, observerJs, backgroundJs } = getScripts();
+  const { utilsJs, uiBaseJs, uiJs } = getScripts();
 
   await page.setContent(`<!DOCTYPE html><html><body><div id="content"></div></body></html>`);
 
@@ -77,7 +78,7 @@ test('button gracefully handles native Promise rejections (exceptions) from send
 });
 
 test('button handles native Promise rejection with error object from sendMessage', async ({ page }) => {
-  const { utilsJs, uiBaseJs, uiJs, observerJs, backgroundJs } = getScripts();
+  const { utilsJs, uiBaseJs, uiJs } = getScripts();
 
   await page.setContent(`<!DOCTYPE html><html><body><div id="content"></div></body></html>`);
 

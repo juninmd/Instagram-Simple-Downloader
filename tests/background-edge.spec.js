@@ -1,7 +1,7 @@
 const { test, expect } = require('@playwright/test');
-const fs = require('fs');
-const { getScripts } = require('./test-helper');
-const path = require('path');
+const { getScripts, read } = require('./test-helper');
+
+
 
 test('background script handles unexpected URL in request', async ({ page }) => {
   const { bgJs } = getScripts();
