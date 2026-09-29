@@ -119,11 +119,7 @@ test('carousel dynamically added items of mixed types have incrementing indexes'
 });
 
 test('carousel correctly identifies existing elements using download-button attribute instead of title', async ({ page }) => {
-  const read = (f) => fs.readFileSync(path.join(__dirname, '..', f), 'utf-8');
-  const utilsJs = read('utils.js');
-  const uiBaseJs = read('ui-base.js');
-  const uiJs = read('ui.js');
-  const observerJs = read('observer.js');
+  const { utilsJs, uiBaseJs, uiJs, observerJs } = getScripts();
 
   await page.setContent(`
     <!DOCTYPE html>
