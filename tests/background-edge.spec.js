@@ -38,4 +38,14 @@ test('background script handles unexpected URL in request', async ({ page }) => 
   const fallbackArgs = await page.evaluate(() => window.downloadArgs);
   expect(fallbackArgs.url).toBe('not-a-url');
   expect(fallbackArgs.filename).toBe('video.mp4');
+
+  await page.evaluate(() => {
+    window.bgListener({ url: 'not-a-url?query=1', type: 'image' }, null, (res) => { window.sendResponseArgs = res; });
+  });
+
+  await page.waitForTimeout(50);
+
+  const fallbackQueryArgs = await page.evaluate(() => window.downloadArgs);
+  expect(fallbackQueryArgs.url).toBe('not-a-url?query=1');
+  expect(fallbackQueryArgs.filename).toBe('image.jpg');
 });

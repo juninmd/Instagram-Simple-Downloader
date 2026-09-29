@@ -88,6 +88,19 @@ test('background script handles download messages for image and video', async ({
   expect(vidArgs.url).toBe('http://example.com/vid.mp4');
   expect(vidArgs.filename).toBe('vid.mp4');
 
+  // Test video download with query parameters
+  await page.evaluate(() => {
+    window.successLogged = false;
+    window.sendResponseArgs = null;
+    window.bgListener({ url: 'http://example.com/vid-with-query.mp4?ig_cache_key=123&foo=bar', type: 'video' }, null, (res) => { window.sendResponseArgs = res; });
+  });
+
+  await page.waitForTimeout(50);
+
+  const vidQueryArgs = await page.evaluate(() => window.downloadArgs);
+  expect(vidQueryArgs.url).toBe('http://example.com/vid-with-query.mp4?ig_cache_key=123&foo=bar');
+  expect(vidQueryArgs.filename).toBe('vid-with-query.mp4');
+
   // Test fallback for missing filename
   await page.evaluate(() => {
     window.successLogged = false;
