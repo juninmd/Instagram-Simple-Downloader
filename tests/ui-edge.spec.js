@@ -1,10 +1,9 @@
 const { test, expect } = require('@playwright/test');
-const fs = require('fs');
 const { getScripts } = require('./test-helper');
-const path = require('path');
+
 
 test('appendButtons handles invalid containers gracefully', async ({ page }) => {
-  const { utilsJs, uiBaseJs, uiJs } = getScripts();
+  const { utilsJs, uiBaseJs, uiJs, observerJs, backgroundJs } = getScripts();
 
   await page.setContent(`<!DOCTYPE html><html><body><div id="content"></div></body></html>`);
 
@@ -37,7 +36,7 @@ test('appendButtons handles invalid containers gracefully', async ({ page }) => 
 });
 
 test('button updates aria-live to assertive on error', async ({ page }) => {
-  const { utilsJs, uiBaseJs, uiJs } = getScripts();
+  const { utilsJs, uiBaseJs, uiJs, observerJs, backgroundJs } = getScripts();
 
   await page.setContent(`<!DOCTYPE html><html><body></body></html>`);
 
@@ -66,7 +65,7 @@ test('button updates aria-live to assertive on error', async ({ page }) => {
 });
 
 test('button handles null callback in success and error paths properly', async ({ page }) => {
-  const { utilsJs, uiBaseJs, uiJs } = getScripts();
+  const { utilsJs, uiBaseJs, uiJs, observerJs, backgroundJs } = getScripts();
 
   await page.setContent(`<!DOCTYPE html><html><body><div id="content"></div></body></html>`);
 

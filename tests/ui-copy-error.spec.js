@@ -1,10 +1,9 @@
 const { test, expect } = require('@playwright/test');
-const fs = require('fs');
 const { getScripts } = require('./test-helper');
-const path = require('path');
+
 
 test('copy button simulates writeText failure and transitions to error state', async ({ page }) => {
-  const { utilsJs, uiBaseJs, uiJs } = getScripts();
+  const { utilsJs, uiBaseJs, uiJs, observerJs, backgroundJs } = getScripts();
 
   await page.setContent(`
     <!DOCTYPE html>

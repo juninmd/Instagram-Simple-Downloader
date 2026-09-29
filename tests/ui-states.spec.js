@@ -1,10 +1,9 @@
 const { test, expect } = require('@playwright/test');
-const fs = require('fs');
 const { getScripts } = require('./test-helper');
-const path = require('path');
+
 
 test('button transitions through loading and success states', async ({ page }) => {
-  const { utilsJs, uiBaseJs, uiJs } = getScripts();
+  const { utilsJs, uiBaseJs, uiJs, observerJs, backgroundJs } = getScripts();
 
   await page.setContent(`<!DOCTYPE html><html><body><div id="content"></div></body></html>`);
 
