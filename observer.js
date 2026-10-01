@@ -33,6 +33,8 @@
    * @returns {void}
    */
   const processItems = (container, items) => {
+    if (!items || items.length === 0) return;
+
     // Calculate dynamic numbering indices by querying the count of existing elements in the DOM container
     // rather than using the loop index to prevent duplicate numbering of newly loaded items in carousels.
     let existingCount = container.querySelectorAll('[download-button="ok"]').length;
