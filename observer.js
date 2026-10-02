@@ -99,20 +99,11 @@
     }
   };
 
-  let timeoutId = null;
-
   /**
    * A debounced wrapper for the main observer callback to optimize performance.
    * Prevents browser lag by rate-limiting intensive DOM queries during rapid mutations.
-   * @returns {void}
    */
-  const debouncedObserverCallback = () => {
-    if (timeoutId) clearTimeout(timeoutId);
-    timeoutId = setTimeout(() => {
-      observerCallback();
-      timeoutId = null;
-    }, 100);
-  };
+  const debouncedObserverCallback = U.debounce(observerCallback, 100);
 
   const observer = new MutationObserver(debouncedObserverCallback);
   observer.observe(document.body, {

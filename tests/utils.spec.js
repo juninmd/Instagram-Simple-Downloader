@@ -100,4 +100,30 @@ test.describe('Utility functions', () => {
     expect(firstConfettiStyle.position).toBe('fixed');
     expect(firstConfettiStyle.background).not.toBe('');
   });
+
+  test('debounce correctly rate-limits execution', async ({ page }) => {
+    const result = await page.evaluate(async () => {
+      let callCount = 0;
+      const fn = () => { callCount++; };
+      const debouncedFn = window.ISD_UTILS.debounce(fn, 50);
+
+      debouncedFn();
+      debouncedFn();
+      debouncedFn();
+
+      // Should not be called immediately
+      const initialCount = callCount;
+
+      // Wait 100ms
+      await new Promise(resolve => setTimeout(resolve, 100));
+
+      return {
+        initialCount,
+        finalCount: callCount
+      };
+    });
+
+    expect(result.initialCount).toBe(0);
+    expect(result.finalCount).toBe(1);
+  });
 });
