@@ -75,7 +75,7 @@
       try {
         await onClick();
         updateState(false, true, false);
-        if (onSuccess) onSuccess(btn);
+        if (onSuccess) { try { onSuccess(btn); } catch (e) { console.error(e); } }
       } catch (err) {
         console.error(err);
         updateState(false, false, true);
