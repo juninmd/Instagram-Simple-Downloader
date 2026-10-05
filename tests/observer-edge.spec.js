@@ -66,6 +66,8 @@ test('observer handles missing target elements gracefully', async ({ page }) => 
         <video><source /></video>
         <!-- Video with valid source src -->
         <video><source src="test.mp4" /></video>
+        <!-- Video with multiple sources -->
+        <video><source /><source src="real.mp4" /></video>
       </article>
     </body>
     </html>
@@ -79,12 +81,15 @@ test('observer handles missing target elements gracefully', async ({ page }) => 
   const fullScriptNoSrc = utilsJs + '\n' + uiBaseJs + '\n' + uiJs + '\n' + modifiedObserverJs;
   await page.evaluate(fullScriptNoSrc);
 
-  // Since there are 4 media tags matched by MEDIA_SELECTOR, 3 are missing 'src'
-  // and 1 has 'src', we expect exactly 1 set of buttons to be injected.
+  // Since there are 5 media tags matched by MEDIA_SELECTOR, 3 are missing 'src'
+  // and 2 have 'src', we expect exactly 2 sets of buttons to be injected.
   const allBtns = page.locator('.isd-btn');
-  // 1 download button, 1 copy button
-  await expect(allBtns).toHaveCount(2);
+  // 2 download buttons, 2 copy buttons
+  await expect(allBtns).toHaveCount(4);
 
-  const downloadBtnVideo = page.locator('.isd-btn[title*="Video #1"]');
-  await expect(downloadBtnVideo).toHaveCount(1);
+  const downloadBtnVideo1 = page.locator('.isd-btn[title*="Video #1"]');
+  await expect(downloadBtnVideo1).toHaveCount(1);
+
+  const downloadBtnVideo2 = page.locator('.isd-btn[title*="Video #2"]');
+  await expect(downloadBtnVideo2).toHaveCount(1);
 });

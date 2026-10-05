@@ -19,7 +19,7 @@
   const getMediaSource = (item) => {
     let src = item.src;
     if (!src && item.nodeName === 'VIDEO') {
-      const source = item.querySelector('source');
+      const source = item.querySelector('source[src]');
       if (source) src = source.src;
     }
     return src || null;
