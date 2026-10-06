@@ -3,7 +3,7 @@
  * @namespace ISD_UTILS
  */
 (function() {
-  window.ISD_UTILS = {};
+  window.ISD_UTILS = window.ISD_UTILS || {};
 
   window.ISD_UTILS.CONSTANTS = {
     VIDEO_COLOR: '#D32F2F',
