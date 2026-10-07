@@ -17,7 +17,7 @@
    * @returns {string|null} The source URL, or null if not found.
    */
   const getMediaSource = (item) => {
-    let src = item.src;
+    let src = item.currentSrc || item.src;
     if (!src && item.nodeName === 'VIDEO') {
       const source = item.querySelector('source[src]');
       if (source) src = source.src;
