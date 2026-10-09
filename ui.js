@@ -6,7 +6,14 @@
   window.ISD_UI = window.ISD_UI || {};
   const U = window.ISD_UTILS, C = U.CONSTANTS, el = U.el;
 
-  const b = typeof browser !== 'undefined' ? browser : (typeof chrome !== 'undefined' ? chrome : {});
+  let b;
+  if (typeof browser !== 'undefined') {
+    b = browser;
+  } else if (typeof chrome !== 'undefined') {
+    b = chrome;
+  } else {
+    b = {};
+  }
 
   /**
    * Creates a download button specific to the media type.
