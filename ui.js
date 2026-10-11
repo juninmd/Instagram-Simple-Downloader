@@ -6,6 +6,7 @@
   window.ISD_UI = window.ISD_UI || {};
   const U = window.ISD_UTILS, C = U.CONSTANTS, el = U.el;
 
+  /** @type {Object} */
   let b;
   if (typeof browser !== 'undefined') {
     b = browser;

@@ -1,3 +1,4 @@
+/** @type {Object} */
 let b;
 if (typeof browser !== 'undefined') {
   b = browser;

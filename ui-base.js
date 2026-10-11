@@ -80,7 +80,7 @@
         console.error(err);
         updateState(false, false, true);
       }
-      resetTimer = setTimeout(() => updateState(false, false, false), 2000);
+      resetTimer = setTimeout(() => updateState(false, false, false), C.STATE_RESET_TIMEOUT);
     });
     return btn;
   };
