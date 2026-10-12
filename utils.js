@@ -26,9 +26,8 @@
   window.ISD_UTILS.debounce = (func, wait) => {
     let timeout;
     return function (...args) {
-      const context = this;
       clearTimeout(timeout);
-      timeout = setTimeout(() => func.apply(context, args), wait);
+      timeout = setTimeout(() => func.apply(this, args), wait);
     };
   };
 
@@ -44,9 +43,7 @@
     const e = document.createElement(tag || 'div');
     if (cls) e.className = cls;
     Object.entries(attrs || {}).forEach(([k, v]) => {
-      if (v !== undefined && v !== null) {
-        e.setAttribute(k, v);
-      }
+      if (v !== undefined && v !== null) e.setAttribute(k, v);
     });
     Object.assign(e.style, style || {});
     return e;
@@ -126,8 +123,7 @@
    * @returns {void}
    */
   window.ISD_UTILS.createConfetti = (rect) => {
-    if (!document.body) return;
-    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (!document.body || (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)) return;
     if (!rect || typeof rect.left !== 'number' || typeof rect.width !== 'number' || typeof rect.top !== 'number' || typeof rect.height !== 'number') return;
     const colors = window.ISD_UTILS.CONSTANTS.CONFETTI_COLORS;
     const centerX = rect.left + rect.width / 2;
