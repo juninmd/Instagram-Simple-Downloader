@@ -103,7 +103,7 @@
    * A debounced wrapper for the main observer callback to optimize performance.
    * Prevents browser lag by rate-limiting intensive DOM queries during rapid mutations.
    */
-  const debouncedObserverCallback = U.debounce(observerCallback, 100);
+  const debouncedObserverCallback = U.debounce(observerCallback, U.CONSTANTS.OBSERVER_DEBOUNCE_MS);
 
   const observer = new MutationObserver(debouncedObserverCallback);
   observer.observe(document.body, {
