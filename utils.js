@@ -12,6 +12,8 @@
     CONFETTI_COLORS: ['#D32F2F', '#2E7D32', '#0095f6', '#FDD835', '#9C27B0'],
     STATE_RESET_TIMEOUT: 2000,
     OBSERVER_DEBOUNCE_MS: 100,
+    CONFETTI_COUNT: 12,
+    CONFETTI_DURATION_MS: 600,
     ICON_DOWNLOAD: `<svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>`,
     ICON_COPY: `<svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>`,
     ICON_CHECK: `<svg aria-hidden="true" class="isd-hidden" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>`
@@ -130,7 +132,7 @@
     const centerX = rect.left + rect.width / 2;
     const centerY = rect.top + rect.height / 2;
 
-    for (let i = 0; i < 12; i++) {
+    for (let i = 0; i < window.ISD_UTILS.CONSTANTS.CONFETTI_COUNT; i++) {
       const confetti = document.createElement('div');
       confetti.className = 'isd-confetti';
       confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
@@ -143,7 +145,7 @@
       confetti.style.setProperty('--dx', dx);
       confetti.style.setProperty('--dy', dy);
       document.body.appendChild(confetti);
-      setTimeout(() => confetti.remove(), 600);
+      setTimeout(() => confetti.remove(), window.ISD_UTILS.CONSTANTS.CONFETTI_DURATION_MS);
     }
   };
 })();

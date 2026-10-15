@@ -82,7 +82,8 @@ test.describe('Utility functions', () => {
 
     // We should expect around 12 confetti elements based on the utils code
     const confettiElements = page.locator('.isd-confetti');
-    await expect(confettiElements).toHaveCount(12);
+    const count = await page.evaluate(() => window.ISD_UTILS.CONSTANTS.CONFETTI_COUNT);
+    await expect(confettiElements).toHaveCount(count);
 
     // We inject the styles so position is actually fixed via CSS class.
     await page.evaluate(() => {
