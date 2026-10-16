@@ -46,4 +46,22 @@ test('background script handles unexpected URL in request', async ({ page }) => 
   const fallbackQueryArgs = await page.evaluate(() => window.downloadArgs);
   expect(fallbackQueryArgs.url).toBe('not-a-url?query=1');
   expect(fallbackQueryArgs.filename).toBe('image.jpg');
+
+  // Test missing request validation
+  const missingReqResult = await page.evaluate(() => {
+    let result = null;
+    const isAsync = window.bgListener(null, null, (res) => { result = res; });
+    return { isAsync, result };
+  });
+  expect(missingReqResult.isAsync).toBe(false);
+  expect(missingReqResult.result.error).toBe('Invalid request: URL is missing.');
+
+  // Test missing URL validation
+  const missingUrlResult = await page.evaluate(() => {
+    let result = null;
+    const isAsync = window.bgListener({}, null, (res) => { result = res; });
+    return { isAsync, result };
+  });
+  expect(missingUrlResult.isAsync).toBe(false);
+  expect(missingUrlResult.result.error).toBe('Invalid request: URL is missing.');
 });
