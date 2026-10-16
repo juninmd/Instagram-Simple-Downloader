@@ -41,6 +41,10 @@ function extractFilename(requestUrl, mediaType) {
  * @returns {boolean} Returns true to indicate that the response will be sent asynchronously.
  */
 b.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+    if (!request || !request.url) {
+        sendResponse({ error: 'Invalid request: URL is missing.' });
+        return false; // Indicates synchronous response
+    }
 
     const parsedFilename = extractFilename(request.url, request.type);
 
