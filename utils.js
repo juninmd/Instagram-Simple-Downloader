@@ -4,7 +4,6 @@
  */
 (function() {
   window.ISD_UTILS = window.ISD_UTILS || {};
-
   window.ISD_UTILS.CONSTANTS = {
     VIDEO_COLOR: '#D32F2F',
     IMAGE_COLOR: '#2E7D32',
@@ -18,7 +17,6 @@
     ICON_COPY: `<svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>`,
     ICON_CHECK: `<svg aria-hidden="true" class="isd-hidden" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>`
   };
-
   /**
    * Creates a debounced function that delays invoking the provided function until after `wait` milliseconds
    * have elapsed since the last time the debounced function was invoked.
@@ -33,7 +31,6 @@
       timeout = setTimeout(() => func.apply(this, args), wait);
     };
   };
-
   /**
    * Helper to create DOM elements.
    * @param {string} tag - Tag name.
@@ -51,7 +48,6 @@
     Object.assign(e.style, style || {});
     return e;
   };
-
   /**
    * Injects the required CSS styles for the extension into the document head.
    * This includes animations, button styles, and interactive states.
@@ -116,9 +112,8 @@
       .isd-btn.isd-error { cursor: pointer; }
       .isd-btn svg { margin-inline-end: 6px; }
     `;
-    document.head.appendChild(style);
+    (document.head || document.documentElement).appendChild(style);
   };
-
   /**
    * Creates a brief confetti animation originating from the specified DOM element's rectangle.
    * Respects user preferences for reduced motion by aborting if enabled.
@@ -131,7 +126,6 @@
     const colors = window.ISD_UTILS.CONSTANTS.CONFETTI_COLORS;
     const centerX = rect.left + rect.width / 2;
     const centerY = rect.top + rect.height / 2;
-
     for (let i = 0; i < window.ISD_UTILS.CONSTANTS.CONFETTI_COUNT; i++) {
       const confetti = document.createElement('div');
       confetti.className = 'isd-confetti';
