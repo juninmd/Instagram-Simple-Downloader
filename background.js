@@ -1,12 +1,5 @@
 /** @type {Object} */
-let b;
-if (typeof browser !== 'undefined') {
-  b = browser;
-} else if (typeof chrome !== 'undefined') {
-  b = chrome;
-} else {
-  b = {};
-}
+const b = typeof browser !== 'undefined' ? browser : (typeof chrome !== 'undefined' ? chrome : {});
 
 /**
  * Extracts a filename from the given URL.
