@@ -13,6 +13,9 @@
     OBSERVER_DEBOUNCE_MS: 100,
     CONFETTI_COUNT: 12,
     CONFETTI_DURATION_MS: 600,
+    WRAPPER_MARGIN_BLOCK_END: '8px',
+    WRAPPER_Z_INDEX: 1000,
+    CONFETTI_Z_INDEX: 10000,
     ICON_DOWNLOAD: `<svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>`,
     ICON_COPY: `<svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>`,
     ICON_CHECK: `<svg aria-hidden="true" class="isd-hidden" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>`
@@ -82,7 +85,7 @@
       .isd-pop { animation: isd-pop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
       .isd-confetti {
         position: fixed; width: 6px; height: 6px; border-radius: 50%;
-        pointer-events: none; z-index: 10000;
+        pointer-events: none; z-index: ${window.ISD_UTILS.CONSTANTS.CONFETTI_Z_INDEX};
         animation: isd-confetti-explode 0.6s ease-out forwards;
       }
       @media (prefers-reduced-motion: reduce) {
