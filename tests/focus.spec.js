@@ -9,7 +9,7 @@ test('focus style verification', async ({ page }) => {
   if (!cssMatch) {
     throw new Error('Could not find CSS in utils.js');
   }
-  const css = cssMatch[1];
+  const css = cssMatch[1].replace('${window.ISD_UTILS.CONSTANTS.CONFETTI_Z_INDEX}', '10000');
 
   await page.setContent(`
     <!DOCTYPE html>
