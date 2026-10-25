@@ -102,6 +102,19 @@ test.describe('Utility functions', () => {
     expect(firstConfettiStyle.background).not.toBe('');
   });
 
+  test('el creates DOM element with boolean attributes properly', async ({ page }) => {
+    const elementProps = await page.evaluate(() => {
+      const el = window.ISD_UTILS.el('input', '', { disabled: 'disabled', readonly: '' });
+      return {
+        disabled: el.getAttribute('disabled'),
+        readonly: el.getAttribute('readonly')
+      };
+    });
+
+    expect(elementProps.disabled).toBe('disabled');
+    expect(elementProps.readonly).toBe('');
+  });
+
   test('debounce correctly rate-limits execution', async ({ page }) => {
     const result = await page.evaluate(async () => {
       let callCount = 0;

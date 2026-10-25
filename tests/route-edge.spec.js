@@ -18,8 +18,8 @@ test('buttons are injected in singular reel route without trailing slash', async
   `);
 
   let modifiedObserverJs = observerJs.replace(
-    /const url = new URL\(window\.location\.href\);/s,
-    "const url = new URL('https://instagram.com/reel');"
+    /const pathname = window\.location\.pathname;/s,
+    "const pathname = '/reel';"
   );
 
   const fullScript = utilsJs + '\n' + uiBaseJs + '\n' + uiJs + '\n' + modifiedObserverJs;
@@ -49,8 +49,8 @@ test('buttons are injected in post page without trailing slash', async ({ page }
   `);
 
   let modifiedObserverJs = observerJs.replace(
-    /const url = new URL\(window\.location\.href\);/s,
-    "const url = new URL('https://instagram.com/p');"
+    /const pathname = window\.location\.pathname;/s,
+    "const pathname = '/p';"
   );
 
   const fullScript = utilsJs + '\n' + uiBaseJs + '\n' + uiJs + '\n' + modifiedObserverJs;

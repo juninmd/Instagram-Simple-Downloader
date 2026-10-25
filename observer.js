@@ -84,8 +84,7 @@
    */
   const observerCallback = () => {
     try {
-      const url = new URL(window.location.href);
-      const pathname = url.pathname;
+      const pathname = window.location.pathname;
 
       const isArticleRoute = pathname === '/' || /^\/(reels?|p)(\/|$)/.test(pathname);
 

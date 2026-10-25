@@ -18,8 +18,8 @@ test('buttons are injected in reels', async ({ page }) => {
   `);
 
   let modifiedObserverJs = observerJs.replace(
-    /const url = new URL\(window\.location\.href\);/s,
-    "const url = new URL('https://instagram.com/reels/123/');"
+    /const pathname = window\.location\.pathname;/s,
+    "const pathname = '/reels/123/';"
   );
 
   const fullScript = utilsJs + '\n' + uiBaseJs + '\n' + uiJs + '\n' + modifiedObserverJs;
@@ -49,8 +49,8 @@ test('buttons are injected in singular reel route', async ({ page }) => {
   `);
 
   let modifiedObserverJs = observerJs.replace(
-    /const url = new URL\(window\.location\.href\);/s,
-    "const url = new URL('https://instagram.com/reel/123/');"
+    /const pathname = window\.location\.pathname;/s,
+    "const pathname = '/reel/123/';"
   );
 
   const fullScript = utilsJs + '\n' + uiBaseJs + '\n' + uiJs + '\n' + modifiedObserverJs;
