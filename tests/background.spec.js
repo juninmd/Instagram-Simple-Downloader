@@ -28,6 +28,7 @@ test('background script handles download messages for image and video', async ({
 
     window.browser = {
       runtime: {
+        id: 'test-ext-id',
         onMessage: {
           addListener: (fn) => {
             window.bgListener = fn;
@@ -37,17 +38,22 @@ test('background script handles download messages for image and video', async ({
       downloads: {
         download: (options, cb) => {
           window.downloadArgs = options;
-          if (options.url === 'fail') {
+          if (options.url.includes('/sim-fail.jpg')) {
              return Promise.reject('Simulated error');
-          } else if (options.url === 'cb-fail') {
+          } else if (options.url.includes('/cb-fail.jpg')) {
             window.browser.runtime.lastError = { message: 'Callback failed' };
             return Promise.reject(new Error('Callback failed'));
-          } else if (options.url === 'sync-fail') {
+          } else if (options.url.includes('/sync-fail.jpg')) {
              throw new Error('Sync throw');
           }
           return Promise.resolve(123);
         }
       }
+    };
+
+    window.validSender = {
+      id: 'test-ext-id',
+      tab: { url: 'https://www.instagram.com/p/C123/' }
     };
 
     // Evaluate background script
@@ -56,14 +62,14 @@ test('background script handles download messages for image and video', async ({
 
   // Test image download
   await page.evaluate(() => {
-    window.bgListener({ url: 'http://example.com/img.jpg', type: 'image' }, null, (res) => { window.sendResponseArgs = res; });
+    window.bgListener({ url: 'https://scontent-gru1-1.cdninstagram.com/v/t51/img.jpg', type: 'image' }, window.validSender, (res) => { window.sendResponseArgs = res; });
   });
 
   // Small wait for promise
   await page.waitForTimeout(50);
 
   const imgArgs = await page.evaluate(() => window.downloadArgs);
-  expect(imgArgs.url).toBe('http://example.com/img.jpg');
+  expect(imgArgs.url).toBe('https://scontent-gru1-1.cdninstagram.com/v/t51/img.jpg');
   expect(imgArgs.filename).toBe('img.jpg');
   expect(imgArgs.saveAs).toBe(true);
 
@@ -77,45 +83,45 @@ test('background script handles download messages for image and video', async ({
   await page.evaluate(() => {
     window.successLogged = false;
     window.sendResponseArgs = null;
-    window.bgListener({ url: 'http://example.com/vid.mp4', type: 'video' }, null, (res) => { window.sendResponseArgs = res; });
+    window.bgListener({ url: 'https://scontent-gru1-1.cdninstagram.com/v/t51/vid.mp4', type: 'video' }, window.validSender, (res) => { window.sendResponseArgs = res; });
   });
 
   await page.waitForTimeout(50);
 
   const vidArgs = await page.evaluate(() => window.downloadArgs);
-  expect(vidArgs.url).toBe('http://example.com/vid.mp4');
+  expect(vidArgs.url).toBe('https://scontent-gru1-1.cdninstagram.com/v/t51/vid.mp4');
   expect(vidArgs.filename).toBe('vid.mp4');
 
   // Test video download with query parameters
   await page.evaluate(() => {
     window.successLogged = false;
     window.sendResponseArgs = null;
-    window.bgListener({ url: 'http://example.com/vid-with-query.mp4?ig_cache_key=123&foo=bar', type: 'video' }, null, (res) => { window.sendResponseArgs = res; });
+    window.bgListener({ url: 'https://scontent-gru1-1.cdninstagram.com/v/t51/vid-with-query.mp4?ig_cache_key=123&foo=bar', type: 'video' }, window.validSender, (res) => { window.sendResponseArgs = res; });
   });
 
   await page.waitForTimeout(50);
 
   const vidQueryArgs = await page.evaluate(() => window.downloadArgs);
-  expect(vidQueryArgs.url).toBe('http://example.com/vid-with-query.mp4?ig_cache_key=123&foo=bar');
+  expect(vidQueryArgs.url).toBe('https://scontent-gru1-1.cdninstagram.com/v/t51/vid-with-query.mp4?ig_cache_key=123&foo=bar');
   expect(vidQueryArgs.filename).toBe('vid-with-query.mp4');
 
   // Test fallback for missing filename
   await page.evaluate(() => {
     window.successLogged = false;
     window.sendResponseArgs = null;
-    window.bgListener({ url: 'http://example.com/', type: 'image' }, null, (res) => { window.sendResponseArgs = res; });
+    window.bgListener({ url: 'https://scontent-gru1-1.cdninstagram.com/v/t51/', type: 'image' }, window.validSender, (res) => { window.sendResponseArgs = res; });
   });
 
   await page.waitForTimeout(50);
 
   const fallbackArgs = await page.evaluate(() => window.downloadArgs);
-  expect(fallbackArgs.url).toBe('http://example.com/');
+  expect(fallbackArgs.url).toBe('https://scontent-gru1-1.cdninstagram.com/v/t51/');
   expect(fallbackArgs.filename).toBe('image.jpg');
 
   // Test failure
   await page.evaluate(() => {
     window.sendResponseArgs = null;
-    window.bgListener({ url: 'fail', type: 'image' }, null, (res) => { window.sendResponseArgs = res; });
+    window.bgListener({ url: 'https://scontent-gru1-1.cdninstagram.com/v/t51/sim-fail.jpg', type: 'image' }, window.validSender, (res) => { window.sendResponseArgs = res; });
   });
 
   await page.waitForTimeout(50);
@@ -129,7 +135,7 @@ test('background script handles download messages for image and video', async ({
   // Test callback failure
   await page.evaluate(() => {
     window.sendResponseArgs = null;
-    window.bgListener({ url: 'cb-fail', type: 'image' }, null, (res) => { window.sendResponseArgs = res; });
+    window.bgListener({ url: 'https://scontent-gru1-1.cdninstagram.com/v/t51/cb-fail.jpg', type: 'image' }, window.validSender, (res) => { window.sendResponseArgs = res; });
   });
 
   await page.waitForTimeout(50);
@@ -140,7 +146,7 @@ test('background script handles download messages for image and video', async ({
   // Test synchronous exception
   await page.evaluate(() => {
     window.sendResponseArgs = null;
-    window.bgListener({ url: 'sync-fail', type: 'image' }, null, (res) => { window.sendResponseArgs = res; });
+    window.bgListener({ url: 'https://scontent-gru1-1.cdninstagram.com/v/t51/sync-fail.jpg', type: 'image' }, window.validSender, (res) => { window.sendResponseArgs = res; });
   });
 
   await page.waitForTimeout(50);
