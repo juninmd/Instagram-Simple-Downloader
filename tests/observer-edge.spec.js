@@ -14,8 +14,8 @@ test('observer handles missing target elements gracefully', async ({ page }) => 
   `);
 
   let modifiedObserverJs = observerJs.replace(
-    /const url = new URL\(window\.location\.href\);/s,
-    "const url = new URL('https://instagram.com/stories/test/');"
+    /const pathname = window\.location\.pathname;/s,
+    "const pathname = '/stories/test/';"
   );
 
   const fullScript = utilsJs + '\n' + uiBaseJs + '\n' + uiJs + '\n' + modifiedObserverJs;
@@ -30,8 +30,8 @@ test('observer handles missing target elements gracefully', async ({ page }) => 
   await page.setContent(`<!DOCTYPE html><html><body></body></html>`);
 
   modifiedObserverJs = observerJs.replace(
-    /const url = new URL\(window\.location\.href\);/s,
-    "const url = new URL('https://instagram.com/p/123/');"
+    /const pathname = window\.location\.pathname;/s,
+    "const pathname = '/p/123/';"
   );
 
   const fullScriptProfile = utilsJs + '\n' + uiBaseJs + '\n' + uiJs + '\n' + modifiedObserverJs;
@@ -44,7 +44,7 @@ test('observer handles missing target elements gracefully', async ({ page }) => 
   await page.setContent(`<!DOCTYPE html><html><body></body></html>`);
 
   modifiedObserverJs = observerJs.replace(
-    /const url = new URL\(window\.location\.href\);/s,
+    /const pathname = window\.location\.pathname;/s,
     "throw new Error('URL parse error');"
   );
 
@@ -74,8 +74,8 @@ test('observer handles missing target elements gracefully', async ({ page }) => 
   `);
 
   modifiedObserverJs = observerJs.replace(
-    /const url = new URL\(window\.location\.href\);/s,
-    "const url = new URL('https://instagram.com/p/123/');"
+    /const pathname = window\.location\.pathname;/s,
+    "const pathname = '/p/123/';"
   );
 
   const fullScriptNoSrc = utilsJs + '\n' + uiBaseJs + '\n' + uiJs + '\n' + modifiedObserverJs;
