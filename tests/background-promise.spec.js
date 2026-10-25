@@ -12,6 +12,7 @@ test('background script handles native Promise resolution from download', async 
 
     window.browser = {
       runtime: {
+        id: 'test-ext-id',
         onMessage: {
           addListener: (fn) => { window.bgListener = fn; }
         }
@@ -25,12 +26,17 @@ test('background script handles native Promise resolution from download', async 
       }
     };
 
+    window.validSender = {
+      id: 'test-ext-id',
+      tab: { url: 'https://www.instagram.com/p/C123/' }
+    };
+
     // Evaluate background script
     eval(script);
   }, bgJs);
 
   await page.evaluate(() => {
-    window.bgListener({ url: 'http://example.com/prom.jpg', type: 'image' }, null, (res) => { window.sendResponseArgs = res; });
+    window.bgListener({ url: 'https://scontent-gru1-1.cdninstagram.com/v/t51/prom.jpg', type: 'image' }, window.validSender, (res) => { window.sendResponseArgs = res; });
   });
 
   await page.waitForTimeout(50);
