@@ -25,6 +25,7 @@
   ],
   "background": {
     "scripts": [
+      "background-utils.js",
       "background.js"
     ]
   }

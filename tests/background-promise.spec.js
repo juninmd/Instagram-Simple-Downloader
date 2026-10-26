@@ -2,11 +2,11 @@ const { test, expect } = require('@playwright/test');
 const { getScripts } = require('./test-helper');
 
 test('background script handles native Promise resolution from download', async ({ page }) => {
-  const { bgJs } = getScripts();
+  const { bgUtilsJs, bgJs } = getScripts();
 
   await page.setContent(`<!DOCTYPE html><html><body></body></html>`);
 
-  await page.evaluate((script) => {
+  await page.evaluate(([bgUtilsScript, script]) => {
     window.downloadArgs = null;
     window.sendResponseArgs = null;
 
@@ -32,8 +32,8 @@ test('background script handles native Promise resolution from download', async 
     };
 
     // Evaluate background script
-    eval(script);
-  }, bgJs);
+    eval(bgUtilsScript + "\n" + script);
+  }, [bgUtilsJs, bgJs]);
 
   await page.evaluate(() => {
     window.bgListener({ url: 'https://scontent-gru1-1.cdninstagram.com/v/t51/prom.jpg', type: 'image' }, window.validSender, (res) => { window.sendResponseArgs = res; });

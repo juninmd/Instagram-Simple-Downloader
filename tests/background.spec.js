@@ -2,11 +2,11 @@ const { test, expect } = require('@playwright/test');
 const { getScripts } = require('./test-helper');
 
 test('background script handles download messages for image and video', async ({ page }) => {
-  const { bgJs } = getScripts();
+  const { bgUtilsJs, bgJs } = getScripts();
 
   await page.setContent(`<!DOCTYPE html><html><body></body></html>`);
 
-  await page.evaluate((script) => {
+  await page.evaluate(([bgUtilsScript, script]) => {
     window.downloadArgs = null;
     window.successLogged = false;
     window.errorLogged = false;
@@ -57,8 +57,8 @@ test('background script handles download messages for image and video', async ({
     };
 
     // Evaluate background script
-    eval(script);
-  }, bgJs);
+    eval(bgUtilsScript + "\n" + script);
+  }, [bgUtilsJs, bgJs]);
 
   // Test image download
   await page.evaluate(() => {
