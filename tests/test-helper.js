@@ -11,6 +11,7 @@ function getScripts() {
     uiBaseJs: read('ui-base.js'),
     uiJs: read('ui.js'),
     observerJs: read('observer.js'),
+    bgUtilsJs: read('background-utils.js'),
     bgJs: read('background.js'),
   };
   return cache;

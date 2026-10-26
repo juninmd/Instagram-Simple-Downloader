@@ -2,11 +2,11 @@ const { test, expect } = require('@playwright/test');
 const { getScripts } = require('./test-helper');
 
 test('background script validates request, sender, scheme, host, type, and sanitizes filenames', async ({ page }) => {
-  const { bgJs } = getScripts();
+  const { bgUtilsJs, bgJs } = getScripts();
 
   await page.setContent(`<!DOCTYPE html><html><body></body></html>`);
 
-  await page.evaluate((script) => {
+  await page.evaluate(([bgUtilsScript, script]) => {
     window.downloadArgs = null;
     window.sendResponseArgs = null;
 
@@ -30,8 +30,8 @@ test('background script validates request, sender, scheme, host, type, and sanit
       tab: { url: 'https://www.instagram.com/p/C123/' }
     };
 
-    eval(script);
-  }, bgJs);
+    eval(bgUtilsScript + "\n" + script);
+  }, [bgUtilsJs, bgJs]);
 
   // Helper to send message
   const sendMessage = async (request, sender) => {
