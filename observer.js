@@ -8,6 +8,7 @@
 
   // Inject styles immediately
   U.injectStyles();
+  if (U.injectAperture) U.injectAperture();
 
   const MEDIA_SELECTOR = 'img[srcset]:not([download-button="ok"]), video:not([download-button="ok"])';
 
@@ -63,6 +64,20 @@
   };
 
   /**
+   * Fallback for the logged-out permalink layout (/p/<id>/), which has no `<article>`
+   * and serves the main image without `srcset`. Only the primary post media is handled.
+   * @returns {void}
+   */
+  const searchMainPost = () => {
+    if (document.querySelector('article')) return;
+    const main = document.querySelector('main');
+    if (!main) return;
+    const media = [...main.querySelectorAll('video, img[src*="cdninstagram"]')]
+      .find((m) => m.nodeName === 'VIDEO' || m.naturalWidth >= 300);
+    if (media && media.getAttribute('download-button') !== 'ok') processItems(main, [media]);
+  };
+
+  /**
    * Scans the DOM for Instagram Stories, which typically use a specialized `<section>` layout.
    * Identifies un-processed media items and dispatches them for button injection.
    * @returns {void}
@@ -90,6 +105,7 @@
 
       if (isArticleRoute) {
         searchArticles();
+        searchMainPost();
       } else if (pathname.startsWith('/stories/')) {
         searchStories();
       }

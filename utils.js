@@ -5,9 +5,9 @@
 (function() {
   window.ISD_UTILS = window.ISD_UTILS || {};
   window.ISD_UTILS.CONSTANTS = {
-    VIDEO_COLOR: '#D32F2F',
-    IMAGE_COLOR: '#2E7D32',
-    COPY_COLOR: '#0095f6',
+    VIDEO_COLOR: '#d6336c',
+    IMAGE_COLOR: '#0a8f7a',
+    COPY_COLOR: '#3b4268',
     CONFETTI_COLORS: ['#D32F2F', '#2E7D32', '#0095f6', '#FDD835', '#9C27B0'],
     STATE_RESET_TIMEOUT: 2000,
     OBSERVER_DEBOUNCE_MS: 100,
