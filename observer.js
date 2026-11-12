@@ -8,6 +8,7 @@
 
   // Inject styles immediately
   U.injectStyles();
+  if (U.injectAperture) U.injectAperture();
 
   const MEDIA_SELECTOR = 'img[srcset]:not([download-button="ok"]), video:not([download-button="ok"])';
 
