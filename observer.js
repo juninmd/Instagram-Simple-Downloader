@@ -23,7 +23,9 @@
       const source = item.querySelector('source[src]');
       if (source) src = source.src;
     }
-    return src || null;
+    // blob: URLs are local MSE handles the background script can never download.
+    if (!src || /^blob:/i.test(src)) return null;
+    return src;
   };
 
   /**
