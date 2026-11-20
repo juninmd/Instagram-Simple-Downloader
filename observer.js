@@ -13,12 +13,27 @@
   const MEDIA_SELECTOR = 'img[srcset]:not([download-button="ok"]), video:not([download-button="ok"])';
 
   /**
+   * Picks the largest candidate of an img srcset (`w` descriptors first, then `x`).
+   * @param {string} srcset - The raw srcset attribute.
+   * @returns {string|null} The URL of the largest candidate, or null when none has a valid descriptor.
+   */
+  const pickLargestFromSrcset = (srcset) => {
+    const best = { w: null, x: null };
+    for (const [, url, num, unit] of (srcset || '').matchAll(/(\S+?)\s+(\d+(?:\.\d+)?)([wx])(?:,|\s|$)/g)) {
+      const size = parseFloat(num);
+      if (!best[unit] || size > best[unit].size) best[unit] = { url, size };
+    }
+    return (best.w || best.x || {}).url || null;
+  };
+
+  /**
    * Helper function to extract the media source URL from an HTML element.
    * @param {HTMLElement} item - The media element (img or video).
    * @returns {string|null} The source URL, or null if not found.
    */
   const getMediaSource = (item) => {
-    let src = item.currentSrc || item.src;
+    // currentSrc is the variant the browser picked for this layout, usually not the largest one.
+    let src = (item.nodeName === 'IMG' && pickLargestFromSrcset(item.getAttribute('srcset'))) || item.currentSrc || item.src;
     if (!src && item.nodeName === 'VIDEO') {
       const source = item.querySelector('source[src]');
       if (source) src = source.src;
