@@ -89,9 +89,11 @@
     if (document.querySelector('article')) return;
     const main = document.querySelector('main');
     if (!main) return;
-    const media = [...main.querySelectorAll('video, img[src*="cdninstagram"]')]
-      .find((m) => m.nodeName === 'VIDEO' || m.naturalWidth >= 300);
-    if (media && media.getAttribute('download-button') !== 'ok') processItems(main, [media]);
+    const candidates = [...main.querySelectorAll('video, img[src*="cdninstagram"]')];
+    const media = candidates.find((m) => m.nodeName === 'VIDEO' || m.naturalWidth >= 300);
+    if (media) return media.getAttribute('download-button') === 'ok' || processItems(main, [media]);
+    // naturalWidth stays 0 until decode and a load is no childList mutation: rescan on load (deduped listener).
+    candidates.forEach((m) => m.complete || m.addEventListener('load', observerCallback, { once: true }));
   };
 
   /**

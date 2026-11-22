@@ -23,3 +23,23 @@ test('permalink fallback ignores small images', async ({ page }) => {
   await page.evaluate([utilsJs, uiBaseJs, uiJs, js].join('\n'));
   await expect(page.locator('.isd-btn')).toHaveCount(0);
 });
+
+test('permalink fallback injects once the main image finishes loading', async ({ page }) => {
+  const { utilsJs, uiBaseJs, uiJs, observerJs } = getScripts();
+  await page.setContent(`<main><img id="main" src="${PX}#cdninstagram"></main>`);
+  await page.evaluate(() => {
+    const img = document.getElementById('main');
+    Object.defineProperty(img, 'complete', { value: false, configurable: true });
+    Object.defineProperty(img, 'naturalWidth', { value: 0, configurable: true });
+  });
+  const js = observerJs.replace(/const pathname = window\.location\.pathname;/s, "const pathname = '/p/abc/';");
+  await page.evaluate([utilsJs, uiBaseJs, uiJs, js].join('\n'));
+  await expect(page.locator('.isd-btn')).toHaveCount(0);
+  await page.evaluate(() => {
+    const img = document.getElementById('main');
+    Object.defineProperty(img, 'complete', { value: true });
+    Object.defineProperty(img, 'naturalWidth', { value: 1080 });
+    img.dispatchEvent(new Event('load'));
+  });
+  await expect(page.locator('.isd-btn')).toHaveCount(2);
+});
